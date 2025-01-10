@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import 'swiper/css/effect-fade'; // Import fade effect styles
+import 'swiper/css/effect-fade'; 
 
 import { Autoplay,Pagination,EffectFade  } from 'swiper/modules';
 
@@ -17,9 +17,9 @@ function Banner() {
          delay: 1500,
          disableOnInteraction: false,
        }}
-       effect={'fade'} // Apply the fade effect
-       speed={400} // Transition duration in milliseconds
-      fadeEffect={{ crossFade: true }} // Optional: Smooth cross-fade
+       effect={'fade'} 
+       speed={400} 
+      fadeEffect={{ crossFade: true }} 
       pagination={{ clickable: true }}
       loop
       navigation={false}

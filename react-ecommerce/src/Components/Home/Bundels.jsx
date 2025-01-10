@@ -21,8 +21,6 @@ function Bundels() {
         </div>
 
     ))}
-
-
     </div>
     </section>
   )
