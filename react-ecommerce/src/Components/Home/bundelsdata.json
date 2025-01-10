@@ -1,0 +1,25 @@
+[
+    {
+        "image":"/src/assets/images/camping-bundle.png",
+        "id" : 1,
+        "discountedPrice" : 50,
+        "name" : "Camping Essentials Bundle",
+        "Price" : 100
+
+
+    },
+    {
+        "image":"/src/assets/images/camping-kit.png",
+        "id" : 2,
+        "discountedPrice" : 100,
+        "name" : "Ultimate Camping Kit",
+        "Price" : 200
+    },
+    {
+        "image":"/src/assets/images/camping-kit.png",
+        "id" : 3,
+        "discountedPrice" : 200,
+        "name" : "Camping Kit",
+        "Price" : 150
+    }
+]

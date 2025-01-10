@@ -1,0 +1,24 @@
+[
+    {
+      "tag": "Collection 2024",
+      "title": "20% HOLIDAY DISCOUNT!",
+      "date": "December 1st - December 31st",
+      "image": "/src/assets/images/1.jpg",
+      "link": "products_screen/products.html"
+    },
+    {
+      "tag": "Sales",
+      "title": "50% OFF ON CAMPING GEAR!",
+      "date": "Limited Time Offer",
+      "image": "/src/assets/images/2.jpg",
+      "link": "products_screen/products.html"
+    },
+    {
+      "tag": "Exciting News",
+      "title": "FREE SHIPPING!",
+      "date": "On orders over $50",
+      "image": "/src/assets/images/3.jpg",
+      "link": "products_screen/products.html"
+    }
+  ]
+  

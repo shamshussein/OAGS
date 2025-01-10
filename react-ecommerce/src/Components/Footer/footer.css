@@ -1,0 +1,86 @@
+
+.footer {
+    background-color: #6c8176;
+    color: #000000;
+    padding: 4vh 2rem;
+    font-family:"Poppins", sans-serif ;
+    flex-shrink: 0;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 3vh;
+  }
+  
+  .contact-info, .footer-menu, .account {
+    flex: 1;
+    min-width: 10vh;
+  }
+  
+  .contact-info h3, .footer-menu h3, .account h3 {
+    font-size: 3vh;
+    margin-bottom: 3vh;
+    color: #ffffff;
+  }
+  
+  .contact-info ul, .footer-menu ul, .account ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .contact-info li, .footer-menu li, .account li {
+    font-size: 2vh;
+    margin-bottom: 1vh;
+  }
+  
+  .contact-info li strong, .footer-menu li strong, .account li strong {
+    font-weight: bold;
+  }
+  
+  .footer-menu a, .account a {
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-menu a:hover, .account a:hover {
+    color: #ffffff;
+  }
+  
+  .social-media {
+    display: flex;
+    justify-content: center;
+    gap: 3vh;
+    margin-top: 1vh;
+    padding-top: 3vh;
+  }
+  
+  .social-icon {
+    font-size: 1rem;
+    color: #000000;
+    text-decoration: none; 
+    transition: color 0.3s ease;
+  }
+  
+  .social-icon:hover {
+    color: #467a6b;
+  }
+  
+  .social-icon i {
+    font-size: 1.5rem;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    margin-top: 4vh;
+    font-size: 1.6vh;
+    font-weight: bold;
+  }
+  
+  .footer-bottom p {
+    color: #000000;
+    margin: 0;
+  }
+   

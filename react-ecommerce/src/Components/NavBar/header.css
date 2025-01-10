@@ -1,0 +1,15 @@
+.nav-link {
+    transition: border-color 0.5s ease; /* Add transition effect for the border color */
+  }
+  
+  .nav-link:hover {
+    border-bottom: 1px solid #000; /* Add underline color on hover */
+  }
+  
+
+  .headerIcons:hover{
+
+    font-weight: 400;
+    color: rgba(33, 37, 41, 0.75);
+
+  }
