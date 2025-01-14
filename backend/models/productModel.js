@@ -2,42 +2,49 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const productSchema = new mongoose.Schema({
-    productName:{
+    productName: {
         type: String,
         required: [true, "Add the product name"],
         trim: true,
-        minlength:3,
+        minlength: 3,
         unique: true,
     },
-    productDescription:{
+    productDescription: {
         type: String,
         required: [true, "Add the product description"],
         trim: true,
-        minlength:3,
+        minlength: 3,
         maxLength: 255,
     },
-    productImage:{
+    productImage: {
         type: String,
-        default: ""
+        default: "",
     },
-    productPrice:{
+    productPrice: {
         type: Schema.Types.Decimal128,
-        default: 0.00,
-        required: [true, "Add the product price"]
+        required: [true, "Add the product price"],
     },
-    productPrice:{
+    productQuantity: {
         type: Number,
+        required: [true, "Add the product quantity"],
+    },
+    productCategory: {
+        type: String, // Update to a simple string for the category
+        required: [true, "Add the product category"],
+    },
+    productRating: {
+        type: Number, // Rating will be a number, e.g., 4.5
         default: 0,
-        required: [true, "Add the product quantity"]
+        min: 0,
+        max: 5,
     },
-    productPrice:{
-        type: Schema.Types.ObjectId,
-        ref: "User",
+    isSized: {
+        type: Boolean,
+        default: false, // This indicates whether the product has a size option
     },
-    
 },
 {
-    timestamps: true
-}
-);
+    timestamps: true, // Automatically add createdAt and updatedAt fields
+});
+
 module.exports = mongoose.model("Product", productSchema);
