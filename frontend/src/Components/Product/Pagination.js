@@ -1,23 +1,47 @@
 import React from 'react';
+import './Pagination.css'; 
 
-const Pagination = ({ currentPage, setCurrentPage, totalProducts }) => {
-    const productsPerPage = 5;
-    const totalPages = Math.ceil(totalProducts / productsPerPage);
+const Pagination = ({ currentPage, setCurrentPage, totalProducts, productsPerPage }) => {
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
 
-    const handleLoadMore = () => {
-        setCurrentPage(prevPage => prevPage + 1);
-    };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
-    const handleShowLess = () => {
-        setCurrentPage(1);
-    };
-
-    return (
-        <div className="pagination-buttons">
-            {currentPage > 1 && <button className="show-less" onClick={handleShowLess}>Show Less</button>}
-            {currentPage < totalPages && <button className="load-more" onClick={handleLoadMore}>Load More</button>}
-        </div>
-    );
+  return (
+    <nav className="pagination-container">
+      <ul className="pagination justify-content-center">
+        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+          <button
+            className="page-link"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+        </li>
+        {Array.from({ length: totalPages }).map((_, index) => (
+          <li
+            key={index}
+            className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
+          >
+            <button className="page-link" onClick={() => handlePageChange(index + 1)}>
+              {index + 1}
+            </button>
+          </li>
+        ))}
+        <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+          <button
+            className="page-link"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </li>
+      </ul>
+    </nav>
+  );
 };
 
 export default Pagination;

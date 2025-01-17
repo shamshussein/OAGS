@@ -1,5 +1,6 @@
 import React from 'react';
 import 'font-awesome/css/font-awesome.min.css';
+import './ProductItem.css';
 
 const generateStars = (rating) => {
   const fullStars = Math.floor(rating);
@@ -22,26 +23,53 @@ const generateStars = (rating) => {
 };
 
 const ProductItem = ({ product, discountPercentage }) => {
-  // const discountedPrice = product.productPrice * (1 - discountPercentage / 100);
+  const productPrice = product.productPrice
+    ? parseFloat(product.productPrice.$numberDecimal) 
+    : 0;
+
+  const discountedPrice = productPrice * (1 - discountPercentage / 100);
+  const imageSrc = product.productImage || '/assets/images/image_fallback.png'; 
 
   return (
-    <div className="card mb-3" style={{ maxWidth: '540px' }}>
+    <div className="card mb-3 product-item-card">
       <div className="row g-0">
+
         <div className="col-md-4">
-          <img src={product.productImage} className="img-fluid rounded-start" alt={product.productName} />
+          <img
+            src={imageSrc}
+            className="img-fluid product-item-image"
+            alt={product.productName}
+          />
         </div>
+
         <div className="col-md-8">
-          <div className="card-body">
+          <div className="card-body position-relative">
+
+            <div className="position-absolute top-0 end-0 p-2">
+              <small className="text-warning">{generateStars(product.productRating || 5)}</small>
+            </div>
+
             <h5 className="card-title">{product.productName}</h5>
+            <p className="card-text text-muted">
+              <strong>Category:</strong> {product.productCategory}
+            </p>
+            <p className="card-text text-muted">
+              <strong>Quantity:</strong> {product.productQuantity}
+            </p>
+            {product.isSized && (
+              <p className="card-text text-info">
+                <strong>Sizes:</strong> M, L, XL
+              </p>
+            )}
             <p className="card-text">
-              {/* <span className="text-muted text-decoration-line-through me-2">${product.productPrice}</span> */}
-              {/* <span className="text-success">${discountedPrice}</span> */}
+              <span className="text-muted text-decoration-line-through me-2">
+                ${productPrice.toFixed(2)}
+              </span>
+              <span className="text-success">${discountedPrice.toFixed(2)}</span>
             </p>
             <p className="card-text">{product.productDescription}</p>
-            <p className="card-text">
-              <small className="text-muted">{generateStars(product.productRating || 5)}</small>
-            </p>
-            <button className="btn btn-primary" data-id={product.productId}>
+
+            <button className="btn btn-primary w-100" data-id={product.productId}>
               Add to Cart
             </button>
           </div>

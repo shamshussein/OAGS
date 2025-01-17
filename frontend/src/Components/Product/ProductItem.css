@@ -1,0 +1,35 @@
+.product-item-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .product-item-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .product-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .card-body {
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .card-text {
+    margin-bottom: 0.5rem;
+  }
+  
+  .btn {
+    margin-top: 1rem;
+  }
+  

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProductItem from './ProductItem';
 import Pagination from './Pagination';
+import './ProductList.css'; 
 
 const ProductList = ({ discountPercentage }) => {
   const [products, setProducts] = useState([]);
@@ -14,14 +15,15 @@ const ProductList = ({ discountPercentage }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await axios.get('http://localhost:3000/api/products/allProducts');
         setProducts(response.data.products);
-        setLoading(false);
       } catch (err) {
         setError('Error fetching products');
+      } finally {
         setLoading(false);
       }
-    };   
+    };
 
     fetchProducts();
   }, []);
@@ -32,7 +34,7 @@ const ProductList = ({ discountPercentage }) => {
     const paginatedProducts = products.slice(start, end);
 
     return (
-      <div className="row">
+      <div className="row gy-4">
         {paginatedProducts.map((product) => (
           <div key={product._id} className="col-md-6 col-lg-4">
             <ProductItem product={product} discountPercentage={discountPercentage} />
@@ -43,15 +45,25 @@ const ProductList = ({ discountPercentage }) => {
   };
 
   if (loading) {
-    return <div>Loading products...</div>;
+    return (
+      <div className="loading-container">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="error-container">
+        <p className="text-danger">{error}</p>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="container">
       {renderPage()}
       <Pagination
         currentPage={currentPage}

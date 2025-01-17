@@ -29,22 +29,22 @@ const productSchema = new mongoose.Schema({
         required: [true, "Add the product quantity"],
     },
     productCategory: {
-        type: String, // Update to a simple string for the category
+        type: String, 
         required: [true, "Add the product category"],
     },
     productRating: {
-        type: Number, // Rating will be a number, e.g., 4.5
+        type: Number, 
         default: 0,
         min: 0,
         max: 5,
     },
     isSized: {
         type: Boolean,
-        default: false, // This indicates whether the product has a size option
+        default: false, 
     },
 },
 {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
+    timestamps: true, 
 });
 
 module.exports = mongoose.model("Product", productSchema);
