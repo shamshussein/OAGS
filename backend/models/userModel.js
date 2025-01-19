@@ -43,12 +43,12 @@ const userSchema = new mongoose.Schema({
         minlength: 8,
     },
     passwordChangedAt: Date,
-    orders: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Order'
-        }
-    ]
+    // orders: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'Order'
+    //     }
+    // ]
 
     },
     {timestamps: true}

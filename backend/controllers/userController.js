@@ -1,12 +1,14 @@
-const user = require("../models/userModel");
+const User = require("../models/userModel");
 const validator = require("validator");
 const jwt = require('jsonwebtoken');
 const { promisify } = require("util");
 
 const signToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_SECRET,{
+    return jwt.sign({id}, process.env.JWT_SECRET
+      ,{
         expriesIn: process.env.JWT_EXPIRE_IN
-    });
+    }
+  );
 };
 const createSendToken = (user, statusCode, res) =>{
 const token = signToken(user._id);
@@ -28,14 +30,14 @@ exports.signup = async (req, res) => {
         if(req.body.password !== req.body.passwordConfirm){
             return res.status(400).json({message: 'Password dont match'});
         }
-        const newUser = await user.create({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            username: req.body.username,
+        const newUser = await User.create({
+            // firstName: req.body.firstName,
+            // lastName: req.body.lastName,
+            userName: req.body.userName,
             email: req.body.email,
+            phoneNumber: req.body.phoneNumber,
             password: req.body.password,
             passwordConfirm: req.body.passwordConfirm,
-            role: req.body.role
         });
         createSendToken(newUser, 201, res)
     } catch (err) {
@@ -84,7 +86,7 @@ exports.protect = async (req, res, next) => {
         console.log(err);
       }
   
-      const currentUser = await user.findById(decoded.id); 
+      const currentUser = await User.findById(decoded.id); 
       if (!currentUser) {
         return res.status(401).json({ message: "The token owner no longer exists" });
       }

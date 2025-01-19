@@ -1,23 +1,94 @@
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
 .auth-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .auth-container h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .auth-container .form-label {
-    font-weight: bold;
-  }
-  
-  .auth-container .btn {
-    width: 100%;
-    margin-top: 10px;
-  }
-  
+  width: 600px;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 2rem auto;
+}
+
+.auth-container h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container label {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.auth-container input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.auth-container input:focus {
+  border-color: #a4c3b2;
+  outline: none;
+  box-shadow: 0 0 0 0.1rem rgba(16, 157, 49, 0.758);
+}
+
+.auth-container button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-container .btn-primary {
+  background-color: #a4c3b2;
+  color: #fff;
+}
+
+.auth-container .btn-primary:hover {
+  background-color: #5d9d7a;
+}
+
+.auth-container .btn-outline-dark {
+  color: #333;
+  border: 1px solid #333;
+  background-color: #fff;
+}
+
+.auth-container .btn-outline-dark:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.auth-container .alternate-action {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.auth-container .alternate-action a {
+  color: #45996b;
+  text-decoration: none;
+}
+
+.auth-container .alternate-action a:hover {
+  text-decoration: underline;
+}
