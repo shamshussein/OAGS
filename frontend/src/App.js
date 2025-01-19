@@ -3,6 +3,7 @@ import Header from 'Components/layout/NavBar/Header';
 import Hero from 'pages/home/Hero';
 import Footer from 'Components/layout/Footer/Footer';
 import Product from "pages/product/Product";
+import SignIn from "Components/auth/SignIn";
 
 function App() {
 
@@ -10,6 +11,8 @@ function App() {
 <>
     <Header />
     <Routes>
+    {/* <Route path="/signin" element={<SignIn />} />  */}
+
         <Route path="/" element={<Hero />} />
 
         <Route path="/products" element={<Product />} />

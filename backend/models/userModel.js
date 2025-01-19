@@ -3,20 +3,6 @@ const Schema = mongoose.Schema;
 const bcrypt = require ("bcrypt");
 
 const userSchema = new mongoose.Schema({
-    firstName :{
-        type: String,
-        required: [true, "First Name is required"],
-        trim: true,
-        minlength:3,
-        maxlength: 50,
-    },
-    lastName :{
-        type: String,
-        required: [true, "Last Name is required"],
-        trim: true,
-        minlength:3,
-        maxlength: 50,
-    },
     userName :{
         type: String,
         unique: true,
@@ -44,12 +30,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         default:"",
     },
-    friends: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-        }
-    ],
     password :{
         type: String,
         required: true,
@@ -63,12 +43,6 @@ const userSchema = new mongoose.Schema({
         minlength: 8,
     },
     passwordChangedAt: Date,
-    role:{
-        type: String,
-        default:"user",
-        enum:["admin", "user"]
-    },
-
     orders: [
         {
             type: Schema.Types.ObjectId,
