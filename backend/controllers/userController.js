@@ -5,9 +5,8 @@ const { promisify } = require("util");
 
 const signToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET
-      ,{
-        expriesIn: process.env.JWT_EXPIRE_IN
-    }
+      // { expiresIn: process.env.JWT_EXPIRE_IN } 
+
   );
 };
 const createSendToken = (user, statusCode, res) =>{
@@ -20,6 +19,13 @@ res.status(statusCode).json ({
 }
 exports.signup = async (req, res) => {
     try {
+      const userCheck = await User.findOne({userName:req.body.userName});
+        if(userCheck){
+        return res.status(400).json({message: 'User already exist, please sign in!'});
+         }
+         if(req.body.userName === ""){
+          return res.status(400).json({message: 'Please enter your username'});
+           }
         const emailCheck = await User.findOne({email:req.body.email});
         if(emailCheck){
             return res.status(400).json({message: 'Email is already in use'});
@@ -27,6 +33,12 @@ exports.signup = async (req, res) => {
         if(!validator.isEmail(req.body.email)){
             return res.status(400).json({message: 'Email is not valid'});
         }
+        if(!validator.isMobilePhone(req.body.phoneNumber)){
+          return res.status(400).json({message: 'Please enter a valid phone number'});
+      }
+      if(!validator.isStrongPassword(req.body.password)){
+        return res.status(400).json({message: 'Provide a strong password containing at least one uppercase, a lowercase, a number, and a symbol.'});
+    }
         if(req.body.password !== req.body.passwordConfirm){
             return res.status(400).json({message: 'Password dont match'});
         }
@@ -41,7 +53,7 @@ exports.signup = async (req, res) => {
         });
         createSendToken(newUser, 201, res)
     } catch (err) {
-        res.status(500).json({message: err.message});
+        res.status(500).json({message: "Wrong credentials"});
         console.log(err);
     }
 };
@@ -64,6 +76,7 @@ exports.login = async (req, res) => {
     }
 };
 
+//middleware
 exports.protect = async (req, res, next) => {
     try {
       let token;
