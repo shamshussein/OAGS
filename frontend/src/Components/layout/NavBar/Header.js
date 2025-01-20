@@ -1,10 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { faCartShopping, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate  } from 'react-router-dom';
 import './header.css';
 
 function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to log out?"
+    );
+
+    if (confirmed) {
+      localStorage.removeItem("token");
+      setIsLoggedIn(false); 
+      alert("You have successfully logged out.");
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg border-bottom border-black">
       <div className="container">
@@ -36,9 +60,12 @@ function Header() {
             <li className="nav-item me-3">
               <Link className="nav-link text-black fw-bold" to="/contact">Contact</Link>
             </li>
-            <li className="nav-item">
+            {
+            isLoggedIn ? (<li className="nav-item">
               <Link className="nav-link text-black fw-bold" to="/orders">My Orders</Link>
-            </li>
+            </li>):
+           ( <li></li>)
+            }
           </ul>
 
           <div className="d-flex align-items-center">
@@ -48,12 +75,25 @@ function Header() {
                 <span className="cart-indicator">0</span>
               </span>
             </Link>
-            <Link to="/signin" className="btn me-3">
-              <FontAwesomeIcon icon={faUser} className="fs-5 headerIcons" />
-            </Link>
-            <Link to="/logout" id="logoutIcon" className="btn">
-              <i className="bx bx-log-out"></i>
-            </Link>
+            {isLoggedIn ? (
+        <button
+          id="logoutIcon"
+          className="btn"
+          onClick={handleLogout}
+        >
+          <FontAwesomeIcon
+            icon={faSignOutAlt}
+            className="fs-5 headerIcons"
+          />
+        </button>
+      ) : (
+        <Link to="/signin" className="btn me-3">
+          <FontAwesomeIcon
+            icon={faUser}
+            className="fs-5 headerIcons"
+          />
+        </Link>
+      )}
           </div>
         </div>
       </div>

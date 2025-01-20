@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import './auth.css';
 import { signUp } from '../services/authService';
 
 const SignUp = () => {
+    const navigate = useNavigate(); 
+  
   const [formData, setFormData] = useState({
     email: '',
     userName: '',
@@ -16,9 +20,10 @@ const SignUp = () => {
   const handleSignUp = async () => {
     try {
       const response = await signUp(formData);
-      setSuccess('Sign-up successful! Please log in.');
+      localStorage.setItem('token', response.data.token);
       setError('');
-      console.log('Sign-up successful:', response.data);
+      navigate('/'); 
+
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
       setSuccess('');

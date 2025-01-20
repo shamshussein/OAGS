@@ -1,23 +1,33 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './auth.css';
-import { signIn, signInWithGoogle } from '../services/authService';
+import { signIn } from '../services/authService';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const navigate = useNavigate(); 
 
   const handleSignIn = async () => {
     try {
       const response = await signIn({ email, password });
-      console.log('Sign-in successful:', response.data);
+      localStorage.setItem('token', response.data.token);
+      setSuccess('Sign-in successful!');
+      navigate('/'); 
+
       setError('');
     } catch (err) {
       setError(err.response?.data?.message || 'Wrong credentials');
     }
   };
 
+
+  const handleCreateAccountClick = () => {
+      navigate('/signup'); 
+  };
   // const handleGoogleSignIn = async () => {
   //   try {
   //     const response = await signInWithGoogle();
@@ -65,6 +75,8 @@ const SignIn = () => {
             />
           </div>
           {error && <p className="text-danger">{error}</p>}
+          {success && <p className="text-success">{success}</p>}
+
           <button
             type="button"
             className="btn btn-primary w-100 mb-3"
@@ -72,18 +84,19 @@ const SignIn = () => {
           >
             Sign In
           </button>
+          {/* <button
+            type="button"
+            className="btn btn-outline-dark w-100 mb-3"
+            onClick={handleGoogleSignIn}
+          >
+            Sign in with Google
+          </button> */}
           <button
             type="button"
             className="btn btn-outline-dark w-100 mb-3"
-            // onClick={handleGoogleSignIn}
-          >
-            Sign in with Google
-          </button>
-          <div className="text-center">
-            <Link to="/signup" className="btn btn-link">
-              Create an Account
-            </Link>
-          </div>
+            onClick={handleCreateAccountClick}>
+            Create an Account
+        </button>
         </form>
         <p className="terms text-center mt-4">
           By signing in or creating a member account, you agree to the{' '}
