@@ -14,6 +14,9 @@ function Header() {
     const userData = JSON.parse(localStorage.getItem("user")); 
     if (userData && userData.token) {
       setUserName(userData.userName || "U"); 
+      console.log(userData.userName);
+      console.log(userData.token);
+
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
@@ -26,7 +29,7 @@ function Header() {
     );
 
     if (confirmed) {
-      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       setIsLoggedIn(false); 
       alert("You have successfully logged out.");
     }
@@ -151,10 +154,6 @@ function Header() {
               }
               }
             >
-          {/* <FontAwesomeIcon
-            icon={faSignOutAlt}
-            className="fs-5 headerIcons"
-          /> */}
               Logout
             </button>
            
