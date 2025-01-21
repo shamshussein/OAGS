@@ -20,10 +20,13 @@ const SignUp = () => {
   const handleSignUp = async () => {
     try {
       const response = await signUp(formData);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify({ 
+        token: response.data.token, 
+        userName: response.data.userName 
+      }));
       setError('');
       navigate('/'); 
-
+      console.log(response.data.token);
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
       setSuccess('');

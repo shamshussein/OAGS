@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate  } from 'react-router-dom';
 import './header.css';
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    const userData = JSON.parse(localStorage.getItem("user")); 
+    if (userData && userData.token) {
+      setUserName(userData.userName || "U"); 
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
@@ -29,6 +32,13 @@ function Header() {
     }
   };
 
+  const handleDeleteAccount = () => {
+    const confirmed = window.confirm("Are you sure you want to delete your account?");
+    if (confirmed) {
+      console.log("Account deleted");
+      navigate("/");
+    }
+  };
   return (
     <nav className="navbar navbar-expand-lg border-bottom border-black">
       <div className="container">
@@ -76,16 +86,82 @@ function Header() {
               </span>
             </Link>
             {isLoggedIn ? (
+        //       <>
+        // <button
+        //   id="logoutIcon"
+        //   className="btn"
+        //   onClick={handleLogout}
+        // >
+        //   <FontAwesomeIcon
+        //     icon={faSignOutAlt}
+        //     className="fs-5 headerIcons"
+        //   />
+        // </button>
+        <div className="dropdown">
         <button
-          id="logoutIcon"
-          className="btn"
-          onClick={handleLogout}
+          className="btn dropdown-toggle d-flex align-items-center"
+          type="button"
+          id="userDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          style={{
+            backgroundColor: "#f8f9fa",
+            border: "2px solid rgba(57, 198, 83, 0.81)",
+            borderRadius: "50%",
+            width: "45px",
+            height: "45px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontWeight: "600",
+            textTransform: "uppercase",
+            marginBottom:"8px",
+            marginLeft:"20px"
+          }}
         >
-          <FontAwesomeIcon
+          {userName.charAt(0)}
+        </button>
+        <ul className="dropdown-menu" aria-labelledby="userDropdown">
+          <li>
+            <button
+              className="dropdown-item"
+              onClick={() => navigate("/change-password")}
+            >
+              Change Password
+            </button>
+          </li>
+          <li>
+            <button
+              className="dropdown-item"
+              onClick={handleDeleteAccount}
+            >
+              Delete Account
+            </button>
+          </li>
+          <li>
+            <hr className="dropdown-divider" />
+          </li>
+          <li>
+            <button
+              className="dropdown-item"
+              onClick={handleLogout}
+              style={
+                {
+                textAlign: "center",
+              }
+              }
+            >
+          {/* <FontAwesomeIcon
             icon={faSignOutAlt}
             className="fs-5 headerIcons"
-          />
-        </button>
+          /> */}
+              Logout
+            </button>
+           
+          </li>
+        </ul>
+      </div>
+      // </>
       ) : (
         <Link to="/signin" className="btn me-3">
           <FontAwesomeIcon
@@ -94,6 +170,7 @@ function Header() {
           />
         </Link>
       )}
+
           </div>
         </div>
       </div>

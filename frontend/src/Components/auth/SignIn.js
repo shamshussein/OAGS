@@ -14,16 +14,17 @@ const SignIn = () => {
   const handleSignIn = async () => {
     try {
       const response = await signIn({ email, password });
-      localStorage.setItem('token', response.data.token);
-      setSuccess('Sign-in successful!');
+      localStorage.setItem('user', JSON.stringify({ 
+        token: response.data.token, 
+        userName: response.data.userName 
+      }));
+            setSuccess('Sign-in successful!');
       navigate('/'); 
-
-      setError('');
+      console.log(response.data.token);
     } catch (err) {
       setError(err.response?.data?.message || 'Wrong credentials');
     }
   };
-
 
   const handleCreateAccountClick = () => {
       navigate('/signup'); 

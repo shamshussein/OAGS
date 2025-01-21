@@ -4,6 +4,7 @@ const app = express();
 
 const productRouter = require('./routers/productRouter');
 const userRouter = require('./routers/userRouter');
+const feedbackRouter = require('./routers/feedbackRouter');
 
 const DB = require("./database").connectDB;
 
@@ -18,6 +19,7 @@ DB();
 
 app.use('/api/products', productRouter); 
 app.use('/api/users', userRouter); 
+app.use('/api/feedbacks', feedbackRouter); 
 
 app.listen(3000, () => {
     console.log("Server listening on port 3000");
