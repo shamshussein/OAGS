@@ -17,7 +17,7 @@ const Pagination = ({ currentPage, setCurrentPage, totalProducts, productsPerPag
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            Previous
+            <i className="fa fa-chevron-left" aria-hidden="true"></i>
           </button>
         </li>
         {Array.from({ length: totalPages }).map((_, index) => (
@@ -36,7 +36,7 @@ const Pagination = ({ currentPage, setCurrentPage, totalProducts, productsPerPag
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
-            Next
+           <i className="fa fa-chevron-right" aria-hidden="true"></i>
           </button>
         </li>
       </ul>

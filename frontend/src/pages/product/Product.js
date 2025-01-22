@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Sidebar from '../../Components/product/Sidebar';
-import ProductList from '../../Components/product/ProductList';
+import Sidebar from '../../Components/Product/Sidebar';
+import ProductList from '../../Components/Product/ProductList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const products = [
