@@ -49,7 +49,7 @@ exports.signup = async (req, res) => {
       const newUser = await User.create({
           // firstName: req.body.firstName,
           // lastName: req.body.lastName,
-          googleId: 1,
+          googleId: '2',
           userName: req.body.userName,
           email: req.body.email,
           phoneNumber: req.body.phoneNumber,
