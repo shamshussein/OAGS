@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './auth.css';
-import { signUp } from '../services/authService';
+import { signUp, googlSignUp } from '../services/authService';
 
 const SignUp = () => {
+  
   const [formData, setFormData] = useState({
     email: '',
     userName: '',
@@ -10,22 +13,75 @@ const SignUp = () => {
     passwordConfirm: '',
     phoneNumber: '',
   });
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate(); 
 
   const handleSignUp = async () => {
     try {
       const response = await signUp(formData);
-      setSuccess('Sign-up successful! Please log in.');
+      localStorage.setItem('user', JSON.stringify({ 
+        token: response.data.token, 
+        userName: response.data.userName 
+      }));
       setError('');
-      console.log('Sign-up successful:', response.data);
+      navigate('/'); 
+      console.log(response.data.token);
+      console.log(response.data.userName);
+
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
       setSuccess('');
     }
   };
 
+  const handleGoogleSuccess = async (response) => {
+    try {
+        const credential = response.credential; 
+
+        const payload = JSON.parse(atob(credential.split('.')[1]));
+        const { email, name } = payload;
+        const phoneNumber = payload.phoneNumber || '08800486'; 
+
+        const serverResponse = await googlSignUp({
+            credential,
+            email,
+            name,
+            phoneNumber,
+        });
+
+        localStorage.setItem(
+            'user',
+            JSON.stringify({
+                token: serverResponse.data.token,
+                userName: serverResponse.data.userName,
+                phoneNumber: serverResponse.data.phoneNumber || '',
+                email: serverResponse.data.email,
+            })
+        );
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('loggedInEmail', email);
+        localStorage.setItem('isGoogleUser', 'true');
+
+
+        navigate('/');
+
+    } catch (err) {
+        console.error("Error during Google Sign-Up:", err);
+        setError(err.response?.data?.message || "Google sign-up failed.");
+    }
+};
+
+const handleGoogleFailure = (error) => {
+    console.error("Google Sign-In Error:", error);
+    setError("Google sign-in failed. Please try again.");
+};
+  
+
   return (
+    <GoogleOAuthProvider clientId="228358965090-n0v3qt1ub11abq17adigr3s0u0sfgsu1.apps.googleusercontent.com">
+
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
       <div className="auth-container">
       <div className="logo text-center mb-4">
@@ -122,9 +178,16 @@ const SignUp = () => {
           >
             Sign Up
           </button>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleFailure}
+            useOneTap
+            className="w-100 mt-3"
+          />
         </form>
       </div>
     </div>
+    </GoogleOAuthProvider>
   );
 };
 

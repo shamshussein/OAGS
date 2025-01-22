@@ -2,57 +2,53 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require ("bcrypt");
 
-const userSchema = new mongoose.Schema({
-    userName :{
-        type: String,
-        unique: true,
-        required: [true, "UserName is required"],
-        trim: true,
-        minlength:3,
-        maxlength: 20,
+const userSchema = new Schema({
+    userName: {
+      type: String,
+      unique: true,
+      required: [true, "UserName is required"],
+      trim: true,
+      minlength: 3,
+      maxlength: 20,
     },
-    email :{
-        type: String,
-        unique: true,
-        required: [true, "Email is required"],
-        trim: true,
-        maxlength: 150,
-        lowercase: true
+    email: {
+      type: String,
+      unique: true,
+      required: [true, "Email is required"],
+      trim: true,
+      maxlength: 150,
+      lowercase: true,
     },
-    phoneNumber :{
-        type: String,
-        unique: true,
-        required: [true, "Phone Number is required"],
-        trim: true,
-        maxlength: 20,
+    phoneNumber: {
+      type: String,
+      unique: true,
+      trim: true,
+      maxlength: 20,
     },
-    profilePicture :{
-        type: String,
-        default:"",
+    profilePicture: {
+      type: String,
+      default: "",
     },
-    password :{
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 8,
+    password: {
+      type: String,
+      required: false, 
+      trim: true,
+      minlength: 8,
     },
-    passwordConfirm :{
-        type: String,
-        // required: true,
-        trim: true,
-        minlength: 8,
+    passwordConfirm: {
+      type: String,
+      trim: true,
+      minlength: 8,
+    },
+    googleId: {
+      type: String,
+    //   unique: true,
+    
     },
     passwordChangedAt: Date,
-    // orders: [
-    //     {
-    //         type: Schema.Types.ObjectId,
-    //         ref: 'Order'
-    //     }
-    // ]
-
-    },
-    {timestamps: true}
-    );
+  },
+  { timestamps: true });
+  
 
     userSchema.pre("save", async function(next){
         try {
