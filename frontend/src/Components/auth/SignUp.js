@@ -4,6 +4,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './auth.css';
 import { signUp, googlSignUp } from '../services/authService';
 
+
 const SignUp = () => {
   
   const [formData, setFormData] = useState({
