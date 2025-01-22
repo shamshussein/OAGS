@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+
 import './auth.css';
-import { signIn } from '../services/authService';
+import { signIn, googlSignUp } from '../services/authService';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -13,10 +15,10 @@ const SignIn = () => {
 
   const handleSignIn = async () => {
     try {
-      const response = await signIn({ email, password });
+      const response = await signIn({ email , password });
       localStorage.setItem('user', JSON.stringify({ 
         token: response.data.token, 
-        userName: response.data.userName 
+        userName: email 
       }));
       setSuccess('Sign-in successful!');
       navigate('/'); 
@@ -29,17 +31,47 @@ const SignIn = () => {
   const handleCreateAccountClick = () => {
       navigate('/signup'); 
   };
-  // const handleGoogleSignIn = async () => {
-  //   try {
-  //     const response = await signInWithGoogle();
-  //     console.log('Google Sign-in successful:', response.data);
-  //     setError('');
-  //   } catch (err) {
-  //     setError(err.response?.data?.message || 'An error occurred during Google Sign-In');
-  //   }
-  // };
 
+const handleGoogleSuccess = async (response) => {
+    try {
+        const credential = response.credential; 
+
+        const payload = JSON.parse(atob(credential.split('.')[1]));
+        const { email, name } = payload;
+        const phoneNumber = payload.phoneNumber || '08800486'; 
+
+        const serverResponse = await googlSignUp({
+            credential,
+            email,
+            name,
+            phoneNumber,
+        });
+
+        localStorage.setItem(
+            'user',
+            JSON.stringify({
+                token: serverResponse.data.token,
+                userName: serverResponse.userName,
+                phoneNumber: serverResponse.phoneNumber || '',
+                email: serverResponse.email,
+            })
+        );
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('loggedInEmail', email);
+
+        navigate('/');
+
+    } catch (err) {
+        console.error("Error during Google Sign-Up:", err);
+        setError(err.response?.data?.message || "Google sign-up failed.");
+    }
+};
+const handleGoogleFailure = (error) => {
+  console.error("Google Sign-In Error:", error);
+  setError("Google sign-in failed. Please try again.");
+};
   return (
+   <GoogleOAuthProvider clientId="228358965090-n0v3qt1ub11abq17adigr3s0u0sfgsu1.apps.googleusercontent.com">  
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
       <div className="auth-container">
         <div className="logo text-center mb-4">
@@ -80,18 +112,19 @@ const SignIn = () => {
 
           <button
             type="button"
-            className="btn btn-outline-dark w-100 mb-3"
+            className="btn btn-secondary w-100 mb-3"
             onClick={handleSignIn}
           >
             Sign In
           </button>
-          {/* <button
-            type="button"
-            className="btn btn-outline-dark w-100 mb-3"
-            onClick={handleGoogleSignIn}
-          >
-            Sign in with Google
-          </button> */}
+           <GoogleLogin
+                     onSuccess={handleGoogleSuccess}
+                     onError={handleGoogleFailure}
+                     useOneTap
+                     className="w-100 mt-3"
+                   />
+        <p className="text-center mb-4">Or</p>
+
           <button
             type="button"
             className="btn btn-outline-dark w-100 mb-3"
@@ -106,6 +139,8 @@ const SignIn = () => {
         </p>
       </div>
     </div>
+        </GoogleOAuthProvider>
+  
   );
 };
 

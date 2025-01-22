@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require ("bcrypt");
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     userName: {
       type: String,
       unique: true,
-      required: [true, "UserName is required"],
+      required: [true, 'UserName is required'],
       trim: true,
       minlength: 3,
       maxlength: 20,
@@ -14,7 +15,7 @@ const userSchema = new Schema({
     email: {
       type: String,
       unique: true,
-      required: [true, "Email is required"],
+      required: [true, 'Email is required'],
       trim: true,
       maxlength: 150,
       lowercase: true,
@@ -27,11 +28,11 @@ const userSchema = new Schema({
     },
     profilePicture: {
       type: String,
-      default: "",
+      default: '',
     },
     password: {
       type: String,
-      required: false, 
+      required: false,
       trim: true,
       minlength: 8,
     },
@@ -42,12 +43,14 @@ const userSchema = new Schema({
     },
     googleId: {
       type: String,
-    //   unique: true,
-    
+      unique: true,
+      sparse: true,
     },
     passwordChangedAt: Date,
   },
-  { timestamps: true });
+  { timestamps: true }
+);
+
   
 
     userSchema.pre("save", async function(next){
