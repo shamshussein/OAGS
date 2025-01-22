@@ -173,7 +173,7 @@ const handleGoogleFailure = (error) => {
           {success && <p className="text-success">{success}</p>}
           <button
             type="button"
-            className="btn btn-primary w-100 mb-3"
+            className="btn btn-outline-dark w-100 mb-3"
             onClick={handleSignUp}
           >
             Sign Up

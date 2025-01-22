@@ -5,15 +5,15 @@
   overflow: hidden;
   margin-top: 2vh;
   margin-bottom: 2vh;
-  height: 50vh;
-  width:55vh;
-  position: relative;
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth opacity and transform transition */
+  height: 45vh;
+  /* width:55vh; */
+  /* position: relative; */
+  transition: opacity 0.3s ease, transform 0.3s ease; 
 }
 
 .product-item-card:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  transform: scale(1.05); /* Slight zoom effect */
+  transform: scale(1.05);
 }
 
 .product-info{
@@ -30,13 +30,13 @@ margin-left: 2vh;
   color: rgb(165, 2, 2)(204, 7, 7);
 }
 
-/* Initially show everything normally */
 .product-item-image {
   width: 100%;
   height: 100%;
+  /* margin-top: 50%; */
   margin-left: 2vh;
   object-fit: contain;
-  transition: opacity 0.3s ease; /* Smooth transition for image opacity */
+  transition: opacity 0.3s ease; 
 }
 
 .card-body {
@@ -44,7 +44,7 @@ margin-left: 2vh;
   margin-top: 3vh;
   margin-left: 2.5vh;
   position: relative;
-  transition: opacity 0.3s ease; /* Smooth transition for content opacity */
+  transition: opacity 0.3s ease; 
 }
 
 .card-title {
@@ -52,87 +52,82 @@ margin-left: 2vh;
   font-weight: bold;
   margin-top: 1vh;
   margin-bottom: 2vh;
-  transition: opacity 0.3s ease; /* Transition for text opacity */
+  transition: opacity 0.3s ease;
 }
 
 .card-text {
   margin-bottom: 0.5rem;
   margin-top: 1vh;
-  transition: opacity 0.3s ease; /* Transition for text opacity */
+  transition: opacity 0.3s ease; 
  
 }
 
 /* On hover, hide the image and the text details */
 .product-item-card:hover .product-item-image,
 .product-item-card:hover .card-body {
-  opacity: 0; /* Hide the image and text */
+  opacity: 0.08; /* Hide the image and text */
   
 }
 
 .btn-primary {
   position: absolute;
-  bottom: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, 50%); /* Perfect centering adjustment */
+  bottom: 50%; 
+  left: 50%; 
+  transform: translate(-50%, 50%); 
   width: 20vh;
   padding: 0.5rem;
   z-index: 1000;
-  opacity: 0; /* Hide the button by default */
-  pointer-events: none; /* Prevent interaction when hidden */
-  transition: opacity 0.3s ease, pointer-events 0.3s ease; /* Smooth transition */
-  transition-delay: 0s; /* Add a delay for when the button shows up */
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity 0.3s ease, pointer-events 0.3s ease; 
+  transition-delay: 0s;
   font-size: small;
-  border: 1px solid black; /* Thin black border */
-  background-color: white; /* White background */
-  color: black; /* Black text */
-  text-transform: uppercase; /* Uppercase text for a cleaner look */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
-  border-radius: 4px; /* Rounded corners */
+  border: 1px solid black; 
+  background-color: white; 
+  color: black; 
+  text-transform: uppercase; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  border-radius: 4px; 
 }
 
-/* On hover, make the button visible */
 .product-item-card:hover .btn-primary {
-  opacity: 1; /* Make the button visible */
-  pointer-events: auto; /* Enable interaction */
-  transition-delay: 0s; /* Remove delay when hovering */
+  opacity: 1; 
+  pointer-events: auto; 
+  transition-delay: 0s; 
 }
 
-/* Optionally, you can add a hover effect on the button for better UX */
 .btn-primary:hover {
-  background-color: #000000; /* Light gray background on hover */
-  border-color: #ffffff; /* Ensure border remains black on hover */
-  color: #ffffff; /* Slightly darker text on hover */
+  background-color: #000000; 
+  border-color: #ffffff;
+  color: #ffffff; 
 }
 
 .btn-primary:active{
-  background-color: #000000; /* Light gray background on hover */
-  border-color: #ffffff; /* Ensure border remains black on hover */
-  color: #ffffff; /* Slightly darker text on hover */
+  background-color: #000000; 
+  border-color: #ffffff; 
+  color: #ffffff; 
 }
 
 
-/* Rating stars customization */
 .rating {
   padding: auto;
 }
 
 .custom-icon {
-  font-size: 15px; /* Adjust size */
-  color: #f39c12; /* Gold color */
-  margin-right: 4px; /* Add spacing between stars */
-  transition: transform 0.2s; /* Add hover effect */
+  font-size: 15px; 
+  color: #f39c12; 
+  margin-right: 4px;
+  transition: transform 0.2s; 
 }
 
-
-
 .fa-star {
-  color: #ffc107; /* Full stars color */
+  color: #ffc107;
 }
 
 .fa-star-half-o {
-  color: #ffc107; /* Half star color */
+  color: #ffc107; 
 }
 
 .fa-star-o {
-  color: #e0e0e0; /* Empty stars color */
+  color: #e0e0e0; 
 }

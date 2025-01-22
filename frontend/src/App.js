@@ -5,8 +5,9 @@ import AuthLayout from 'Components/layout/AuthLayout';
 import Hero from 'pages/home/Hero';
 import Product from 'pages/product/Product';
 import SignIn from 'Components/auth/SignIn';
-import CartPage from 'pages/cart/CartPage'; // Import CartPage
-import { CartProvider } from 'pages/cart/Cart'; // Import CartProvider
+import CartPage from 'pages/cart/CartPage'; 
+import { CartProvider } from 'pages/cart/Cart'; 
+import SignUp from 'Components/auth/SignUp';
 
 
 function App() {
@@ -75,7 +76,7 @@ function App() {
           </AuthLayout>
         }
       />
-     <Route path="/signup" element={<AuthLayout><signUp /></AuthLayout>} />
+     <Route path="/signup" element={<AuthLayout><SignUp /></AuthLayout>} />
 
     </Routes>
     </CartProvider>

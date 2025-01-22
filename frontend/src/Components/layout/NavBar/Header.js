@@ -3,13 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate  } from 'react-router-dom';
 import './header.css';
-import { useCart } from 'pages/cart/Cart'; // Adjust the path
+import { useCart } from 'pages/cart/Cart';
 
 function Header() {
-<<<<<<< HEAD
-  const { cartItems } = useCart(); // Access the cart items from CartContext
+  const { cartItems } = useCart(); 
 
-=======
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
 
@@ -47,7 +45,6 @@ function Header() {
       navigate("/");
     }
   };
->>>>>>> c0f6427eec4c418e9f45a3e61de1e05e082e792a
   return (
     <nav className="navbar navbar-expand-lg border-bottom border-black">
       <div className="container">
@@ -90,7 +87,7 @@ function Header() {
           <div className="d-flex align-items-center">
           <Link to="/cart" className="btn position-relative me-3">
               <FontAwesomeIcon icon={faCartShopping} className="fs-5 headerIcons" />
-              {/* Update the badge to show the number of items in the cart */}
+
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 <span className="cart-indicator">{cartItems.length}</span>
               </span>
