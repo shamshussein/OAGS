@@ -30,8 +30,13 @@ function FeedBack() {
       <div className="client-testimonials">
         {feedbacks.length > 0 ? (
           feedbacks.map((feedback) => (
-            <div key={feedback._id} style={{ marginBottom: "15px" }}>
-              <strong>{feedback.user.userName}:</strong> {feedback.feedback}
+            <div key={feedback._id} className="testimonial">
+              <h4>
+                {feedback.user?.userName || "Anonymous User"}:
+              </h4>{" "}
+              <p>
+              {feedback.feedback || "No feedback provided."}
+              </p>
             </div>
           ))
         ) : (

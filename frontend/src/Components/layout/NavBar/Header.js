@@ -14,17 +14,18 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user")); 
+    const userData = JSON.parse(localStorage.getItem("user"));
+    console.log("User Data from LocalStorage:", userData);
     if (userData && userData.token) {
-      setUserName(userData.userName || "U"); 
-      console.log(userData.userName);
-      console.log(userData.token);
-
+      const name = userData.userName?.trim() || "U"; 
+      setUserName(name);
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
   }, []);
+  
+  
 
   const handleLogout = () => {
     const confirmed = window.confirm(

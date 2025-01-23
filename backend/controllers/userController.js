@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
+const crypto = require("crypto"); 
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -23,45 +24,48 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    const userCheck = await User.findOne({userName:req.body.userName});
-      if(userCheck){
-      return res.status(400).json({message: 'User already exist, please sign in!'});
-       }
-       if(req.body.userName === ""){
-        return res.status(400).json({message: 'Please enter your username'});
-         }
-      const emailCheck = await User.findOne({email:req.body.email});
-      if(emailCheck){
-          return res.status(400).json({message: 'Email is already in use'});
-      }
-      if(!validator.isEmail(req.body.email)){
-          return res.status(400).json({message: 'Email is not valid'});
-      }
-      if(!validator.isMobilePhone(req.body.phoneNumber)){
-        return res.status(400).json({message: 'Please enter a valid phone number'});
+    const userCheck = await User.findOne({ userName: req.body.userName });
+    if (userCheck) {
+      return res.status(400).json({ message: 'User already exists, please sign in!' });
     }
-    if(!validator.isStrongPassword(req.body.password)){
-      return res.status(400).json({message: 'Provide a strong password containing at least one uppercase, a lowercase, a number, and a symbol.'});
-  }
-      if(req.body.password !== req.body.passwordConfirm){
-          return res.status(400).json({message: 'Password dont match'});
-      }
-      const newUser = await User.create({
-          // firstName: req.body.firstName,
-          // lastName: req.body.lastName,
-          googleId: '2',
-          userName: req.body.userName,
-          email: req.body.email,
-          phoneNumber: req.body.phoneNumber,
-          password: req.body.password,
-          passwordConfirm: req.body.passwordConfirm,
-      });
-      createSendToken(newUser, 201, res)
+    if (req.body.userName === '') {
+      return res.status(400).json({ message: 'Please enter your username' });
+    }
+
+    const emailCheck = await User.findOne({ email: req.body.email });
+    if (emailCheck) {
+      return res.status(400).json({ message: 'Email is already in use' });
+    }
+
+    if (!validator.isEmail(req.body.email)) {
+      return res.status(400).json({ message: 'Email is not valid' });
+    }
+    if (!validator.isMobilePhone(req.body.phoneNumber)) {
+      return res.status(400).json({ message: 'Please enter a valid phone number' });
+    }
+    if (!validator.isStrongPassword(req.body.password)) {
+      return res.status(400).json({ message: 'Provide a strong password containing at least one uppercase letter, one lowercase letter, a number, and a symbol.' });
+    }
+    if (req.body.password !== req.body.passwordConfirm) {
+      return res.status(400).json({ message: 'Passwords do not match' });
+    }
+
+    const newUser = await User.create({
+      userName: req.body.userName,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      password: req.body.password,
+      passwordConfirm: req.body.passwordConfirm,
+    });
+    
+
+    createSendToken(newUser, 201, res);
   } catch (err) {
-      res.status(500).json({message: "Wrong credentials"});
-      console.log(err);
+    res.status(500).json({ message: 'Something went wrong during sign-up' });
+    console.error(err);
   }
 };
+
 
 exports.login = async (req, res) => {
   try {
@@ -97,13 +101,15 @@ exports.googleAuth = async (req, res) => {
 
       let user = await User.findOne({ googleId: payload.sub });
       if (!user) {
+        const randomPassword = crypto.randomBytes(8).toString("hex"); 
+
           user = await User.create({
               email,
               userName: name,   
               phoneNumber,
               googleId: payload.sub,
-              password: 'TemporaryPassword_123',
-              passwordConfirm: 'TemporaryPassword_123', 
+              password: randomPassword,
+              passwordConfirm: randomPassword
           });
       }
       createSendToken(user, 200, res);      

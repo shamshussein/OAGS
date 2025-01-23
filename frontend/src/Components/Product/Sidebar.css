@@ -1,0 +1,47 @@
+.sidebar {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .sidebar h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .filter-group {
+    margin-bottom: 20px;
+  }
+  
+  .sidebar label {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .sidebar select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .sidebar button {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+  }
+  

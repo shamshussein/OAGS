@@ -100,6 +100,41 @@
   transform: translateY(-2vh); 
   box-shadow: 0 6vh 12vh rgba(0, 0, 0, 0.2); 
 }
+.client-testimonials {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
+  max-width: 100vh;
+  margin: 0 auto;
+  flex-wrap: nowrap;
+  padding: 10px;
+}
+
+.testimonial {
+  background-color: #ffffff;
+  padding: 3vh;
+  width:60%;
+  height: 15vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: opacity 1s ease-in-out, transform 0.5s ease;
+  text-align: center;
+}
+
+.testimonial p {
+  font-size: 0.9rem;
+  color: #648a87;
+  margin-bottom: 2vh;
+  margin-top: 2vh;
+}
+
+.testimonial h4 {
+  font-size: 0.7rem;
+  color: #000000;
+  font-weight: bold;
+}
 
 
 @media (max-width: 768px) {

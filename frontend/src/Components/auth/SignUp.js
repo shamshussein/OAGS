@@ -23,8 +23,10 @@ const SignUp = () => {
     try {
       const response = await signUp(formData);
       localStorage.setItem('user', JSON.stringify({ 
-        token: response.data.token, 
-        userName: response.data.userName 
+        token: response.data.token,
+        userName: formData.userName,
+        phoneNumber: formData.phoneNumber || '',
+        email: formData.email,
       }));
       setError('');
       navigate('/'); 
@@ -56,15 +58,13 @@ const SignUp = () => {
             'user',
             JSON.stringify({
                 token: serverResponse.data.token,
-                userName: serverResponse.data.userName,
-                phoneNumber: serverResponse.data.phoneNumber || '',
-                email: serverResponse.data.email,
+                userName: serverResponse.userName,
+                phoneNumber: serverResponse.phoneNumber || '',
+                email: serverResponse.email,
             })
         );
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('loggedInEmail', email);
-        localStorage.setItem('isGoogleUser', 'true');
-
 
         navigate('/');
 
@@ -174,11 +174,13 @@ const handleGoogleFailure = (error) => {
           {success && <p className="text-success">{success}</p>}
           <button
             type="button"
-            className="btn btn-outline-dark w-100 mb-3"
+            className="btn btn-secondary w-100 mb-3"
             onClick={handleSignUp}
           >
             Sign Up
           </button>
+          <p className="text-center mb-4">Or</p>
+
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleFailure}

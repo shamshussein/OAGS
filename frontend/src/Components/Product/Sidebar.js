@@ -1,73 +1,90 @@
 import React, { useState } from 'react';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import Button from 'react-bootstrap/Button';
+import './Sidebar.css';
 
-function Sidebar({ setFilteredProducts }) {
-  const [priceRange, setPriceRange] = useState(500);
-  const [categories, setCategories] = useState([]);
-  const [show, setShow] = useState(false);
+const Sidebar = ({ setFilteredProducts, products, setCurrentPage }) => {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedPriceRange, setSelectedPriceRange] = useState('');
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const applyFilter = () => {
+    let filtered = [...products];
 
-  const applyFilters = () => {
-    setFilteredProducts((prevProducts) =>
-      prevProducts.filter((product) => product.price <= priceRange)
-    );
-    handleClose(); 
+    if (selectedCategory) {
+      filtered = filtered.filter(
+        (product) =>
+          product.productCategory &&
+          product.productCategory.toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
+
+    if (selectedPriceRange) {
+      const [min, max] = selectedPriceRange.split('-').map(Number);
+      filtered = filtered.filter((product) => {
+        const price = parseFloat(product.productPrice.$numberDecimal || product.productPrice); 
+        return price >= min && (max ? price <= max : true);
+      });
+    }
+
+    setFilteredProducts(filtered);
+    setCurrentPage(1); 
+  };
+
+  const resetFilters = () => {
+    setSelectedCategory('');
+    setSelectedPriceRange('');
+    setFilteredProducts(products); 
+    setCurrentPage(1); 
   };
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow} className="m-3">
-        Apply Filters
-      </Button>
+    <div className="sidebar">
+      <h5>Filter Products</h5>
 
-      <Offcanvas show={show} onHide={handleClose} placement="end">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Filter Products</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          <div className="mb-4">
-            <label htmlFor="price-range" className="form-label">
-              Price Range:
-            </label>
-            <input
-              type="range"
-              id="price-range"
-              className="form-range"
-              min="0"
-              max="1000"
-              value={priceRange}
-              step="5"
-              onChange={(e) => setPriceRange(e.target.value)}
-            />
-            <div className="mt-2">${priceRange}</div>
-          </div>
+      <div className="filter-group">
+        <label htmlFor="category">Category</label>
+        <select
+          id="category"
+          className="form-select"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="">All Categories</option>
+          <option value="Hiking">Hiking</option>
+          <option value="Survival">Survival</option>
+          <option value="Camping">Camping</option>
+          <option value="Travel">Travel</option>
+        </select>
+      </div>
 
-          <div className="mb-4">
-            <h5>Categories</h5>
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="camping"
-                value="Camping"
-                onChange={(e) => setCategories([...categories, e.target.value])}
-              />
-              <label className="form-check-label" htmlFor="camping">
-                Camping
-              </label>
-            </div>
-          </div>
+      <div className="filter-group mt-3">
+        <label htmlFor="price-range">Price Range</label>
+        <select
+          id="price-range"
+          className="form-select"
+          value={selectedPriceRange}
+          onChange={(e) => setSelectedPriceRange(e.target.value)}
+        >
+          <option value="">All Prices</option>
+          <option value="0-50">$0 - $50</option>
+          <option value="50-100">$50 - $100</option>
+          <option value="100-200">$100 - $200</option>
+          <option value="200-500">$200 - $500</option>
+          <option value="500-1000">$500 - $1000</option>
+        </select>
+      </div>
 
-          <Button variant="success" onClick={applyFilters}>
-            Apply Filters
-          </Button>
-        </Offcanvas.Body>
-      </Offcanvas>
-    </>
+      <div className="mt-4">
+        <button className="btn btn-secondary w-100" onClick={applyFilter}>
+          Apply Filter
+        </button>
+      </div>
+
+      <div className="mt-2">
+        <button className="btn btn-secondary w-100" onClick={resetFilters}>
+          Reset Filters
+        </button>
+      </div>
+    </div>
   );
-}
+};
 
 export default Sidebar;

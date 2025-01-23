@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Import useState
+import React, { useState } from 'react';
 import 'font-awesome/css/font-awesome.min.css';
 import './ProductItem.css';
 import axios from 'axios';
@@ -24,21 +24,24 @@ const generateStars = (rating) => {
 };
 
 const ProductItem = ({ product, discountPercentage }) => {
-  const [ setCartItems] = useState([]);  // Track cart items
+  const [cartQuantity, setCartQuantity] = useState(1); 
+  const [isOutOfStock, setIsOutOfStock] = useState(product.productQuantity === 0);
 
   const addToCart = async (product) => {
+    if (cartQuantity > product.productQuantity) {
+      alert("You can't add more than the available stock.");
+      return;
+    }
+    
     try {
       console.log('Adding product to cart:', product);
 
       const response = await axios.post('http://localhost:3000/api/cart/addToCart', {
         product: product._id,
-        productQuantity: 1,  // Quantity can be dynamic
+        productQuantity: cartQuantity,  
       });
 
       console.log('Cart updated:', response.data);
-
-      // Assuming response.data.cart contains the updated cart
-      setCartItems(response.data.cart.products);  // Update cart state
     } catch (error) {
       console.error('Error adding product to cart:', error);
     }
@@ -47,6 +50,18 @@ const ProductItem = ({ product, discountPercentage }) => {
   const productPrice = product.productPrice ? parseFloat(product.productPrice.$numberDecimal) : 0;
   const discountedPrice = productPrice * (1 - discountPercentage / 100);
   const imageSrc = product.productImage || '/assets/images/image_fallback.png'; 
+
+  const handleIncrement = () => {
+    if (cartQuantity < product.productQuantity) {
+      setCartQuantity(cartQuantity + 1);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (cartQuantity > 1) {
+      setCartQuantity(cartQuantity - 1);
+    }
+  };
 
   return (
     <div className="card mb-3 product-item-card">
@@ -59,7 +74,7 @@ const ProductItem = ({ product, discountPercentage }) => {
           <div className="card-body position-relative producr-info">
             <h5 className="card-title">{product.productName}</h5>
             <p className="card-text "><strong>Category:</strong> {product.productCategory}</p>
-            <p className="card-text "><strong>Quantity:</strong> {product.productQuantity}</p>
+            <p className="card-text "><strong>Quantity Available:</strong> {product.productQuantity}</p>
             {product.isSized && (
               <p className="card-text text-info">
                 <strong style={{ color: 'black' }}>Sizes: M, L, XL</strong>
@@ -76,13 +91,37 @@ const ProductItem = ({ product, discountPercentage }) => {
             </div>
           </div>
         </div>
+
+        <div className="quantity-selector">
+          {isOutOfStock ? (
+            <p className="text-danger">Out of Stock</p>
+          ) : (
+            <div className="quantity-controls">
+              <button
+                className="btn btn-secondary"
+                onClick={handleDecrement}
+                disabled={cartQuantity <= 1}
+              >
+                -
+              </button>
+              <span>{cartQuantity}</span>
+              <button
+                className="btn btn-secondary"
+                onClick={handleIncrement}
+                disabled={cartQuantity >= product.productQuantity}
+              >
+                +
+              </button>
+            </div>
+          )}
+        </div>
+
         <button 
           className="btn-primary" 
-          data-id={product.productId} 
           onClick={() => {
-            console.log('Add to cart clicked!', product);  // Log when button is clicked
-            addToCart(product);  // Call the addToCart function
+            addToCart(product);
           }}
+          disabled={isOutOfStock || cartQuantity === 0}
         >
           Add to Cart
         </button>
