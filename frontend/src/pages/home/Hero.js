@@ -1,5 +1,6 @@
+
 import React from 'react';
-import 'styles/Hero.css';
+import 'styles/hero.css';
 import Banner from 'Components/home/Banner';
 import Cares from 'Components/home/Cares';
 import Bundels from 'Components/home/Bundels';
