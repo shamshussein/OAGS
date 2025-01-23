@@ -75,7 +75,7 @@ const ProductItem = ({ product, discountPercentage }) => {
           <div className="card-body">
             <h5 className="card-title">{product.productName}</h5>
             <p className="card-text"><strong>Category:</strong> {product.productCategory}</p>
-            <p className="card-text"><strong>Quantity Available:</strong> {product.productQuantity}</p>
+            <p className="card-text"><strong>Quantity:</strong> {product.productQuantity}</p>
             {product.isSized && (
               <p className="card-text text-info">
                 <strong style={{ color: 'black' }}>Sizes: M, L, XL</strong>
