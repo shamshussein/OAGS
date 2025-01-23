@@ -6,7 +6,7 @@ const ProductList = ({ products, discountPercentage }) => {
   return (
     <div className="container">
       {products.length > 0 ? (
-        <div className="row gy-4">
+        <div className="row gy-10">
           {products.map((product) => (
             <div key={product._id} className="col-md-6 col-lg-4">
               <ProductItem

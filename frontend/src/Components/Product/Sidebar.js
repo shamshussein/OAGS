@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import './Sidebar.css';
 
-const Sidebar = ({ setFilteredProducts, products, setCurrentPage }) => {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedPriceRange, setSelectedPriceRange] = useState('');
+const Sidebar = ({
+  setFilteredProducts,
+  products,
+  setCurrentPage,
+  setSelectedCategory,
+  setSelectedPriceRange,
+  searchTerm,
+}) => {
+  const [selectedCategory, setCategory] = useState('');
+  const [selectedPriceRange, setPriceRange] = useState('');
 
   const applyFilter = () => {
     let filtered = [...products];
@@ -19,20 +26,35 @@ const Sidebar = ({ setFilteredProducts, products, setCurrentPage }) => {
     if (selectedPriceRange) {
       const [min, max] = selectedPriceRange.split('-').map(Number);
       filtered = filtered.filter((product) => {
-        const price = parseFloat(product.productPrice.$numberDecimal || product.productPrice); 
+        const price = parseFloat(product.productPrice.$numberDecimal || product.productPrice);
         return price >= min && (max ? price <= max : true);
       });
     }
 
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (product) =>
+          product.productName.toLowerCase().includes(searchTerm) ||
+          product.productCategory.toLowerCase().includes(searchTerm) ||
+          product.productDescription.toLowerCase().includes(searchTerm)
+      );
+    }
+
     setFilteredProducts(filtered);
-    setCurrentPage(1); 
+    setCurrentPage(1);
+
+    setSelectedCategory(selectedCategory);
+    setSelectedPriceRange(selectedPriceRange);
   };
 
   const resetFilters = () => {
+    setCategory('');
+    setPriceRange('');
+    setFilteredProducts(products);
+    setCurrentPage(1);
+
     setSelectedCategory('');
     setSelectedPriceRange('');
-    setFilteredProducts(products); 
-    setCurrentPage(1); 
   };
 
   return (
@@ -45,7 +67,7 @@ const Sidebar = ({ setFilteredProducts, products, setCurrentPage }) => {
           id="category"
           className="form-select"
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e) => setCategory(e.target.value)}
         >
           <option value="">All Categories</option>
           <option value="Hiking">Hiking</option>
@@ -61,7 +83,7 @@ const Sidebar = ({ setFilteredProducts, products, setCurrentPage }) => {
           id="price-range"
           className="form-select"
           value={selectedPriceRange}
-          onChange={(e) => setSelectedPriceRange(e.target.value)}
+          onChange={(e) => setPriceRange(e.target.value)}
         >
           <option value="">All Prices</option>
           <option value="0-50">$0 - $50</option>

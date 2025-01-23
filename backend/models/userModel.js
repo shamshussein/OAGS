@@ -26,10 +26,6 @@ const userSchema = new Schema(
       trim: true,
       maxlength: 20,
     },
-    profilePicture: {
-      type: String,
-      default: '',
-    },
     password: {
       type: String,
       required: false,

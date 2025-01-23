@@ -33,9 +33,10 @@
     padding: 10px;
     font-size: 14px;
     font-weight: bold;
+
   }
   
-  .btn-primary {
+  .mt-4 .btn-secondary {
     background-color: #007bff;
     border: none;
   }
