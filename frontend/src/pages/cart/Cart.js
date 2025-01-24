@@ -1,39 +1,57 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import CartItem from 'Components/cart/CartItem';
 
-// Create a Context
-const CartContext = createContext();
-
-// Custom Hook to use Cart Context
-export const useCart = () => useContext(CartContext);
-
-// CartProvider Component
-export const CartProvider = ({ children }) => {
+const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  // Functions to manage the cart
-  const addToCart = (item) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((i) => i._id === item._id);
-      if (existingItem) {
-        return prevItems.map((i) =>
-          i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i
-        );
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.token) {
+          console.error('User is not logged in.');
+          return;
+        }
+
+        const response = await axios.get('http://localhost:3000/api/carts/getCartItems', {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        if (response.data.cartItems.length === 0) {
+          console.log('Cart is empty.');
+        }
+
+        setCartItems(response.data.cartItems);
+        setTotalPrice(response.data.totalPrice);
+      } catch (error) {
+        console.error('Error fetching cart items:', error);
       }
-      return [...prevItems, { ...item, quantity: 1 }];
-    });
-  };
+    };
 
-  const removeFromCart = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item._id !== id));
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
+    fetchCartItems();
+  }, []);
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
-      {children}
-    </CartContext.Provider>
+    <div>
+      <h2>Your Cart</h2>
+      {cartItems.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <div>
+          <ul>
+            {cartItems.map((item, index) => (
+              <CartItem key={index} item={item} />
+            ))}
+          </ul>
+          <h3>Total Price: ${totalPrice}</h3>
+        </div>
+      )}
+    </div>
   );
 };
+
+export default Cart;

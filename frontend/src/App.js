@@ -5,14 +5,12 @@ import AuthLayout from 'Components/layout/AuthLayout';
 import Hero from 'pages/home/Hero';
 import Product from 'pages/product/Product';
 import SignIn from 'Components/auth/SignIn';
-import CartPage from 'pages/cart/CartPage'; 
-import { CartProvider } from 'pages/cart/Cart'; 
+import Cart from 'pages/cart/Cart'; 
 import SignUp from 'Components/auth/SignUp';
 
 
 function App() {
   return (
-    <CartProvider>
     <Routes>
       {/* Routes with MainLayout */}
       <Route
@@ -37,7 +35,7 @@ function App() {
           path="/cart"
           element={
             <MainLayout>
-              <CartPage />
+              <Cart />
             </MainLayout>
           }
         />
@@ -79,7 +77,6 @@ function App() {
      <Route path="/signup" element={<AuthLayout><SignUp /></AuthLayout>} />
 
     </Routes>
-    </CartProvider>
   );
 }
 

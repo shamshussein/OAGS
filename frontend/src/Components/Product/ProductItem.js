@@ -24,7 +24,6 @@ const generateStars = (rating) => {
 };
 
 const ProductItem = ({ product, discountPercentage }) => {
-  const [cartQuantity, setCartQuantity] = useState(1);
   const [isOutOfStock, setIsOutOfStock] = useState(false);
 
   useEffect(() => {
@@ -32,38 +31,39 @@ const ProductItem = ({ product, discountPercentage }) => {
   }, [product.productQuantity]);
 
   const addToCart = async (product) => {
-    if (cartQuantity > product.productQuantity) {
-      alert("You can't add more than the available stock.");
-      return;
-    }
-
     try {
-      const response = await axios.post('http://localhost:3000/api/cart/addToCart', {
-        product: product._id,
-        productQuantity: cartQuantity,
-      });
-
+      const user = JSON.parse(localStorage.getItem('user')); 
+  
+      if (!user || !user.token) {
+        alert("User is not logged in.");
+        return;
+      }
+  
+      const response = await axios.post(
+        'http://localhost:3000/api/carts/addToCart',
+        {
+          product: product._id,
+          productQuantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+  
       console.log('Cart updated:', response.data);
+      alert('Product added to cart successfully.');
     } catch (error) {
-      console.error('Error adding product to cart:', error);
+      console.error('Error adding product to cart:', error.response?.data?.message || error.message);
+      alert(error.response?.data?.message || 'An error occurred.');
     }
   };
+  
 
   const productPrice = product.productPrice ? parseFloat(product.productPrice.$numberDecimal) : 0;
   const discountedPrice = productPrice * (1 - discountPercentage / 100);
   const imageSrc = product.productImage || '/assets/images/image_fallback.png';
-
-  const handleIncrement = () => {
-    if (cartQuantity < product.productQuantity) {
-      setCartQuantity(cartQuantity + 1);
-    }
-  };
-
-  const handleDecrement = () => {
-    if (cartQuantity > 1) {
-      setCartQuantity(cartQuantity - 1);
-    }
-  };
 
   return (
     <div className="card mb-4 product-item-card shadow-sm">
@@ -76,11 +76,6 @@ const ProductItem = ({ product, discountPercentage }) => {
             <h5 className="card-title">{product.productName}</h5>
             <p className="card-text"><strong>Category:</strong> {product.productCategory}</p>
             <p className="card-text"><strong>Quantity:</strong> {product.productQuantity}</p>
-            {product.isSized && (
-              <p className="card-text text-info">
-                <strong style={{ color: 'black' }}>Sizes: M, L, XL</strong>
-              </p>
-            )}
             <p className="card-text">
               <span className="price">${productPrice.toFixed(2)}</span>
               <span className="text-danger">${discountedPrice.toFixed(2)}</span>
@@ -93,31 +88,13 @@ const ProductItem = ({ product, discountPercentage }) => {
             {isOutOfStock ? (
               <p className="text-danger mb-0">Out of Stock</p>
             ) : (
-              <div className="quantity-controls d-flex align-items-center">
-                <button
-                  className="btn btn-sm btn-outline-secondary"
-                  onClick={handleDecrement}
-                  disabled={cartQuantity <= 1}
-                >
-                  -
-                </button>
-                <span className="mx-2">{cartQuantity}</span>
-                <button
-                  className="btn btn-sm btn-outline-secondary"
-                  onClick={handleIncrement}
-                  disabled={cartQuantity >= product.productQuantity}
-                >
-                  +
-                </button>
-              </div>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => addToCart(product)}
+              >
+                Add to Cart
+              </button>
             )}
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => addToCart(product)}
-              disabled={isOutOfStock || cartQuantity === 0}
-            >
-              Add to Cart
-            </button>
           </div>
         </div>
       </div>

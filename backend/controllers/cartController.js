@@ -4,79 +4,128 @@ const Product = require("../models/productModel");
 const mongoose = require("mongoose");
 const Bundle = require("../models/bundlesModel");
 
-exports.addToCart = async (req,res) =>{
+exports.addToCart = async (req, res) => {
     try {
-        const cartOwner = await User.findById({_id: req.user._id});
-        if(!cartOwner){
-            return res.status(404).json({message: "A cart should have an owner"});
-        }
-        const cart = await Cart.findOne({_id: cartOwner._id});
-
-
-        const product = await Product.findOne({_id: req.body.product});
-        if(!product){
-            return res.status(404).json({message: "Product not found"});
-        }
-        let productPrice = product.productPrice;
-        let productQuantity = req.body.productQuantity;
-
-        if(productQuantity < product.productQuantity){
-            return res.status(409).json({message: "Sorry we dont have the quantity"});
-        }
-        let price= productPrice * productQuantity;
-        product.productQuantity -= productQuantity;
-        await product.save();
-
-        if(!cart){
-            const newCart = await Cart.create({
-                cartOwner: cartOwner._id,
-                products: [req.body.product],
-                totalPrice: price,
-            });
-            return res.status(200).json({newCart});
-        }
-        cart.products.push(req.body.product);
-        cart.totalPrice += price;
-        await cart.save();
-        return res.status(200).json({cart});
+      const product = await Product.findById(req.body.product);
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+      const productQuantity = req.body.productQuantity || 1;
+  
+      if (productQuantity > product.productQuantity) {
+        return res.status(409).json({ message: "Insufficient product quantity available" });
+      }
+  
+      product.productQuantity -= productQuantity;
+      await product.save();
+  
+      const userId = req.user._id;
+  
+      let cart = await Cart.findOne({ cartOwner: userId });
+      if (!cart) {
+        cart = await Cart.create({ cartOwner: userId, cartItems: [], totalPrice: 0 });
+      }
+  
+      const existingProductIndex = cart.cartItems.findIndex(
+        (item) => item.itemType === "product" && item.itemId.toString() === product._id.toString()
+      );
+  
+      const productPrice = parseFloat(product.productPrice) * productQuantity; 
+  
+      if (existingProductIndex !== -1) {
+        cart.cartItems[existingProductIndex].quantity += productQuantity;
+        cart.cartItems[existingProductIndex].itemPrice = (
+          parseFloat(cart.cartItems[existingProductIndex].itemPrice) + productPrice
+        ).toFixed(2);
+      } else {
+        cart.cartItems.push({
+          itemType: "product",
+          itemId: product._id,
+          quantity: productQuantity,
+          itemPrice: productPrice.toFixed(2),
+        });
+      }
+  
+      cart.totalPrice = (parseFloat(cart.totalPrice) + productPrice).toFixed(2);
+      await cart.save();
+  
+      res.status(200).json({ message: "Product added to cart successfully", cart });
     } catch (err) {
-        res.status(500).json({message: err.message});
+      console.error("Error adding product to cart:", err.message);
+      res.status(500).json({ message: "An error occurred", error: err.message });
     }
-};
+  };
+  
 
-exports.addBundleToCart = async (req, res) => {
+  exports.addBundleToCart = async (req, res) => {
     try {
-        const { bundleId } = req.body;
-
-        if (!mongoose.Types.ObjectId.isValid(bundleId)) {
-            return res.status(400).json({ message: "Invalid bundle ID" });
-        }
-
-        const bundle = await Bundle.findById(bundleId).populate("products");
-        if (!bundle) {
-            return res.status(404).json({ message: "Bundle not found" });
-        }
-
-        const userId = req.user._id;
-
-        let cart = await Cart.findOne({ cartOwner: userId });
-        if (!cart) {
-            cart = await Cart.create({ cartOwner: userId });
-        }
-
-        const productIds = bundle.products.map((product) => product._id);
-
-        cart.products.push(...productIds);
-
-        const bundlePrice = parseFloat(bundle.discountedPrice);
-        cart.totalPrice = parseFloat(cart.totalPrice) + bundlePrice;
-
-        await cart.save();
-
-        res.status(200).json({ message: "Bundle added to cart successfully", cart });
+      const { bundleId } = req.body;
+  
+      if (!mongoose.Types.ObjectId.isValid(bundleId)) {
+        return res.status(400).json({ message: "Invalid bundle ID" });
+      }
+  
+      const bundle = await Bundle.findById(bundleId).populate("products");
+      if (!bundle) {
+        return res.status(404).json({ message: "Bundle not found" });
+      }
+  
+      const userId = req.user._id;
+  
+      let cart = await Cart.findOne({ cartOwner: userId });
+      if (!cart) {
+        cart = await Cart.create({ cartOwner: userId, cartItems: [], totalPrice: 0 });
+      }
+  
+      const existingBundleIndex = cart.cartItems.findIndex(
+        (item) => item.itemType === "bundle" && item.itemId.toString() === bundle._id.toString()
+      );
+  
+      const bundlePrice = parseFloat(bundle.discountedPrice);
+  
+      if (existingBundleIndex !== -1) {
+        cart.cartItems[existingBundleIndex].quantity += 1;
+        cart.cartItems[existingBundleIndex].itemPrice = (
+          parseFloat(cart.cartItems[existingBundleIndex].itemPrice) + bundlePrice
+        ).toFixed(2);
+      } else {
+        cart.cartItems.push({
+          itemType: "bundle",
+          itemId: bundle._id,
+          quantity: 1,
+          itemPrice: bundlePrice.toFixed(2),
+        });
+      }
+  
+      cart.totalPrice = (parseFloat(cart.totalPrice) + bundlePrice).toFixed(2);
+      await cart.save();
+  
+      res.status(200).json({ message: "Bundle added to cart successfully", cart });
     } catch (err) {
-        console.error("Error adding bundle to cart:", err.message);
-        res.status(500).json({ message: "An error occurred", error: err.message });
+      console.error("Error adding bundle to cart:", err.message);
+      res.status(500).json({ message: "An error occurred", error: err.message });
     }
-};
-
+  };
+  
+  exports.getCartItems = async (req, res) => {
+    try {
+      const userId = req.user._id;
+  
+      const cart = await Cart.findOne({ cartOwner: userId }).populate({
+        path: "cartItems.itemId",
+        select: "productName bundleName productPrice discountedPrice",
+      });
+  
+      if (!cart || cart.cartItems.length === 0) {
+        return res.status(200).json({ message: "Cart is empty", cartItems: [] });
+      }
+  
+      res.status(200).json({ cartItems: cart.cartItems, totalPrice: cart.totalPrice });
+    } catch (err) {
+      console.error("Error fetching cart items:", err.message);
+      res.status(500).json({ message: "An error occurred", error: err.message });
+    }
+  };
+  
+  

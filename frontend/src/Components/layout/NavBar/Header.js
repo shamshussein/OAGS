@@ -3,10 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate  } from 'react-router-dom';
 import './header.css';
-import { useCart } from 'pages/cart/Cart';
 
 function Header() {
-  const { cartItems } = useCart(); 
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
@@ -89,9 +87,9 @@ function Header() {
           <Link to="/cart" className="btn position-relative me-3">
               <FontAwesomeIcon icon={faCartShopping} className="fs-5 headerIcons" />
 
-              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {/* <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 <span className="cart-indicator">{cartItems.length}</span>
-              </span>
+              </span> */}
             </Link>
             {isLoggedIn ? (
         //       <>

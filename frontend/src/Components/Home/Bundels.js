@@ -27,7 +27,7 @@ function Bundles() {
             }
 
             const response = await axios.post(
-                "http://localhost:3000/api/cart/addBundleToCart",
+                "http://localhost:3000/api/carts/addBundleToCart",
                 { bundleId },
                 {
                     headers: {

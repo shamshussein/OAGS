@@ -25,7 +25,7 @@ app.use('/api/users', userRouter);
 app.use('/api/feedbacks', feedbackRouter); 
 app.use('/api/bundles', bundlesRouter); 
 
-app.use('/api/cart', cartRouter); 
+app.use('/api/carts', cartRouter); 
 
 app.listen(3000, () => {
     console.log("Server listening on port 3000");
