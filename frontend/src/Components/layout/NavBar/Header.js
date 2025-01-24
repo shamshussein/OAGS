@@ -45,7 +45,7 @@ function Header() {
     }
   };
   return (
-    <nav className="navbar navbar-expand-lg border-bottom border-black">
+    <nav className="navbar navbar-expand-lg ">
       <div className="container">
         <Link className="navbar-brand" to="/">
           <img src="/assets/images/logo.png" alt="Logo" style={{ height: '40px' }} />

@@ -24,7 +24,7 @@ function Banner() {
       loop
       navigation={false}
       modules={[Autoplay, Pagination,EffectFade]}
-      className='border-bottom border-black'
+      className=''
       >
         {bannerData.map((banner, index) => (
           <SwiperSlide key={index}>

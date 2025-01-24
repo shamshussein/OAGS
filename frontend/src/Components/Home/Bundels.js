@@ -45,7 +45,7 @@ function Bundles() {
     };
 
     return (
-        <section className="our-offers me-auto border-bottom border-black">
+        <section className="our-offers me-auto border-black">
             <h2 style={{ paddingTop: '10vh', paddingBottom: '5vh', fontSize: '1.5rem' }}>BUNDLES</h2>
             <div className="our-products col-12 container d-flex flex-wrap justify-content-lg-between justify-content-md-center justify-content-center mx-auto">
                 {bundles.map((bundle, index) => (

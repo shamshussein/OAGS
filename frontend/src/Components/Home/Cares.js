@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruckFast,faCircleCheck,faLock} from '@fortawesome/free-solid-svg-icons';
 function Cares() {
   return (
-    <section className="why-shop-with-us border-bottom border-black">
+    <section className="why-shop-with-us">
       <h2 className="text-center" style={{ paddingTop: '10vh', paddingBottom: '5vh', fontSize: '1.5rem' }}>
         WHAT WE CARE ABOUT
       </h2>
