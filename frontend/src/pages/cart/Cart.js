@@ -10,27 +10,21 @@ const Cart = () => {
     const fetchCartItems = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        if (!user || !user.token) {
+        if (!user || !user._id) {
           console.error('User is not logged in.');
           return;
         }
-
-        const response = await axios.get('http://localhost:3000/api/carts/getCartItems', {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
-
-        if (response.data.cartItems.length === 0) {
-          console.log('Cart is empty.');
-        }
-
+    
+        const response = await axios.get(
+          `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
+        );
+    
         setCartItems(response.data.cartItems);
         setTotalPrice(response.data.totalPrice);
       } catch (error) {
         console.error('Error fetching cart items:', error);
       }
-    };
+    };    
 
     fetchCartItems();
   }, []);

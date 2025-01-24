@@ -18,11 +18,15 @@ const SignIn = () => {
       const response = await signIn({ email , password });
       localStorage.setItem('user', JSON.stringify({ 
         token: response.data.token, 
-        userName: email
+        userName: email,
+         userID :response.data.data.user._id
       }));
       setSuccess('Sign-in successful!');
       navigate('/'); 
       console.log(response.data.token);
+      console.log("resp",response)
+      console.log("user",response.data.data.user)
+
     } catch (err) {
       setError(err.response?.data?.message || 'Wrong credentials');
     }

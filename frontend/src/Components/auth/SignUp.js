@@ -22,6 +22,7 @@ const SignUp = () => {
   const handleSignUp = async () => {
     try {
       const response = await signUp(formData);
+
       localStorage.setItem('user', JSON.stringify({ 
         token: response.data.token,
         userName: formData.userName,

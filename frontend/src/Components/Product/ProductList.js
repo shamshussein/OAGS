@@ -4,7 +4,6 @@ import './ProductList.css';
 import axios from 'axios';
 
 const ProductList = ({ products, discountPercentage }) => {
-  // Add to Cart function
   const addToCart = async (productId, quantity) => {
     try {
       const response = await axios.post('http://localhost:3000/api/cart/addToCart', {
@@ -28,7 +27,7 @@ const ProductList = ({ products, discountPercentage }) => {
               <ProductItem
                 product={product}
                 discountPercentage={discountPercentage}
-                addToCart={(product, quantity) => addToCart(product._id, quantity)} // Pass addToCart function
+                addToCart={(product, quantity) => addToCart(product._id, quantity)} 
               />
             </div>
           ))}
