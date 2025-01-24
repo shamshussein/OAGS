@@ -18,7 +18,7 @@ const SignIn = () => {
       const response = await signIn({ email , password });
       localStorage.setItem('user', JSON.stringify({ 
         token: response.data.token, 
-        userName: email 
+        userName: email
       }));
       setSuccess('Sign-in successful!');
       navigate('/'); 
@@ -51,13 +51,11 @@ const handleGoogleSuccess = async (response) => {
             'user',
             JSON.stringify({
                 token: serverResponse.data.token,
-                userName: serverResponse.userName,
-                phoneNumber: serverResponse.phoneNumber || '',
-                email: serverResponse.email,
+                userName: name,
+                phoneNumber: phoneNumber || '',
+                email: email,
             })
         );
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('loggedInEmail', email);
 
         navigate('/');
 

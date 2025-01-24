@@ -38,7 +38,7 @@ const SignUp = () => {
     }
   };
 
-  const handleGoogleSuccess = async (response) => {
+const handleGoogleSuccess = async (response) => {
     try {
         const credential = response.credential; 
 
@@ -54,17 +54,14 @@ const SignUp = () => {
         });
 
         localStorage.setItem(
-            'user',
-            JSON.stringify({
-                token: serverResponse.data.token,
-                userName: serverResponse.userName,
-                phoneNumber: serverResponse.phoneNumber || '',
-                email: serverResponse.email,
-            })
-        );
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('loggedInEmail', email);
-
+          'user',
+          JSON.stringify({
+              token: serverResponse.data.token,
+              userName: name,
+              phoneNumber: phoneNumber || '',
+              email: email,
+          })
+      );
         navigate('/');
 
     } catch (err) {

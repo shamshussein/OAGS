@@ -17,10 +17,6 @@ const checkAdmin = async(req) => {
 
 exports.createProduct = async (req,res) =>{
     try {
-        // const user = await checkAdmin(req);
-        // if(user === false){
-        //     res.status(404).json({message: "A product should be added by admin!"});
-        // }
         const newProduct = await Product.create({
             productName: req.body.productName,
             productDescription: req.body.productDescription,

@@ -1,28 +1,27 @@
 const Bundle = require('../models/bundlesModel');
+const mongoose = require("mongoose");
 
 const createBundle = async (req, res) => {
     try {
-        const { name, products, image, discountedPrice, originalPrice } = req.body;
+        const { name, image, originalPrice, discountedPrice, products } = req.body;
 
-        if (!name || !products || !discountedPrice || !originalPrice) {
-            return res.status(400).json({ message: "All fields are required." });
-        }
+        const productIds = products.map((id) => new mongoose.Types.ObjectId(id));
 
-        const newBundle = new Bundle({
+        const newBundle = await Bundle.create({
             name,
-            products,
             image,
-            discountedPrice,
             originalPrice,
+            discountedPrice,
+            products: productIds,
         });
 
-        const savedBundle = await newBundle.save();
-        res.status(201).json(savedBundle);
-    } catch (error) {
-        console.error("Error creating bundle:", error.message);
-        res.status(500).json({ message: "Failed to create bundle.", error: error.message });
+        res.status(201).json(newBundle);
+    } catch (err) {
+        console.error("Error creating bundle:", err.message);
+        res.status(400).json({ message: err.message });
     }
 };
+
 
 const getAllBundles = async (req, res) => {
     try {

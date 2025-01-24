@@ -1,6 +1,8 @@
 const Cart = require("../models/cartModel");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
+const mongoose = require("mongoose");
+const Bundle = require("../models/bundlesModel");
 
 exports.addToCart = async (req,res) =>{
     try {
@@ -41,3 +43,40 @@ exports.addToCart = async (req,res) =>{
         res.status(500).json({message: err.message});
     }
 };
+
+exports.addBundleToCart = async (req, res) => {
+    try {
+        const { bundleId } = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(bundleId)) {
+            return res.status(400).json({ message: "Invalid bundle ID" });
+        }
+
+        const bundle = await Bundle.findById(bundleId).populate("products");
+        if (!bundle) {
+            return res.status(404).json({ message: "Bundle not found" });
+        }
+
+        const userId = req.user._id;
+
+        let cart = await Cart.findOne({ cartOwner: userId });
+        if (!cart) {
+            cart = await Cart.create({ cartOwner: userId });
+        }
+
+        const productIds = bundle.products.map((product) => product._id);
+
+        cart.products.push(...productIds);
+
+        const bundlePrice = parseFloat(bundle.discountedPrice);
+        cart.totalPrice = parseFloat(cart.totalPrice) + bundlePrice;
+
+        await cart.save();
+
+        res.status(200).json({ message: "Bundle added to cart successfully", cart });
+    } catch (err) {
+        console.error("Error adding bundle to cart:", err.message);
+        res.status(500).json({ message: "An error occurred", error: err.message });
+    }
+};
+
