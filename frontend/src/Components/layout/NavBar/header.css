@@ -1,15 +1,15 @@
-.nav-link {
-    transition: border-color 0.5s ease;
-  }
+.container {
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+
+}
   
   .nav-link:hover {
-    border-bottom: 1px solid #000; 
+    border-bottom: 1px solid #57756a; 
   }
-  .nav-link:focus {
-    border-bottom: 1px solid #000; 
-  }
+
   .headerIcons:hover{
     font-weight: 400;
-    color: rgba(33, 37, 41, 0.75);
+    color: rgba(97, 146, 136, 0.75);
 
   }
