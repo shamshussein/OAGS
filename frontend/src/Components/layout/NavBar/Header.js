@@ -112,14 +112,14 @@ function Header() {
           aria-expanded="false"
           style={{
             backgroundColor: "#f8f9fa",
-            border: "2px solid rgba(57, 198, 83, 0.81)",
+            border: "1.5px solid rgba(132, 185, 182, 0.81)",
             borderRadius: "50%",
             width: "45px",
             height: "45px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            fontWeight: "600",
+            fontWeight: "300",
             textTransform: "uppercase",
             marginBottom:"8px",
             marginLeft:"20px"

@@ -3,6 +3,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './ProductItem.css';
 import axios from 'axios';
 
+// Generate star rating icons
 const generateStars = (rating) => {
   const fullStars = Math.floor(rating);
   const halfStar = rating % 1 >= 0.5 ? (
@@ -23,6 +24,7 @@ const generateStars = (rating) => {
   );
 };
 
+// ProductItem component
 const ProductItem = ({ product, discountPercentage }) => {
   const [isOutOfStock, setIsOutOfStock] = useState(false);
 

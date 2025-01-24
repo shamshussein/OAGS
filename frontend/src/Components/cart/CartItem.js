@@ -1,4 +1,5 @@
 import React from 'react';
+import './CartItem.css'; // Styles for CartItem
 
 const CartItem = ({ item }) => {
   return (

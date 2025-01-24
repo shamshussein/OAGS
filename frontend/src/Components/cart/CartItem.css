@@ -1,0 +1,9 @@
+.item-details {
+    display: flex;
+    align-items: center;
+  }
+  .item-image {
+    max-width: 80px;
+    border-radius: 5px;
+  }
+  
