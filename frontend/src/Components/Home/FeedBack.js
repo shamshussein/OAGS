@@ -19,11 +19,11 @@ function FeedBack() {
 
   return (
     <section
-      style={{ minHeight: "250px" }}
+      style={{ minHeight: "350px" }}
       className="happy-clients d-flex align-items-center justify-content-center flex-column"
     >
       <h2
-        style={{ paddingTop: "10vh", paddingBottom: "5vh", fontSize: "1.5rem" }}
+        style={{ paddingTop: "6vh", paddingBottom: "5vh", fontSize: "1.5rem" }}
       >
         CLIENTS FEEDBACKS
       </h2>
@@ -32,10 +32,10 @@ function FeedBack() {
           feedbacks.map((feedback) => (
             <div key={feedback._id} className="testimonial">
               <h4>
-                {feedback.user?.userName || "Anonymous User"}:
+                {feedback.user?.userName || "Anonymous User"}
               </h4>{" "}
               <p>
-              {feedback.feedback || "No feedback provided."}
+              " {feedback.feedback || "No feedback provided."} "
               </p>
             </div>
           ))

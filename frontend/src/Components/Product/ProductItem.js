@@ -91,7 +91,7 @@ const ProductItem = ({ product, discountPercentage }) => {
               <p className="text-danger mb-0">Out of Stock</p>
             ) : (
               <button
-                className="btn btn-primary btn-sm"
+                className="btn-primary "
                 onClick={() => addToCart(product)}
               >
                 Add to Cart
