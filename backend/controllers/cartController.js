@@ -38,12 +38,20 @@ exports.addToCart = async (req, res) => {
           parseFloat(cart.cartItems[existingProductIndex].itemPrice) + productPrice
         ).toFixed(2);
       } else {
+        const productDetails = {
+          name: product.productName,
+          description: product.productDescription,
+          image: product.productImage,
+        };
+        
         cart.cartItems.push({
           itemType: "product",
           itemId: product._id,
           quantity: productQuantity,
           itemPrice: productPrice.toFixed(2),
+          ...productDetails, 
         });
+        
       }
   
       cart.totalPrice = (parseFloat(cart.totalPrice) + productPrice).toFixed(2);
@@ -88,12 +96,22 @@ exports.addToCart = async (req, res) => {
           parseFloat(cart.cartItems[existingBundleIndex].itemPrice) + bundlePrice
         ).toFixed(2);
       } else {
+
+        const bundleDetails = {
+          name: bundle.name,
+          description: bundle.description,
+          image: bundle.image,
+        };
+        
         cart.cartItems.push({
           itemType: "bundle",
           itemId: bundle._id,
           quantity: 1,
           itemPrice: bundlePrice.toFixed(2),
+          ...bundleDetails,
         });
+        
+
       }
   
       cart.totalPrice = (parseFloat(cart.totalPrice) + bundlePrice).toFixed(2);
@@ -116,15 +134,10 @@ exports.addToCart = async (req, res) => {
   
       const cart = await Cart.findOne({ cartOwner: userId }).populate({
         path: "cartItems.itemId",
-        populate: {
-          path: "products", 
-          select: "productName productPrice",
-        },
-        select: "productName bundleName productPrice discountedPrice",
+        select: "productName bundleName productDescription productImage",
       });
       
       
-  
       if (!cart || cart.cartItems.length === 0) {
         return res.status(200).json({ message: "Cart is empty", cartItems: [] });
       }

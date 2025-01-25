@@ -1,9 +1,17 @@
-.item-details {
-    display: flex;
-    align-items: center;
-  }
-  .item-image {
-    max-width: 80px;
-    border-radius: 5px;
-  }
-  
+.list-group-item {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+img {
+  transition: transform 0.2s ease-in-out;
+}
+
+img:hover {
+  transform: scale(1.05);
+}
