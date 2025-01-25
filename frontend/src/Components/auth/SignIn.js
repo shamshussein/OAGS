@@ -18,8 +18,10 @@ const SignIn = () => {
       const response = await signIn({ email , password });
       localStorage.setItem('user', JSON.stringify({ 
         token: response.data.token, 
-        userName: email,
-         userID :response.data.data.user._id
+        userName: response.data.data.user.userName,
+        userID :response.data.data.user._id,
+        phoneNumber :response.data.data.user.phoneNumber
+
       }));
       setSuccess('Sign-in successful!');
       navigate('/'); 
@@ -56,7 +58,7 @@ const handleGoogleSuccess = async (response) => {
             JSON.stringify({
                 token: serverResponse.data.token,
                 userName: name,
-                phoneNumber: phoneNumber || '',
+                phoneNumber: phoneNumber,
                 email: email,
             })
         );

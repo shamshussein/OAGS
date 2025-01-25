@@ -5,6 +5,6 @@ const userController = require("../controllers/userController");
 
 router.post("/addToCart", userController.protect, cartController.addToCart);
 router.post("/addBundleToCart", userController.protect, cartController.addBundleToCart);
-router.get('/getCartItems', userController.protect, cartController.getCartItems);
+router.get('/getCartItems', cartController.getCartItems);
 
 module.exports = router;

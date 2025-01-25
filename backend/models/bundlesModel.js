@@ -8,5 +8,5 @@ const bundleSchema = new mongoose.Schema({
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true }],
 });
 
-const Bundle = mongoose.model("Bundle", bundleSchema);
-module.exports = Bundle;
+module.exports = mongoose.model('Bundle', bundleSchema);
+
