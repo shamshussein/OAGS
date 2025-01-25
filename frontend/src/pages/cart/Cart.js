@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CartItem from 'Components/cart/CartItem';
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "./Cart.css";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -47,9 +46,9 @@ const Cart = () => {
                   <CartItem key={index} item={item} />
                 ))}
               </ul>
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex justify-content-between align-items-center mt-3">
                 <h4 className="mb-0">Total Price:</h4>
-                <h4 className="text-success mb-0">${totalPrice}</h4>
+                <h4 className="text-success mb-0">${totalPrice.toFixed(2)}</h4>
               </div>
             </div>
           )}
