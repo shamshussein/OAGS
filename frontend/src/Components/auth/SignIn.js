@@ -18,11 +18,17 @@ const SignIn = () => {
       const response = await signIn({ email , password });
       localStorage.setItem('user', JSON.stringify({ 
         token: response.data.token, 
-        userName: email
+        userName: response.data.data.user.userName,
+        userID :response.data.data.user._id,
+        phoneNumber :response.data.data.user.phoneNumber
+
       }));
       setSuccess('Sign-in successful!');
       navigate('/'); 
       console.log(response.data.token);
+      console.log("resp",response)
+      console.log("user",response.data.data.user)
+
     } catch (err) {
       setError(err.response?.data?.message || 'Wrong credentials');
     }
@@ -52,7 +58,7 @@ const handleGoogleSuccess = async (response) => {
             JSON.stringify({
                 token: serverResponse.data.token,
                 userName: name,
-                phoneNumber: phoneNumber || '',
+                phoneNumber: phoneNumber,
                 email: email,
             })
         );

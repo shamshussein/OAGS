@@ -1,8 +1,7 @@
 const Cart = require("../models/cartModel");
-const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const mongoose = require("mongoose");
-const Bundle = require("../models/bundlesModel");
+const Bundle = require("../models/bundlesModel"); 
 
 exports.addToCart = async (req, res) => {
     try {
@@ -57,7 +56,6 @@ exports.addToCart = async (req, res) => {
     }
   };
   
-
   exports.addBundleToCart = async (req, res) => {
     try {
       const { bundleId } = req.body;
@@ -110,12 +108,22 @@ exports.addToCart = async (req, res) => {
   
   exports.getCartItems = async (req, res) => {
     try {
-      const userId = req.user._id;
+      const userId = req.query.userId;
+  
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID." });
+      }
   
       const cart = await Cart.findOne({ cartOwner: userId }).populate({
         path: "cartItems.itemId",
+        populate: {
+          path: "products", 
+          select: "productName productPrice",
+        },
         select: "productName bundleName productPrice discountedPrice",
       });
+      
+      
   
       if (!cart || cart.cartItems.length === 0) {
         return res.status(200).json({ message: "Cart is empty", cartItems: [] });

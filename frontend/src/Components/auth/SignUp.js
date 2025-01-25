@@ -23,10 +23,10 @@ const SignUp = () => {
     try {
       const response = await signUp(formData);
       localStorage.setItem('user', JSON.stringify({ 
-        token: response.data.token,
-        userName: formData.userName,
-        phoneNumber: formData.phoneNumber || '',
-        email: formData.email,
+        token: response.data.token, 
+        userName: response.data.data.user.userName,
+        userID :response.data.data.user._id,
+        phoneNumber :response.data.data.user.phoneNumber
       }));
       setError('');
       navigate('/'); 
@@ -59,7 +59,7 @@ const handleGoogleSuccess = async (response) => {
           JSON.stringify({
               token: serverResponse.data.token,
               userName: name,
-              phoneNumber: phoneNumber || '',
+              phoneNumber: phoneNumber,
               email: email,
           })
       );
