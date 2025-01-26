@@ -1,34 +1,14 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import CartItem from 'Components/cart/CartItem';
+import React, { useEffect } from "react";
+import { useCart } from "contexts/CartContext";
+import CartItem from "Components/cart/CartItem";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const { cartItems, totalPrice, fetchCartItems } = useCart();
 
   useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (!user || !user.userID) {
-          console.error("User is not logged in or userID is missing.");
-          return;
-        }
-
-        const response = await axios.get(
-          `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
-        );
-
-        setCartItems(response.data.cartItems || []);
-        setTotalPrice(response.data.totalPrice || 0);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-
     fetchCartItems();
-  }, []);
+  }, [fetchCartItems]);
 
   return (
     <div className="container my-5">

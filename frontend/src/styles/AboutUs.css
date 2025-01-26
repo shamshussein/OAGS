@@ -1,0 +1,79 @@
+#about-us h2 {
+  font-family: 'Arial', sans-serif;
+  color: #467a6b;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.content-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.content-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1 1 calc(50% - 1rem); 
+  max-width: calc(50% - 1rem);
+}
+
+.content-card h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.content-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.content-card ul {
+  padding-left: 1.2rem;
+  margin-top: 1rem;
+}
+
+.content-card ul li {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.content-card ul li i {
+  color: #467a6b;
+  margin-right: 0.5rem;
+}
+
+.location-section {
+  margin-top: 3rem;
+}
+
+.location-section h2 {
+  color: #467a6b;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.location-section p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.location-section iframe {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.location-section a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.location-section a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
