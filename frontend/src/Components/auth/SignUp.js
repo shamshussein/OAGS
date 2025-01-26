@@ -30,8 +30,8 @@ const SignUp = () => {
       }));
       setError('');
       navigate('/'); 
-      console.log(response.data.token);
-      console.log(response.data.userName);
+      // console.log(response.data.token);
+      // console.log(response.data.userName);
 
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
@@ -61,12 +61,13 @@ const handleGoogleSuccess = async (response) => {
               userName: name,
               phoneNumber: phoneNumber,
               email: email,
+              userID: serverResponse.data.data.user._id,
           })
       );
         navigate('/');
 
     } catch (err) {
-        console.error("Error during Google Sign-Up:", err);
+        // console.error("Error during Google Sign-Up:", err);
         setError(err.response?.data?.message || "Google sign-up failed.");
     }
 };

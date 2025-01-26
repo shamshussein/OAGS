@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate  } from 'react-router-dom';
 import './header.css';
+import { CartContext } from "contexts/CartContext";
 
 function Header() {
+  const { cartItems } = useContext(CartContext);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
@@ -13,7 +15,7 @@ function Header() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    console.log("User Data from LocalStorage:", userData);
+    // console.log("User Data from LocalStorage:", userData);
     if (userData && userData.token) {
       const name = userData.userName?.trim() || "U"; 
       setUserName(name);
@@ -67,7 +69,7 @@ function Header() {
               <Link className="nav-link text-black fw-bold" to="/">Home</Link>
             </li>
             <li className="nav-item me-3">
-              <Link className="nav-link text-black fw-bold" to="/about-us">About Us</Link>
+              <Link className="nav-link text-black fw-bold" to="/about">About Us</Link>
             </li>
             <li className="nav-item me-3">
               <Link className="nav-link text-black fw-bold" to="/products">Products</Link>
@@ -87,22 +89,17 @@ function Header() {
           <Link to="/cart" className="btn position-relative me-3">
               <FontAwesomeIcon icon={faCartShopping} className="fs-5 headerIcons" />
 
-              {/* <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                <span className="cart-indicator">{cartItems.length}</span>
-              </span> */}
+              <span className="position-relative">
+            <i className="bi bi-cart4" style={{ fontSize: "1.5rem" }}></i>
+            {cartItems.length > 0 && (
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {cartItems.length}
+              </span>
+            )}
+          </span>
+
             </Link>
             {isLoggedIn ? (
-        //       <>
-        // <button
-        //   id="logoutIcon"
-        //   className="btn"
-        //   onClick={handleLogout}
-        // >
-        //   <FontAwesomeIcon
-        //     icon={faSignOutAlt}
-        //     className="fs-5 headerIcons"
-        //   />
-        // </button>
         <div className="dropdown">
         <button
           className="btn dropdown-toggle d-flex align-items-center"

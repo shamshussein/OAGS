@@ -2,6 +2,7 @@ import React from 'react'
 import './footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -18,11 +19,17 @@ function Footer() {
 
      <div className="footer-menu">
         <ul>
-          <li><a href="/">Home</a></li>
+          <li>
+          <Link to="/">Home</Link>
+          </li>
           <li>|</li>
-          <li><a href="about_us_screen/about_us.html">About Us</a></li>
+          <li>
+              <Link to="/about">About Us</Link>
+          </li>
           <li>|</li>
-          <li><a href="contact_us_screen/contact_us.html">Contact</a></li>
+          <li>
+              <Link to="/contact">Contact</Link>
+          </li>
 
         </ul>
       </div>

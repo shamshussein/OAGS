@@ -1,0 +1,57 @@
+.contact-page {
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .contact-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .contact-container h1 {
+    font-size: 2.5rem;
+    color: #333;
+  }
+  
+  .contact-container p {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .contact-container .form-label {
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .contact-container .form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+  }
+  
+  .contact-container .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 0.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .contact-container .contact-methods ul li {
+    font-size: 1rem;
+  }
+  
+  .contact-container .contact-methods ul li a {
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .contact-container .contact-methods ul li a:hover {
+    color: #0056b3;
+  }
+  .btn-secondary {
+    background-color: #007bff;
+    border: none;
+  }
+  .btn-secondary:hover {
+    background-color: #054890;
+    border: none;
+  }

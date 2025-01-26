@@ -20,14 +20,15 @@ const SignIn = () => {
         token: response.data.token, 
         userName: response.data.data.user.userName,
         userID :response.data.data.user._id,
-        phoneNumber :response.data.data.user.phoneNumber
+        phoneNumber :response.data.data.user.phoneNumber,
+        email: response.data.data.user.email
 
       }));
       setSuccess('Sign-in successful!');
       navigate('/'); 
-      console.log(response.data.token);
-      console.log("resp",response)
-      console.log("user",response.data.data.user)
+      // console.log(response.data.token);
+      // console.log("resp",response)
+      // console.log("user",response.data.data.user)
 
     } catch (err) {
       setError(err.response?.data?.message || 'Wrong credentials');
@@ -58,15 +59,16 @@ const handleGoogleSuccess = async (response) => {
             JSON.stringify({
                 token: serverResponse.data.token,
                 userName: name,
+                userID: serverResponse.data.data.user._id,
                 phoneNumber: phoneNumber,
                 email: email,
             })
         );
+      // console.log("idgoogle",serverResponse.data.data.user._id)
 
         navigate('/');
 
     } catch (err) {
-        console.error("Error during Google Sign-Up:", err);
         setError(err.response?.data?.message || "Google sign-up failed.");
     }
 };
