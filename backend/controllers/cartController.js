@@ -16,7 +16,7 @@ exports.addToCart = async (req, res) => {
         return res.status(409).json({ message: "Insufficient product quantity available" });
       }
   
-      product.productQuantity -= productQuantity;
+      // product.productQuantity -= productQuantity;
       await product.save();
   
       const userId = req.user._id;
@@ -51,7 +51,6 @@ exports.addToCart = async (req, res) => {
           itemPrice: productPrice.toFixed(2),
           ...productDetails, 
         });
-        
       }
   
       cart.totalPrice = (parseFloat(cart.totalPrice) + productPrice).toFixed(2);
@@ -111,7 +110,6 @@ exports.addToCart = async (req, res) => {
           ...bundleDetails,
         });
         
-
       }
   
       cart.totalPrice = (parseFloat(cart.totalPrice) + bundlePrice).toFixed(2);
@@ -149,4 +147,56 @@ exports.addToCart = async (req, res) => {
     }
   };
   
+  exports.removeItem = async (req, res) => {
+    try {
+      const { itemId } = req.body; 
+      const userId = req.user.id; 
   
+      if (!mongoose.Types.ObjectId.isValid(itemId)) {
+        return res.status(400).json({ message: "Invalid item ID." });
+      }
+  
+      const cart = await Cart.findOne({ cartOwner: userId });
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found." });
+      }
+  
+      const itemIndex = cart.cartItems.findIndex(
+        (item) => item.itemId.toString() === itemId
+      );
+      if (itemIndex === -1) {
+        return res.status(404).json({ message: "Item not found in cart." });
+      }
+  
+      const removedItem = cart.cartItems[itemIndex];
+      cart.cartItems.splice(itemIndex, 1);
+      cart.totalPrice -= removedItem.itemPrice;
+  
+      await cart.save();
+  
+      res.status(200).json({ message: "Item removed successfully", cart });
+    } catch (err) {
+      console.error("Error removing item from cart:", err.message);
+      res.status(500).json({ message: "An error occurred", error: err.message });
+    }
+  };
+
+  exports.clearCart = async (req, res) => {
+    try {
+      // const cartId = req.body; 
+      const userId = req.user.id; 
+
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID." });
+      }
+      
+      const cart = await Cart.findOneAndDelete({ cartOwner: userId });
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found." });
+      }
+     res.status(200).json({message: "cart deleted successfully"});
+      } catch (err) {
+      console.error("Error removing item from cart:", err.message);
+      res.status(500).json({ message: "An error occurred", error: err.message });
+    }
+  };

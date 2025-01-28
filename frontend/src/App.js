@@ -9,11 +9,9 @@ import Cart from 'pages/cart/Cart';
 import SignUp from 'Components/auth/SignUp';
 import ContactUs from 'pages/contact/ContactUs';
 import AboutUs from 'pages/about/AboutUs';
-import CartProvider from "contexts/CartContext";
 
 function App() {
   return (
-    <CartProvider>
     <Routes>
       {/* Routes with MainLayout */}
       <Route
@@ -87,7 +85,6 @@ function App() {
         />
 
     </Routes>
-    </CartProvider>
   );
 }
 

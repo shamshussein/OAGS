@@ -1,27 +1,85 @@
-import React, { useEffect } from "react";
-import { useCart } from "contexts/CartContext";
+import React, { useEffect, useState } from "react";
 import CartItem from "Components/cart/CartItem";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Cart = () => {
-  const { cartItems, setCartItems, totalPrice, fetchCartItems } = useCart();
+  const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+ 
+  const fetchCartItems = async () => {
+    
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.userID) {
+        console.error("User is not logged in or userID is missing.");
+        return;
+      }
+
+      const response = await axios.get(
+        `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
+      );
+
+      setCartItems(response.data.cartItems || []);
+      setTotalPrice(response.data.totalPrice || 0);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
 
   useEffect(() => {
     fetchCartItems();
-  }, [fetchCartItems]);
+  }, []);
 
-  const updateCartInLocalStorage = (updatedCart) => {
-    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+  const handleRemoveItem = async (itemId) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.token) {
+        console.error("User is not logged in.");
+        return;
+      }
+  
+      await axios.post(
+        `http://localhost:3000/api/carts/removeItem`,
+        { itemId },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`, 
+          },
+        }
+      );
+  
+      fetchCartItems(); 
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
   };
+  const handleClearCart = async (userID) => {
+    try {
+      if (!user || !user.token) {
+        console.error("User is not logged in.");
+        return;
+      }
+     userID = user.userID;
+     console.log("user id: " + userID);
 
-  const handleQuantityChange = (item, newQuantity) => {
-    const updatedCart = cartItems.map((cartItem) =>
-      cartItem.id === item.id ? { ...cartItem, quantity: newQuantity } : cartItem
-    );
-    setCartItems(updatedCart);
-    updateCartInLocalStorage(updatedCart);
+      await axios.post(
+        `http://localhost:3000/api/carts/clearCart`,
+        { userID },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`, 
+          },
+        }
+      );
+  
+      fetchCartItems(); 
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+    }
   };
-
   const discount = totalPrice * 0.1;
   const deliveryFee = cartItems.length > 0 ? 5.99 : 0;
   const finalTotal = totalPrice - discount + deliveryFee;
@@ -44,7 +102,7 @@ const Cart = () => {
                     <CartItem
                       key={item.id}
                       item={item}
-                      onQuantityChange={handleQuantityChange}
+                      onRemoveItem={handleRemoveItem}
                     />
                   ))}
                 </ul>
@@ -83,6 +141,8 @@ const Cart = () => {
                   <span>${finalTotal.toFixed(2)}</span>
                 </li>
               </ul>
+              <button className="btn btn-secondary w-100" onClick={handleClearCart}>Clear Cart</button>
+
             </div>
           </div>
         </div>

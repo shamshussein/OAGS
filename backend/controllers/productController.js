@@ -1,19 +1,4 @@
 const Product = require("../models/productModel");
-const User = require("../models/userModel");
-
-const checkAdmin = async(req) => {
-    try {
-        const user = await User.findOne({_id: req.user._id});
-        if(!user || user.role !=="admin"){
-            return false;
-        }
-        else{
-            return true;
-        }
-    } catch (err) {
-        console.log(err);
-    }
-};
 
 exports.createProduct = async (req,res) =>{
     try {
@@ -31,43 +16,6 @@ exports.createProduct = async (req,res) =>{
     } catch (err) {
         res.status(500).json({message: err});
         
-    }
-};
-
-exports.updateProduct = async(req,res)=>{
-    try {
-        const user = await checkAdmin(req);
-        if(user === false){
-            return res.status(401).json({message: "only admin can update the product"});
-        }
-        const product = await Product.findByIdAndUpdate(
-            req.params.productID,
-             req.body,
-            { new: true }
-            );
-            if(!product){
-                return res.status(404).json({message: "Product Not found"});
-            }
-            return res.status(200).json({message: "product updated successfully"});
-        } catch (err) {
-        res.status(500).json({message: err});
-    }
-};
-exports.deleteProduct = async(req,res)=>{
-    try {
-        const user = await checkAdmin(req);
-        if(user === false){
-            return res.status(401).json({message: "only admin can delete the product"});
-        }
-        const product = await Product.findByIdAndDelete(
-            req.params.productID,
-            );
-            if(!product){
-                return res.status(404).json({message: "Product Not found"});
-            }
-            return res.status(200).json({message: "product deleted successfully"});
-        } catch (err) {
-        res.status(500).json({message: err});
     }
 };
 
