@@ -54,6 +54,8 @@ const ProductItem = ({ product, discountPercentage }) => {
   
       console.log('Cart updated:', response.data);
       alert('Product added to cart successfully.');
+      window.location.reload();
+
     } catch (error) {
       console.error('Error adding product to cart:', error.response?.data?.message || error.message);
       alert(error.response?.data?.message || 'An error occurred.');

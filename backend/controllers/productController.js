@@ -22,7 +22,7 @@ exports.createProduct = async (req,res) =>{
 exports.getAllProducts = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 6; 
+    const limit = parseInt(req.query.limit) || 6;
     const skip = (page - 1) * limit;
     const category = req.query.category ? req.query.category.trim() : "";
 
@@ -33,14 +33,17 @@ exports.getAllProducts = async (req, res) => {
 
     const products = await Product.find(filter).skip(skip).limit(limit);
 
+    const totalProducts = await Product.countDocuments(filter);
+
+    const hasMore = skip + products.length < totalProducts;
+
     if (!products.length) {
-      return res.status(200).json({ products: [] });
+      return res.status(200).json({ products: [], hasMore: false });
     }
 
-    return res.status(200).json({ products });
+    return res.status(200).json({ products, hasMore, totalProducts });
 
   } catch (err) {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
