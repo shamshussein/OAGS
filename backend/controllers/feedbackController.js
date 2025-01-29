@@ -1,5 +1,4 @@
 const Feedback = require("../models/feedbackModel");
-const User = require("../models/userModel");
 
 exports.addFeedback = async (req, res) => {
   try {
@@ -8,7 +7,6 @@ exports.addFeedback = async (req, res) => {
     if (!req.user) {
       return res.status(401).json({ message: "Please log in to provide feedback." });
     }
-
     const newFeedback = await Feedback.create({
       feedback,
       user: req.user.id,
