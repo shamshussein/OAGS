@@ -8,78 +8,108 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const user = JSON.parse(localStorage.getItem("user"));
- 
-  const fetchCartItems = async () => {
-    
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user || !user.userID) {
-        console.error("User is not logged in or userID is missing.");
-        return;
-      }
-
-      const response = await axios.get(
-        `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
-      );
-
-      setCartItems(response.data.cartItems || []);
-      setTotalPrice(response.data.totalPrice || 0);
-    } catch (error) {
-      console.error("Error fetching cart items:", error);
-    }
-  };
 
   useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        if (!user || !user.userID) {
+          console.error("User is not logged in or userID is missing.");
+          return;
+        }
+  
+        const response = await axios.get(
+          `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
+        );
+  
+        setCartItems(response.data.cartItems || []);
+        setTotalPrice(response.data.totalPrice || 0);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+  
     fetchCartItems();
-  }, []);
+  }, [user]);
+  
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
       if (!user || !user.token) {
         console.error("User is not logged in.");
         return;
       }
-  
+
       await axios.post(
         `http://localhost:3000/api/carts/removeItem`,
         { itemId },
         {
           headers: {
-            Authorization: `Bearer ${user.token}`, 
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
-  
-      fetchCartItems(); 
+
     } catch (error) {
       console.error("Error removing item:", error);
     }
   };
-  const handleClearCart = async (userID) => {
+
+  const handleClearCart = async () => {
+    const confirmClear = window.confirm(
+      "Are you sure you want to clear your cart? This action cannot be undone."
+    );
+    if (!confirmClear) return;
+
     try {
       if (!user || !user.token) {
         console.error("User is not logged in.");
         return;
       }
-     userID = user.userID;
-     console.log("user id: " + userID);
 
       await axios.post(
         `http://localhost:3000/api/carts/clearCart`,
-        { userID },
+        { userID: user.userID },
         {
           headers: {
-            Authorization: `Bearer ${user.token}`, 
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
-  
-      fetchCartItems(); 
+
     } catch (error) {
       console.error("Error clearing cart:", error);
     }
+    window.location.reload();
+
   };
+
+  const updateCartItemQuantity = async (itemId, newQuantity) => {
+    try {
+      if (!user || !user.token) {
+        console.error("User is not logged in.");
+        return;
+      }
+
+      await axios.post(
+        "http://localhost:3000/api/carts/updateCartItemQuantity",
+        { itemId, newQuantity },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+    } catch (error) {
+      console.error("Error updating cart item quantity:", error.message);
+      alert(
+        "Failed to update quantity. You reached the maximum amount in stock!"
+      );
+
+      window.location.reload();
+    }
+  };
+
   const discount = totalPrice * 0.1;
   const deliveryFee = cartItems.length > 0 ? 5.99 : 0;
   const finalTotal = totalPrice - discount + deliveryFee;
@@ -102,6 +132,7 @@ const Cart = () => {
                     <CartItem
                       key={item.id}
                       item={item}
+                      updateQuantity={updateCartItemQuantity}
                       onRemoveItem={handleRemoveItem}
                     />
                   ))}
@@ -109,42 +140,52 @@ const Cart = () => {
               )}
             </div>
             <div className="card-footer text-center">
-              <button className="btn btn-success">Proceed to Checkout</button>
+              {cartItems.length > 0 && (
+                <button className="btn btn-success">
+                  Proceed to Checkout
+                </button>
+              )}
             </div>
           </div>
         </div>
         <div className="col-md-4">
-          <div className="card shadow-lg">
-            <div className="card-header bg-secondary text-white">
-              <h3 className="text-center mb-0">Order Summary</h3>
+          {cartItems.length > 0 && (
+            <div className="card shadow-lg">
+              <div className="card-header bg-secondary text-white">
+                <h3 className="text-center mb-0">Order Summary</h3>
+              </div>
+              <div className="card-body">
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item d-flex justify-content-between">
+                    <span>Total Quantity:</span>
+                    <span>{totalQuantity}</span>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between">
+                    <span>Subtotal:</span>
+                    <span>${totalPrice.toFixed(2)}</span>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between">
+                    <span>Discount:</span>
+                    <span>-${discount.toFixed(2)}</span>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between">
+                    <span>Delivery / Taxes:</span>
+                    <span>${deliveryFee.toFixed(2)}</span>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between font-weight-bold">
+                    <span>Final Total:</span>
+                    <span>${finalTotal.toFixed(2)}</span>
+                  </li>
+                </ul>
+                <button
+                  className="btn btn-secondary w-100"
+                  onClick={handleClearCart}
+                >
+                  Clear Cart
+                </button>
+              </div>
             </div>
-            <div className="card-body">
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item d-flex justify-content-between">
-                  <span>Total Quantity:</span>
-                  <span>{totalQuantity}</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between">
-                  <span>Subtotal:</span>
-                  <span>${totalPrice.toFixed(2)}</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between">
-                  <span>Discount:</span>
-                  <span>-${discount.toFixed(2)}</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between">
-                  <span>Delivery / Taxes:</span>
-                  <span>${deliveryFee.toFixed(2)}</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between font-weight-bold">
-                  <span>Final Total:</span>
-                  <span>${finalTotal.toFixed(2)}</span>
-                </li>
-              </ul>
-              <button className="btn btn-secondary w-100" onClick={handleClearCart}>Clear Cart</button>
-
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

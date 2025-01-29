@@ -1,26 +1,38 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Trash } from "react-bootstrap-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CartItem.css";
 
-const CartItem = ({ item, onRemoveItem }) => {
-  const { name, description, image, quantity, itemPrice } = item;
+const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
+  const { name, description, image, quantity, itemPrice, itemId } = item;
   const [itemQuantity, setItemQuantity] = useState(quantity);
 
-  const handleIncrement = () => {
-    setItemQuantity(quantity + 1);
+  const handleIncrement = async () => {
+    const newQuantity = itemQuantity + 1;
+    setItemQuantity(newQuantity);
+    await updateQuantity(itemId, newQuantity);
   };
 
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setItemQuantity(quantity - 1);
+  const handleDecrement = async () => {
+    if (itemQuantity > 1) {
+      const newQuantity = itemQuantity - 1;
+      setItemQuantity(newQuantity);
+      await updateQuantity(itemId, newQuantity);
     }
   };
 
   const handleRemove = () => {
-    onRemoveItem(item.itemId); 
+    const confirmRemoval = window.confirm(
+      `Are you sure you want to remove "${name}" from your cart?`
+    );
+
+    if (confirmRemoval) {
+      onRemoveItem(itemId);
+      window.location.reload();
+
+    }
   };
- 
+
   return (
     <li className="list-group-item d-flex align-items-center p-3">
       <img

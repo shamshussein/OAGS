@@ -8,6 +8,6 @@ const productController = require("../controllers/productController");
 //      productController.createProduct);
 // router.patch("/updateProduct/:productID", userController.protect, productController.updateProduct);
 // router.delete("/deleteProduct/:productID", userController.protect, productController.deleteProduct);
-router.get("/allProducts", productController.getAllProducts);
+router.get("/getAllProducts", productController.getAllProducts);
 
 module.exports = router;

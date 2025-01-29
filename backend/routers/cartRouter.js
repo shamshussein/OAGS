@@ -8,5 +8,6 @@ router.post("/addBundleToCart", userController.protect, cartController.addBundle
 router.get('/getCartItems', cartController.getCartItems);
 router.post('/removeItem', userController.protect, cartController.removeItem);
 router.post('/clearCart', userController.protect, cartController.clearCart);
+router.post('/updateCartItemQuantity', userController.protect, cartController.updateCartItemQuantity);
 
 module.exports = router;

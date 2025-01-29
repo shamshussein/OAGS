@@ -21,15 +21,26 @@ exports.createProduct = async (req,res) =>{
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find(); 
-    if (products.length === 0) {
-      return res.status(404).json({ message: 'No products found' });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6; 
+    const skip = (page - 1) * limit;
+    const category = req.query.category ? req.query.category.trim() : "";
+
+    let filter = {};
+    if (category) {
+      filter.productCategory = { $regex: new RegExp(category, "i") };
     }
-    return res.status(200).json({ products }); 
+
+    const products = await Product.find(filter).skip(skip).limit(limit);
+
+    if (!products.length) {
+      return res.status(200).json({ products: [] });
+    }
+
+    return res.status(200).json({ products });
+
   } catch (err) {
-    console.error(err); 
-    return res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
-  
