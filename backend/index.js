@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require('cors');
 const app = express();
+const path = require("path");
 
 const productRouter = require('./routers/productRouter');
 const userRouter = require('./routers/userRouter');
@@ -12,10 +13,13 @@ const DB = require("./database").connectDB;
 
 app.use(cors({
   origin: "http://localhost:3001",
-  methods: ["GET", "POST"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 app.use(express.json()); 
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 DB();
 

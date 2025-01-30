@@ -42,6 +42,9 @@ const userSchema = new Schema(
       unique: true,
       sparse: true,
     },
+    profilePicture: {
+      type: String, 
+    },
     passwordChangedAt: Date,
   },
   { timestamps: true }

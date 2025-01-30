@@ -46,21 +46,31 @@ function Header() {
     }
   };
 
-  const handleDeleteAccount = async (userID) => {
+  const handleDeleteAccount = async () => {
     const confirmed = window.confirm("Are you sure you want to delete your account?");
     if (confirmed) {
       try {
-        userID = userData.userID;
-
-         await axios.post(
+        const token = userData.token;
+        const response = await axios.delete(
           `http://localhost:3000/api/users/deleteUser`,
-          { userID },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
+        window.location.reload();
+
+        if (response.status === 200) {
+          localStorage.removeItem("user");
+          setIsLoggedIn(false);
+          alert("Your account has been deleted successfully.");
+          navigate("/");
+        }
       } catch (error) {
         console.error("Error deleting user:", error);
-
+        alert("Failed to delete account. Please try again.");
       }
-      navigate("/");
     }
   };
 
@@ -130,13 +140,26 @@ function Header() {
                     alignItems: "center",
                     fontWeight: "300",
                     textTransform: "uppercase",
+                    backgroundImage: userData.profilePicture
+                      ? `url(http://localhost:3000/uploads/${encodeURIComponent(userData.profilePicture)})`
+                      : "none",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center", 
                     marginBottom: "8px",
                     marginLeft: "20px"
                   }}
                 >
-                  {userName.charAt(0)}
+                  {!userData.profilePicture && userName.charAt(0)}
                 </button>
-                <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                  <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => navigate("/edit-profile")}
+                      >
+                        Edit Profile
+                      </button>
+                    </li>
                   <li>
                     <button
                       className="dropdown-item"

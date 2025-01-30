@@ -9,6 +9,7 @@ import Cart from 'pages/cart/Cart';
 import SignUp from 'Components/auth/SignUp';
 import ContactUs from 'pages/contact/ContactUs';
 import AboutUs from 'pages/about/AboutUs';
+import EditProfile from 'Components/layout/NavBar/EditProfile';
 
 function App() {
   return (
@@ -62,6 +63,14 @@ function App() {
         element={
           <MainLayout>
             <div>My Orders</div>
+          </MainLayout>
+        }
+      />
+       <Route
+        path="/edit-profile"
+        element={
+          <MainLayout>
+           <EditProfile />
           </MainLayout>
         }
       />

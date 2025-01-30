@@ -4,6 +4,8 @@ const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const crypto = require("crypto"); 
+const mongoose = require("mongoose");
+const Cart = require("../models/cartModel");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -66,7 +68,6 @@ exports.signup = async (req, res) => {
   }
 };
 
-
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -119,25 +120,56 @@ exports.googleAuth = async (req, res) => {
   }
 };
 
-  exports.deleteUser = async (req, res) => {
-    try {
-      // const cartId = req.body; 
-      const userId = req.user.id; 
+exports.deleteUser = async (req, res) => {
+  try {
+    const userID = req.user.id; // Use the authenticated user's ID
+    console.log("Received userID for deletion:", userID);
 
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({ message: "Invalid user ID." });
-      }
-      
-      const user = await User.findByIdAndDelete({ userID: userId });
-      if (!user) {
-        return res.status(404).json({ message: "User not found." });
-      }
-     res.status(200).json({message: "User deleted successfully"});
-      } catch (err) {
-      console.error("Error deleting user:", err.message);
-      res.status(500).json({ message: "An error occurred", error: err.message });
+    if (!mongoose.Types.ObjectId.isValid(userID)) {
+      return res.status(400).json({ message: "Invalid user ID." });
     }
-  };
+
+    const user = await User.findByIdAndDelete(userID);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    await Cart.deleteMany({ cartOwner: userID });
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting user:", err.message);
+    res.status(500).json({ message: "An error occurred", error: err.message });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const profilePicture = req.file; 
+
+    const userId = req.user.id; 
+
+    const updates = {};
+    if (username) updates.userName = username;
+    if (profilePicture) updates.profilePicture = profilePicture.filename; 
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error("Error updating profile:", err.message);
+    res.status(500).json({ message: "An error occurred", error: err.message });
+  }
+};
 
 // Middleware 
 exports.protect = async (req, res, next) => {

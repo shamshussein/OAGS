@@ -21,14 +21,11 @@ const SignIn = () => {
         userName: response.data.data.user.userName,
         userID :response.data.data.user._id,
         phoneNumber :response.data.data.user.phoneNumber,
-        email: response.data.data.user.email
-
+        email: response.data.data.user.email,
+        profilePicture :response.data.data.user.profilePicture,
       }));
       setSuccess('Sign-in successful!');
       navigate('/'); 
-      // console.log(response.data.token);
-      // console.log("resp",response)
-      // console.log("user",response.data.data.user)
 
     } catch (err) {
       setError(err.response?.data?.message || 'Wrong credentials');
@@ -62,10 +59,10 @@ const handleGoogleSuccess = async (response) => {
                 userID: serverResponse.data.data.user._id,
                 phoneNumber: phoneNumber,
                 email: email,
+                profilePicture: serverResponse.data.data.user.profilePicture,
+
             })
         );
-      // console.log("idgoogle",serverResponse.data.data.user._id)
-
         navigate('/');
 
     } catch (err) {

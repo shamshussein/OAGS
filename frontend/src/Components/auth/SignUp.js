@@ -26,12 +26,10 @@ const SignUp = () => {
         token: response.data.token, 
         userName: response.data.data.user.userName,
         userID :response.data.data.user._id,
-        phoneNumber :response.data.data.user.phoneNumber
+        phoneNumber :response.data.data.user.phoneNumber,
       }));
       setError('');
       navigate('/'); 
-      // console.log(response.data.token);
-      // console.log(response.data.userName);
 
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
@@ -62,12 +60,12 @@ const handleGoogleSuccess = async (response) => {
               phoneNumber: phoneNumber,
               email: email,
               userID: serverResponse.data.data.user._id,
+              profilePicture: serverResponse.data.data.user.profilePicture,
           })
       );
         navigate('/');
 
     } catch (err) {
-        // console.error("Error during Google Sign-Up:", err);
         setError(err.response?.data?.message || "Google sign-up failed.");
     }
 };
