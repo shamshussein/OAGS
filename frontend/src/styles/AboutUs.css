@@ -1,6 +1,4 @@
 #about-us h2 {
-  font-family: 'Arial', sans-serif;
-  color: #467a6b;
   text-transform: uppercase;
   margin-bottom: 2rem;
 }
@@ -18,18 +16,26 @@
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  flex: 1 1 calc(50% - 1rem); 
+  flex: 1 1 calc(50% - 1rem);
   max-width: calc(50% - 1rem);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .content-card h2 {
   font-size: 1.5rem;
-  color: #333;
+  color: #000000;
   margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
 }
 
 .content-card p {
-  color: #666;
+  color: #666666;
   line-height: 1.6;
 }
 
@@ -41,11 +47,22 @@
 .content-card ul li {
   font-size: 1rem;
   margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.content-card ul li:hover {
+  color: #467a6b;
 }
 
 .content-card ul li i {
-  color: #467a6b;
+  color: #609e8d;
   margin-right: 0.5rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.content-card ul li:hover i {
+  color: #609e8d;
+  transform: scale(1.2);
 }
 
 .location-section {
@@ -53,7 +70,7 @@
 }
 
 .location-section h2 {
-  color: #467a6b;
+  color: #000000;
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
@@ -71,6 +88,7 @@
 .location-section a {
   color: #007bff;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .location-section a:hover {

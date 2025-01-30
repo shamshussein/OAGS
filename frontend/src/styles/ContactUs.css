@@ -27,13 +27,7 @@
     border-radius: 0.5rem;
     border: 1px solid #ddd;
   }
-  
-  .contact-container .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    border-radius: 0.5rem;
-    font-size: 1.2rem;
-  }
+
   
   .contact-container .contact-methods ul li {
     font-size: 1rem;
@@ -42,16 +36,14 @@
   .contact-container .contact-methods ul li a {
     font-weight: 500;
     transition: color 0.2s ease-in-out;
+    color: green;
   }
   
-  .contact-container .contact-methods ul li a:hover {
-    color: #0056b3;
-  }
   .btn-secondary {
-    background-color: #007bff;
+    background-color: #609e8d;
     border: none;
   }
   .btn-secondary:hover {
-    background-color: #054890;
+    background-color: #467a6b;
     border: none;
   }

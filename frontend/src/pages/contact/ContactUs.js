@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'styles/ContactUs.css';
-
+import {Whatsapp, Telephone} from 'react-bootstrap-icons';
 function ContactUs() {
   const [formData, setFormData] = useState({
     name: '',
@@ -27,7 +27,7 @@ function ContactUs() {
       <main className="contact-container bg-light p-5 rounded shadow">
         <h1 className="text-center mb-4">Contact Us</h1>
         <p className="text-center text-muted mb-4">
-          We'd love to hear from you! Please reach out with any questions or feedback.
+          We'd love to hear from you!<br/> Please reach out with any questions or feedback.
         </p>
 
         <form onSubmit={handleSubmit} className="needs-validation" noValidate>
@@ -73,13 +73,13 @@ function ContactUs() {
             ></textarea>
           </div>
 
-          <button type="submit" className="btn btn-secondary w-100">Send via Email</button>
+          <button type="submit" className="btn btn-secondary w-100">Send Via Email</button>
         </form>
 
         <div className="contact-methods mt-5 text-center">
-          <h3 className="mb-3">Other Ways to Reach Us</h3>
+          <h3 className="mb-3">Reach Us</h3>
           <p className="text-muted mb-4">
-            For a faster response, feel free to reach us through one of the following methods:
+            For a faster response, feel free to reach us <br/>through one of the following methods
           </p>
           <ul className="list-unstyled">
             <li className="mb-2">
@@ -87,14 +87,14 @@ function ContactUs() {
                 href="https://wa.me/1234567890"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-decoration-none text-primary"
+                className="text-decoration-none"
               >
-                <i className="bi bi-whatsapp me-2"></i>WhatsApp
+                <Whatsapp className='me-2' style={{color:"green"}}/>WhatsApp
               </a>
             </li>
             <li>
               <a href="tel:+1234567890" className="text-decoration-none text-primary">
-                <i className="bi bi-telephone me-2"></i>Call Us
+               <Telephone className='me-2'/>Call Us
               </a>
             </li>
           </ul>
