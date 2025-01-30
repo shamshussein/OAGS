@@ -39,7 +39,7 @@ const Cart = () => {
         console.error("User is not logged in.");
         return;
       }
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:3000/api/carts/removeItem`,
         { itemId },
         {
@@ -89,7 +89,7 @@ const Cart = () => {
         console.error("User is not logged in.");
         return;
       }
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3000/api/carts/updateCartItemQuantity",
         { itemId, newQuantity },
         {

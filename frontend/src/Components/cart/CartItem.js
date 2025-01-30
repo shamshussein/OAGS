@@ -9,14 +9,12 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
   const discountPercentage = 10;
   const discountedPrice = itemPrice * (1 - discountPercentage / 100);
 
-  // Increment handler
   const handleIncrement = async () => {
       const newQuantity = itemQuantity + 1;
       setItemQuantity(newQuantity);
       await updateQuantity(itemId, newQuantity);
   };
 
-  // Decrement handler
   const handleDecrement = async () => {
   
       if (itemQuantity > 1) {
@@ -26,8 +24,6 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
   }
 };
 
-
-  // Remove item handler
   const handleRemove = async () => {
       const confirmRemoval = window.confirm(
         `Are you sure you want to remove "${name}" from your cart?`
