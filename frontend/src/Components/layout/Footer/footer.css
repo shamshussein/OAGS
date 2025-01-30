@@ -1,9 +1,16 @@
 .footer {
+
   background-color: #c7d6cf;
   color: #000000;
   padding: 4vh 2rem;
   font-family: "Poppins", sans-serif;
   flex-shrink: 0;
+  
+  position: relative; /* Change to relative so it stays at the bottom of the page */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
 }
 
 .footer-content {

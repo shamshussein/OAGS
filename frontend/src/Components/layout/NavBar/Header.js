@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import './header.css';
 
@@ -94,20 +94,65 @@ function Header() {
         <div className="collapse navbar-collapse ms-lg-5" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item me-3">
-              <Link className="nav-link text-black fw-bold" to="/">Home</Link>
+              <NavLink
+                className="nav-link text-black fw-bold"
+                to="/"
+                style={({ isActive }) => ({
+                  textDecoration: isActive ? "underline" : "none",
+                  color: isActive ? "#007bff" : "black"
+                })}
+              >
+                Home
+              </NavLink>
             </li>
             <li className="nav-item me-3">
-              <Link className="nav-link text-black fw-bold" to="/about">About Us</Link>
+              <NavLink
+                className="nav-link text-black fw-bold"
+                to="/about"
+                style={({ isActive }) => ({
+                  textDecoration: isActive ? "underline" : "none",
+                  color: isActive ? "#007bff" : "black"
+                })}
+              >
+                About Us
+              </NavLink>
             </li>
             <li className="nav-item me-3">
-              <Link className="nav-link text-black fw-bold" to="/products">Products</Link>
+              <NavLink
+                className="nav-link text-black fw-bold"
+                to="/products"
+                style={({ isActive }) => ({
+                  textDecoration: isActive ? "underline" : "none",
+                  color: isActive ? "#007bff" : "black"
+                })}
+              >
+                Products
+              </NavLink>
             </li>
             <li className="nav-item me-3">
-              <Link className="nav-link text-black fw-bold" to="/contact">Contact</Link>
+              <NavLink
+                className="nav-link text-black fw-bold"
+                to="/contact"
+                style={({ isActive }) => ({
+                  textDecoration: isActive ? "underline" : "none",
+                  color: isActive ? "#007bff" : "black"
+                })}
+              >
+                Contact
+              </NavLink>
             </li>
             {isLoggedIn && (
               <li className="nav-item">
-                <Link className="nav-link text-black fw-bold" to="/orders">My Orders</Link>
+                <NavLink
+                  className="nav-link text-black fw-bold"
+                  to="/orders"
+                  style={({ isActive }) => ({
+                    textDecoration: isActive ? "underline" : "none",
+                    color: isActive ? "#007bff" : "black"
+                  })}
+                >
+                  My Orders
+                </NavLink>
               </li>
             )}
           </ul>
@@ -151,15 +196,15 @@ function Header() {
                 >
                   {!userData.profilePicture && userName.charAt(0)}
                 </button>
-                  <ul className="dropdown-menu" aria-labelledby="userDropdown">
-                    <li>
-                      <button
-                        className="dropdown-item"
-                        onClick={() => navigate("/edit-profile")}
-                      >
-                        Edit Profile
-                      </button>
-                    </li>
+                <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => navigate("/edit-profile")}
+                    >
+                      Edit Profile
+                    </button>
+                  </li>
                   <li>
                     <button
                       className="dropdown-item"

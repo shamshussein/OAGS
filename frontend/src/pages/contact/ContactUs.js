@@ -25,7 +25,7 @@ function ContactUs() {
   return (
     <div className="contact-page container py-5">
       <main className="contact-container bg-light p-5 rounded shadow">
-        <h1 className="text-center mb-4">Contact Us</h1>
+        <h1 className="text-center text-black mb-4">Contact Us</h1>
         <p className="text-center text-muted mb-4">
           We'd love to hear from you!<br/> Please reach out with any questions or feedback.
         </p>
@@ -77,7 +77,7 @@ function ContactUs() {
         </form>
 
         <div className="contact-methods mt-5 text-center">
-          <h3 className="mb-3">Reach Us</h3>
+          <h3 className="mb-3 text-black">Reach Us</h3>
           <p className="text-muted mb-4">
             For a faster response, feel free to reach us <br/>through one of the following methods
           </p>
