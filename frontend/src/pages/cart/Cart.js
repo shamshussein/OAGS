@@ -90,8 +90,8 @@ const Cart = () => {
       <div className="row">
         <div className="col-md-8">
           <div className="card shadow-lg mb-4">
-            <div className="card-header bg-primary text-white">
-              <h2 className="text-center mb-0">Your Cart</h2>
+            <div className=" mt-4 text-black">
+              <h2 className="text-center mb-0" >Your Cart</h2>
             </div>
             <div className="card-body">
               {cartItems.length === 0 ? (
@@ -108,14 +108,11 @@ const Cart = () => {
                 </ul>
               )}
             </div>
-            <div className="card-footer text-center">
-              <button className="btn btn-success">Proceed to Checkout</button>
-            </div>
           </div>
         </div>
         <div className="col-md-4">
           <div className="card shadow-lg">
-            <div className="card-header bg-secondary text-white">
+            <div className="mt-4  text-black">
               <h3 className="text-center mb-0">Order Summary</h3>
             </div>
             <div className="card-body">
@@ -141,8 +138,10 @@ const Cart = () => {
                   <span>${finalTotal.toFixed(2)}</span>
                 </li>
               </ul>
-              <button className="btn btn-secondary w-100" onClick={handleClearCart}>Clear Cart</button>
-
+              <div className="card-footer text-center">
+              <button className="btn btn-secondary w-100 mb-2 mt-2" style={{backgroundColor:"green"}}>Proceed to Checkout</button>
+              <button className="btn btn-secondary w-100 " style={{backgroundColor:"red"}} onClick={handleClearCart}>Clear Cart</button>
+              </div>
             </div>
           </div>
         </div>

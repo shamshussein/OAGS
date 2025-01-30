@@ -4,9 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./CartItem.css";
 
 const CartItem = ({ item, onRemoveItem }) => {
-  const { name, description, image, quantity, itemPrice } = item;
+  const { name, description, image, quantity, itemPrice,} = item;
   const [itemQuantity, setItemQuantity] = useState(quantity);
-
+  const discountPercentage=10;
+  const discountedPrice = itemPrice * (1 - discountPercentage / 100);
   const handleIncrement = () => {
     setItemQuantity(quantity + 1);
   };
@@ -31,7 +32,14 @@ const CartItem = ({ item, onRemoveItem }) => {
       />
       <div className="flex-grow-1">
         <h5 className="mb-1">{name}</h5>
-        <p className="mb-1 text-muted">{description}</p>
+        <span className="me-2" style={{color:"#0e744d",textDecoration:"line-through"}}>
+          ${itemPrice.toFixed(2)}
+        </span>
+        <span className="me-2" style={{color:"#a50202"}}>
+          ${discountedPrice.toFixed(2)}
+        </span>
+
+        <p className="mb-1 text-black">{description}</p>
         <div>
           <button
             className="btn btn-outline-secondary btn-sm me-2"
@@ -39,7 +47,7 @@ const CartItem = ({ item, onRemoveItem }) => {
           >
             -
           </button>
-          <span className="badge bg-primary me-2">Quantity: {itemQuantity}</span>
+          <span className="text-black me-2">Quantity: {itemQuantity}</span>
           <button
             className="btn btn-outline-secondary btn-sm"
             onClick={handleIncrement}
@@ -47,9 +55,6 @@ const CartItem = ({ item, onRemoveItem }) => {
             +
           </button>
         </div>
-        <span className="badge bg-secondary me-2">
-          Price: ${itemPrice.toFixed(2)}
-        </span>
         <button
           className="btn btn-danger btn-sm"
           onClick={handleRemove}

@@ -1,6 +1,7 @@
+
 #about-us h2 {
   font-family: 'Arial', sans-serif;
-  color: #467a6b;
+  color: #000000;
   text-transform: uppercase;
   margin-bottom: 2rem;
 }
@@ -20,16 +21,28 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   flex: 1 1 calc(50% - 1rem); 
   max-width: calc(50% - 1rem);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth transition */
+}
+
+.content-card:hover {
+  transform: translateY(-5px); /* Slightly lift the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Increase shadow for depth */
 }
 
 .content-card h2 {
   font-size: 1.5rem;
-  color: #333;
+  color: #000000;
   margin-bottom: 1rem;
+  font-weight: bold;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.content-card h2:hover {
+  transform: scale(1.1); /* Slightly enlarge the icon */
 }
 
 .content-card p {
-  color: #666;
+  color: #000000;
   line-height: 1.6;
 }
 
@@ -44,8 +57,14 @@
 }
 
 .content-card ul li i {
-  color: #467a6b;
+  color: #518878;
   margin-right: 0.5rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.content-card ul li:hover i {
+  color: #95c4c5; /* Change icon color on hover (e.g., to a reddish color) */
+  transform: scale(1.2); /* Slightly enlarge the icon */
 }
 
 .location-section {
@@ -53,13 +72,14 @@
 }
 
 .location-section h2 {
-  color: #467a6b;
+  color: #000000;
   font-size: 1.8rem;
   margin-bottom: 1rem;
+  font-weight: bold;
 }
 
 .location-section p {
-  color: #666;
+  color: #000000;
   margin-bottom: 1rem;
 }
 

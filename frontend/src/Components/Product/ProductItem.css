@@ -17,13 +17,13 @@ margin-left: 2vh;
 }
 
 .price{
-  color: rgb(14, 116, 77);
+  color: #0e744d;
   margin-right: 1.5vh;
   text-decoration: line-through;
 }
 
 .discounted {
-  color: rgb(165, 2, 2)(204, 7, 7);
+  color: #a50202(204, 7, 7);
 }
 
 .product-item-image {

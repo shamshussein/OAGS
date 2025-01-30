@@ -28,11 +28,18 @@
     border: 1px solid #ddd;
   }
   
-  .contact-container .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+  .contact-container .btn {
+    background-color: #4b7e6f;
+    border-color: #4b7e6f;
     border-radius: 0.5rem;
     font-size: 1.2rem;
+    color: white;
+
+  }
+
+  .contact-container .btn:hover{
+    background-color: #518878;
+    border-color: #518878;
   }
   
   .contact-container .contact-methods ul li {
@@ -42,16 +49,5 @@
   .contact-container .contact-methods ul li a {
     font-weight: 500;
     transition: color 0.2s ease-in-out;
-  }
-  
-  .contact-container .contact-methods ul li a:hover {
-    color: #0056b3;
-  }
-  .btn-secondary {
-    background-color: #007bff;
-    border: none;
-  }
-  .btn-secondary:hover {
-    background-color: #054890;
-    border: none;
+    color: green;
   }

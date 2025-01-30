@@ -2,10 +2,15 @@
   border: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
+
+}
+.list-group-item {
+  background-color: #f8f9fb;
 }
 
+
 .list-group-item:hover {
-  background-color: #f8f9fa;
+  background-color: #eeeeee;
 }
 
 img {
