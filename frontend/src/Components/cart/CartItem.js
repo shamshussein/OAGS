@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Trash } from "react-bootstrap-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CartItem.css";
+import { Plus, Dash,Trash3Fill} from "react-bootstrap-icons";
 
 const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
-  const { name, description, image, quantity, itemPrice, itemId } = item;
+  const { name, image, quantity, itemPrice, itemId } = item;
   const [itemQuantity, setItemQuantity] = useState(quantity);
+  const discountPercentage = 10;
+  const discountedPrice = itemPrice * (1 - discountPercentage / 100);
+
 
   const handleIncrement = async () => {
     const newQuantity = itemQuantity + 1;
@@ -42,35 +45,31 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
         style={{ width: "100px", height: "100px", objectFit: "contain" }}
       />
       <div className="flex-grow-1">
-        <h5 className="mb-1">{name}</h5>
-        <p className="mb-1 text-muted">{description}</p>
-        <div>
-          <button
-            className="btn btn-outline-secondary btn-sm me-2"
-            onClick={handleDecrement}
-          >
-            -
-          </button>
-          <span className="badge bg-primary me-2">Quantity: {itemQuantity}</span>
-          <button
-            className="btn btn-outline-secondary btn-sm"
-            onClick={handleIncrement}
-          >
-            +
-          </button>
-        </div>
-        <span className="badge bg-secondary me-2">
-          Price: ${itemPrice.toFixed(2)}
+        <h5 className="mb-2">{name}</h5>
+        <span className=" text-decoration-line-through me-2 mb-2"  style={{ color: 'red', fontWeight:'bold',fontSize:'1em' }}>
+          ${itemPrice.toFixed(2)}
         </span>
-        <button
-          className="btn btn-danger btn-sm"
-          onClick={handleRemove}
-          title="Remove item"
-        >
-          <Trash />
-        </button>
+        <span className="mb-2"  style={{ color: 'green', fontWeight:'bold',fontSize:'1em' }}>
+          ${discountedPrice.toFixed(2)}
+        </span>
+      
+        <br/>
+        <div className="mt-2">
+          <Dash onClick={handleDecrement} style={{color:'black',fontSize:'1.2em'}}/>
+          <span className="badge text-black ">Quantity: {itemQuantity}</span>
+          <Plus onClick={handleIncrement} style={{color:'black',fontSize:'1.2em'}}/>
+        </div>
       </div>
+
+      <Trash3Fill onClick={handleRemove}
+          title="Remove item"  
+          style={{
+          color:'red',
+          fontSize:'1.2rem',
+          
+          }}/>
     </li>
+    
   );
 };
 

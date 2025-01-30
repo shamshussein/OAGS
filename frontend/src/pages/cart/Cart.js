@@ -119,9 +119,9 @@ const Cart = () => {
     <div className="container my-5">
       <div className="row">
         <div className="col-md-8">
-          <div className="card shadow-lg mb-4">
-            <div className="card-header bg-primary text-white">
-              <h2 className="text-center mb-0">Your Cart</h2>
+          <div className="card shadow-lg mb-4"style={{ border: 'none' }}>
+            <div className="mt-5 text-black">
+              <h2 className="text-center mb-0" style={{fontSize:'1.7em',fontWeight:'bold'}}>Your Cart</h2>
             </div>
             <div className="card-body">
               {cartItems.length === 0 ? (
@@ -139,20 +139,13 @@ const Cart = () => {
                 </ul>
               )}
             </div>
-            <div className="card-footer text-center">
-              {cartItems.length > 0 && (
-                <button className="btn btn-success">
-                  Proceed to Checkout
-                </button>
-              )}
-            </div>
           </div>
         </div>
         <div className="col-md-4">
           {cartItems.length > 0 && (
-            <div className="card shadow-lg">
-              <div className="card-header bg-secondary text-white">
-                <h3 className="text-center mb-0">Order Summary</h3>
+            <div className="card shadow-lg" style={{ border: 'none' ,backgroundColor:'#f9f9f9'}}>
+              <div className=" mt-5 text-black" >
+                <h3 className="text-center mb-0"style={{fontSize:'1.7em',fontWeight:'bold'}}>Summary</h3>
               </div>
               <div className="card-body">
                 <ul className="list-group list-group-flush">
@@ -177,12 +170,22 @@ const Cart = () => {
                     <span>${finalTotal.toFixed(2)}</span>
                   </li>
                 </ul>
-                <button
-                  className="btn btn-secondary w-100"
+                <div className=" text-center">
+              {cartItems.length > 0 && (
+                <button className="btn btn-success mt-3 mb-2 ml-2 mr-2 w-100"
+                style={{backgroundColor:'green',  border: 'none'}}>
+                  Proceed to Checkout
+                </button>
+              )}
+              <button
+                  className="btn btn-success text-center mb-5 ml-2 mr-2 w-100"
+                  style={{backgroundColor:'red', border: 'none'}}
                   onClick={handleClearCart}
                 >
                   Clear Cart
                 </button>
+            </div>
+                
               </div>
             </div>
           )}

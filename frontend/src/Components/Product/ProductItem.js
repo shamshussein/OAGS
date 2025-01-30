@@ -80,7 +80,7 @@ const ProductItem = ({ product, discountPercentage }) => {
             <p className="card-text"><strong>Quantity:</strong> {product.productQuantity}</p>
             <p className="card-text">
               <span className="price">${productPrice.toFixed(2)}</span>
-              <span className="text-danger">${discountedPrice.toFixed(2)}</span>
+              <span className="discounted">${discountedPrice.toFixed(2)}</span>
             </p>
             <p className="card-text">{product.productDescription}</p>
             <div className="rating">{generateStars(product.productRating || 5)}</div>
