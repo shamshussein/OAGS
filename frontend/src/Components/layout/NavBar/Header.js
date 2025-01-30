@@ -194,7 +194,9 @@ function Header() {
                     marginLeft: "20px"
                   }}
                 >
-                  {!userData.profilePicture && userName.charAt(0)}
+                  {
+                  // !userData.profilePicture &&
+                   userName.charAt(0)}
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="userDropdown">
                   <li>

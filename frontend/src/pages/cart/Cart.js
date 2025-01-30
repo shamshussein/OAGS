@@ -102,6 +102,7 @@ const Cart = () => {
       alert(
         "Failed to update quantity. You reached the maximum amount in stock!"
       );
+      window.location.reload();
     }
   };
 
