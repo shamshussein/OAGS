@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import CartItem from "Components/cart/CartItem";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
@@ -27,13 +29,17 @@ const Cart = () => {
     fetchCartItems();
   }, [user]);
 
+  const handleProceedToCheckout = () => {
+    navigate("/checkout", { state: { cartItems, totalPrice } });
+  };
+
   const handleRemoveItem = async (itemId) => {
     try {
       if (!user || !user.token) {
         console.error("User is not logged in.");
         return;
       }
-      await axios.post(
+      const response = await axios.post(
         `http://localhost:3000/api/carts/removeItem`,
         { itemId },
         {
@@ -42,9 +48,9 @@ const Cart = () => {
           },
         }
       );
-      
+  
       setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-    } catch (error) {
+      } catch (error) {
       console.error("Error removing item:", error);
     }
   };
@@ -83,7 +89,7 @@ const Cart = () => {
         console.error("User is not logged in.");
         return;
       }
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:3000/api/carts/updateCartItemQuantity",
         { itemId, newQuantity },
         {
@@ -92,11 +98,12 @@ const Cart = () => {
           },
         }
       );
-      setCartItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === itemId ? { ...item, quantity: newQuantity } : item
-        )
-      );
+     
+        setCartItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === itemId ? { ...item, quantity: newQuantity } : item
+          )
+        );
     } catch (error) {
       console.error("Error updating cart item quantity:", error);
       alert(
@@ -112,12 +119,15 @@ const Cart = () => {
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="container my-5" style={{minHeight:'50vh'}}>
+    <div className="container my-5" style={{ minHeight: "50vh" }}>
       <div className="row">
         <div className="col-md-8">
-          <div className="card shadow-lg mb-4" style={{ border: 'none' }}>
+          <div className="card shadow-lg mb-4" style={{ border: "none" }}>
             <div className="mt-5 text-black">
-              <h2 className="text-center mb-0" style={{ fontSize: '1.7em', fontWeight: 'bold' }}>
+              <h2
+                className="text-center mb-0"
+                style={{ fontSize: "1.7em", fontWeight: "bold" }}
+              >
                 Your Cart
               </h2>
             </div>
@@ -141,9 +151,15 @@ const Cart = () => {
         </div>
         <div className="col-md-4">
           {cartItems.length > 0 && (
-            <div className="card shadow-lg" style={{ border: 'none', backgroundColor: '#f9f9f9' }}>
+            <div
+              className="card shadow-lg"
+              style={{ border: "none", backgroundColor: "#f9f9f9" }}
+            >
               <div className=" mt-5 text-black">
-                <h3 className="text-center mb-0" style={{ fontSize: '1.7em', fontWeight: 'bold' }}>
+                <h3
+                  className="text-center mb-0"
+                  style={{ fontSize: "1.7em", fontWeight: "bold" }}
+                >
                   Summary
                 </h3>
               </div>
@@ -172,13 +188,17 @@ const Cart = () => {
                 </ul>
                 <div className="text-center">
                   {cartItems.length > 0 && (
-                    <button className="btn btn-success mt-3 mb-2 ml-2 mr-2 w-100" style={{ backgroundColor: 'green', border: 'none' }}>
+                    <button
+                      className="btn btn-success mt-3 mb-2 ml-2 mr-2 w-100"
+                      style={{ backgroundColor: "green", border: "none" }}
+                      onClick={handleProceedToCheckout}
+                    >
                       Proceed to Checkout
                     </button>
                   )}
                   <button
                     className="btn btn-success text-center mb-5 ml-2 mr-2 w-100"
-                    style={{ backgroundColor: 'red', border: 'none' }}
+                    style={{ backgroundColor: "red", border: "none" }}
                     onClick={handleClearCart}
                   >
                     Clear Cart

@@ -10,6 +10,7 @@ import SignUp from 'Components/auth/SignUp';
 import ContactUs from 'pages/contact/ContactUs';
 import AboutUs from 'pages/about/AboutUs';
 import EditProfile from 'Components/layout/NavBar/EditProfile';
+import Checkout from 'pages/checkout/Checkout';
 
 function App() {
   return (
@@ -38,6 +39,14 @@ function App() {
           element={
             <MainLayout>
               <Cart />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <MainLayout>
+              <Checkout />
             </MainLayout>
           }
         />

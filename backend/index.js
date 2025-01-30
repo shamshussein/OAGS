@@ -1,35 +1,44 @@
 const express = require("express");
-const cors = require('cors');
-const app = express();
+const cors = require("cors");
 const path = require("path");
+const dotenv = require("dotenv");
 
-const productRouter = require('./routers/productRouter');
-const userRouter = require('./routers/userRouter');
-const feedbackRouter = require('./routers/feedbackRouter');
-const bundlesRouter = require('./routers/bundlesRouter');
-const cartRouter = require('./routers/cartRouter')
+const productRouter = require("./routers/productRouter");
+const userRouter = require("./routers/userRouter");
+const feedbackRouter = require("./routers/feedbackRouter");
+const bundlesRouter = require("./routers/bundlesRouter");
+const cartRouter = require("./routers/cartRouter");
+const checkoutRouter = require("./routers/checkoutRouter"); // ✅ Added Checkout Router
 
 const DB = require("./database").connectDB;
 
+dotenv.config();
+
+const app = express();
+
 app.use(cors({
-  origin: "http://localhost:3001",
+  origin: process.env.CLIENT_URL || "http://localhost:3001",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
-app.use(express.json()); 
-
+app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 DB();
 
-app.use('/api/products', productRouter); 
-app.use('/api/users', userRouter); 
-app.use('/api/feedbacks', feedbackRouter); 
-app.use('/api/bundles', bundlesRouter); 
+app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
+app.use("/api/feedbacks", feedbackRouter);
+app.use("/api/bundles", bundlesRouter);
+app.use("/api/carts", cartRouter);
+app.use("/api/checkout", checkoutRouter); // ✅ Added Checkout API
 
-app.use('/api/carts', cartRouter); 
+app.get("/", (req, res) => {
+  res.send("E-commerce API is running...");
+});
 
-app.listen(3000, () => {
-    console.log("Server listening on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
