@@ -42,6 +42,7 @@ function Header() {
       localStorage.removeItem("user");
       setIsLoggedIn(false);
       alert("You have successfully logged out.");
+      window.location.reload();
       navigate("/");
     }
   };

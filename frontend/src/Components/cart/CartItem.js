@@ -10,28 +10,27 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
   const discountedPrice = itemPrice * (1 - discountPercentage / 100);
 
   const handleIncrement = async () => {
-      const newQuantity = itemQuantity + 1;
-      setItemQuantity(newQuantity);
-      await updateQuantity(itemId, newQuantity);
+    const newQuantity = itemQuantity + 1;
+    setItemQuantity(newQuantity);  
+    await updateQuantity(itemId, newQuantity);  
   };
 
   const handleDecrement = async () => {
-  
-      if (itemQuantity > 1) {
-        const newQuantity = itemQuantity - 1;
-        setItemQuantity(newQuantity);
-        await updateQuantity(itemId, newQuantity);
-  }
-};
+    if (itemQuantity > 1) {
+      const newQuantity = itemQuantity - 1;
+      setItemQuantity(newQuantity);  
+      await updateQuantity(itemId, newQuantity);  
+    }
+  };
 
-  const handleRemove = async () => {
-      const confirmRemoval = window.confirm(
-        `Are you sure you want to remove "${name}" from your cart?`
-      );
+  const handleRemove = () => {
+    const confirmRemoval = window.confirm(
+      `Are you sure you want to remove "${name}" from your cart?`
+    );
 
-      if (confirmRemoval) {
-        console.log(`Removing item: ${name}`);
-      }
+    if (confirmRemoval) {
+      onRemoveItem(itemId);  
+    }
   };
 
   return (
