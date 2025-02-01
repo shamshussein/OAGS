@@ -23,7 +23,6 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 DB();
 
@@ -32,7 +31,7 @@ app.use("/api/users", userRouter);
 app.use("/api/feedbacks", feedbackRouter);
 app.use("/api/bundles", bundlesRouter);
 app.use("/api/carts", cartRouter);
-app.use("/api/checkout", checkoutRouter); // ✅ Added Checkout API
+app.use("/api/checkout", checkoutRouter);
 
 app.get("/", (req, res) => {
   res.send("E-commerce API is running...");

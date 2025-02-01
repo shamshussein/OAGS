@@ -27,6 +27,7 @@ const SignUp = () => {
         userName: response.data.data.user.userName,
         userID :response.data.data.user._id,
         phoneNumber :response.data.data.user.phoneNumber,
+        isGoogleSignIn: false,
       }));
       setError('');
       navigate('/'); 
@@ -61,6 +62,7 @@ const handleGoogleSuccess = async (response) => {
               email: email,
               userID: serverResponse.data.data.user._id,
               profilePicture: serverResponse.data.data.user.profilePicture,
+              isGoogleSignIn: true,
           })
       );
         navigate('/');

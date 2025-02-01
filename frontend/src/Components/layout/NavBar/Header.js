@@ -36,45 +36,6 @@ function Header() {
     }
   };
 
-  const handleLogout = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
-    if (confirmed) {
-      localStorage.removeItem("user");
-      setIsLoggedIn(false);
-      alert("You have successfully logged out.");
-      window.location.reload();
-      navigate("/");
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    const confirmed = window.confirm("Are you sure you want to delete your account?");
-    if (confirmed) {
-      try {
-        const token = userData.token;
-        const response = await axios.delete(
-          `http://localhost:3000/api/users/deleteUser`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        window.location.reload();
-
-        if (response.status === 200) {
-          localStorage.removeItem("user");
-          setIsLoggedIn(false);
-          alert("Your account has been deleted successfully.");
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Error deleting user:", error);
-        alert("Failed to delete account. Please try again.");
-      }
-    }
-  };
-
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container">
@@ -168,69 +129,47 @@ function Header() {
               )}
             </Link>
             {isLoggedIn ? (
-              <div className="dropdown">
-                <button
-                  className="btn dropdown-toggle d-flex align-items-center"
-                  type="button"
-                  id="userDropdown"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  style={{
-                    backgroundColor: "#f8f9fa",
-                    border: "1.5px solid rgba(132, 185, 182, 0.81)",
-                    borderRadius: "50%",
-                    width: "45px",
-                    height: "45px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    fontWeight: "300",
-                    textTransform: "uppercase",
-                    backgroundImage: userData.profilePicture
-                      ? `url(http://localhost:3000/uploads/${encodeURIComponent(userData.profilePicture)})`
-                      : "none",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center", 
-                    marginBottom: "8px",
-                    marginLeft: "20px"
-                  }}
-                >
-                  {
-                  // !userData.profilePicture &&
-                   userName.charAt(0)}
-                </button>
-                <ul className="dropdown-menu" aria-labelledby="userDropdown">
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => navigate("/edit-profile")}
-                    >
-                      Edit Profile
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => navigate("/change-password")}
-                    >
-                      Change Password
-                    </button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleDeleteAccount}>
-                      Delete Account
-                    </button>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      Logout
-                    </button>
-                  </li>
-                </ul>
-              </div>
+          <button
+            className="btn d-flex align-items-center profile-button"
+            type="button"
+            style={{
+              backgroundColor: "#f8f9fa",
+              border: "1.5px solid rgba(132, 185, 182, 0.81)",
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "300",
+              textTransform: "uppercase",
+              backgroundImage: userData?.profilePicture
+                ? `url(${userData.profilePicture})`
+                : "linear-gradient(135deg, #84b9b6, #a8d8d5)",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              marginBottom: "5px",
+              marginLeft: "20px",
+              padding: 0,
+              transition: "transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease",
+              cursor: "pointer",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", 
+            }}
+            onClick={() => navigate("/edit-profile")}
+            title="Edit Profile"
+          >
+            {!userData?.profilePicture && (
+              <span
+                style={{
+                  fontSize: "18px",
+                  color: "white",
+                  fontWeight: "500",
+                }}
+              >
+                {userName.charAt(0)}
+              </span>
+            )}
+          </button>
             ) : (
               <Link to="/signin" className="btn me-3">
                 <FontAwesomeIcon icon={faUser} className="fs-5 headerIcons" />

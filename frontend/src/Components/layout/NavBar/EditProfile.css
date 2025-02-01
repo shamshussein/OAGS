@@ -1,0 +1,49 @@
+.card {
+    border: none;
+    border-radius: 10px;
+  }
+  
+  .card-header {
+    background-color:#84b9b6;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  .img-thumbnail {
+    border: 3px solid #dee2e6;
+  }
+  
+  .alert {
+    border-radius: 8px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+  }
+  
+  .btn-primary:hover, .btn-danger:hover {
+    opacity: 0.9;
+  }
+  
+  .form-control {
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+  }
+  
+  .form-label {
+    font-size: 1.1rem;
+    color: #495057;
+  }

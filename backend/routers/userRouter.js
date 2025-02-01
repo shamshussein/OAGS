@@ -14,4 +14,9 @@ router.put(
     userController.protect,
     userController.updateProfile
   );
+  router.put(
+    "/removeProfilePicture",
+    userController.protect, 
+    userController.removeProfilePicture 
+  );
 module.exports = router;

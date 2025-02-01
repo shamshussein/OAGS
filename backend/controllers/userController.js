@@ -122,7 +122,7 @@ exports.googleAuth = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const userID = req.user.id; // Use the authenticated user's ID
+    const userID = req.user.id; 
     console.log("Received userID for deletion:", userID);
 
     if (!mongoose.Types.ObjectId.isValid(userID)) {
@@ -144,14 +144,14 @@ exports.deleteUser = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { username } = req.body;
     const profilePicture = req.file; 
 
-    const userId = req.user.id; 
+    const userId = req.user.id;
 
     const updates = {};
-    if (username) updates.userName = username;
-    if (profilePicture) updates.profilePicture = profilePicture.filename; 
+    if (profilePicture) {
+      updates.profilePicture = `data:${profilePicture.mimetype};base64,${profilePicture.buffer.toString("base64")}`;
+    }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
       new: true,
@@ -167,6 +167,30 @@ exports.updateProfile = async (req, res) => {
     });
   } catch (err) {
     console.error("Error updating profile:", err.message);
+    res.status(500).json({ message: "An error occurred", error: err.message });
+  }
+};
+
+exports.removeProfilePicture = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePicture: null }, 
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile picture removed successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error("Error removing profile picture:", err.message);
     res.status(500).json({ message: "An error occurred", error: err.message });
   }
 };
