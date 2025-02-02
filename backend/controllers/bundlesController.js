@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const createBundle = async (req, res) => {
     try {
-        const { name, image, originalPrice, discountedPrice, products } = req.body;
+        const { name, image, originalPrice, discountedPrice, products, imagebanner } = req.body;
 
         const productIds = products.map((id) => new mongoose.Types.ObjectId(id));
 
@@ -13,6 +13,7 @@ const createBundle = async (req, res) => {
             originalPrice,
             discountedPrice,
             products: productIds,
+            imagebanner,
         });
 
         res.status(201).json(newBundle);

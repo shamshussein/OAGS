@@ -32,6 +32,8 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
       onRemoveItem(itemId);  
     }
   };
+  
+  
 
   return (
     <li className="list-group-item d-flex align-items-center p-3">
