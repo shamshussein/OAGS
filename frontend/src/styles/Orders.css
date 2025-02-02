@@ -1,0 +1,75 @@
+.orders-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .order-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+  
+  .order-card p {
+    margin: 5px 0;
+  }
+  
+  .empty-text {
+    color: gray;
+    text-align: center;
+  }
+  
+  .loading-text {
+    text-align: center;
+    font-size: 18px;
+    color: gray;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    border: none;
+    transition: 0.3s;
+  }
+  
+  .btn.primary {
+    background: #007bff;
+    color: white;
+  }
+  
+  .btn.primary:hover {
+    background: #0056b3;
+  }
+  
+  .btn.danger {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn.danger:hover {
+    background: #a71d2a;
+  }
+  

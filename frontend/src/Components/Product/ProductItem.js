@@ -76,8 +76,8 @@ const ProductItem = ({ product, discountPercentage }) => {
         <div className="col-md-8 d-flex flex-column justify-content-between">
           <div className="card-body">
             <h5 className="card-title">{product.productName}</h5>
-            <p className="card-text"><strong>Category:</strong> {product.productCategory}</p>
-            <p className="card-text"><strong>Quantity:</strong> {product.productQuantity}</p>
+            {/* <p className="card-text"><strong>Category:</strong> {product.productCategory}</p> */}
+            <p className="card-text"><strong>Stock:</strong> {product.productQuantity}</p>
             <p className="card-text">
               <span className="price">${productPrice.toFixed(2)}</span>
               <span className="discounted">${discountedPrice.toFixed(2)}</span>

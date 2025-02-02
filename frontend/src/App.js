@@ -11,6 +11,7 @@ import ContactUs from 'pages/contact/ContactUs';
 import AboutUs from 'pages/about/AboutUs';
 import EditProfile from 'Components/layout/NavBar/EditProfile';
 import Checkout from 'pages/checkout/Checkout';
+import Orders from 'pages/order/Orders';
 
 function App() {
   return (
@@ -71,7 +72,7 @@ function App() {
         path="/orders"
         element={
           <MainLayout>
-            <div>My Orders</div>
+            <Orders />
           </MainLayout>
         }
       />
