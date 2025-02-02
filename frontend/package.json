@@ -18,8 +18,11 @@
     "react-bootstrap": "^2.10.7",
     "react-bootstrap-icons": "^1.11.5",
     "react-dom": "^19.0.0",
+    "react-image-crop": "^11.0.7",
+    "react-ripples": "^2.2.1",
     "react-router-dom": "^7.1.1",
     "react-scripts": "^5.0.1",
+    "react-toastify": "^11.0.3",
     "swiper": "^11.2.1"
   },
   "scripts": {

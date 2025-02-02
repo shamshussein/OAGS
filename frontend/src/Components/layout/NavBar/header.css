@@ -3,13 +3,21 @@
   margin-bottom: 2vh;
 
 }
-  
-  /* .nav-link:hover {
-    border-bottom: 1px solid #57756a; 
-  } */
-
   .headerIcons:hover{
     font-weight: 400;
     color: rgba(97, 146, 136, 0.75);
 
   }
+.profile-button:hover {
+  transform: scale(1.1); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+  background-color: #e9ecef;
+}
+
+.profile-button span {
+  transition: color 0.2s ease;
+}
+
+.profile-button:hover span {
+  color: #84b9b6; 
+}

@@ -23,6 +23,7 @@ const SignIn = () => {
         phoneNumber :response.data.data.user.phoneNumber,
         email: response.data.data.user.email,
         profilePicture :response.data.data.user.profilePicture,
+        isGoogleSignIn: false,
       }));
       setSuccess('Sign-in successful!');
       navigate('/'); 
@@ -60,6 +61,7 @@ const handleGoogleSuccess = async (response) => {
                 phoneNumber: phoneNumber,
                 email: email,
                 profilePicture: serverResponse.data.data.user.profilePicture,
+                isGoogleSignIn: true,
 
             })
         );
