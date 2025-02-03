@@ -33,8 +33,6 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
     }
   };
   
-  
-
   return (
     <li className="list-group-item d-flex align-items-center p-3">
       <img

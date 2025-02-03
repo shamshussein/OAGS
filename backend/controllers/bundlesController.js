@@ -1,19 +1,32 @@
 const Bundle = require('../models/bundlesModel');
+const Product = require('../models/productModel');
 const mongoose = require("mongoose");
 
 const createBundle = async (req, res) => {
     try {
-        const { name, image, originalPrice, discountedPrice, products, imagebanner } = req.body;
+        const { name, image, products, imagebanner, rating } = req.body;
+
+        if (!name || !image || !products || !imagebanner) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
 
         const productIds = products.map((id) => new mongoose.Types.ObjectId(id));
+
+        const productDetails = await Product.find({ _id: { $in: productIds } });
+
+        let originalPrice = 0;
+
+        productDetails.forEach((product) => {
+            originalPrice += parseFloat(product.productPrice.toString());
+        });
 
         const newBundle = await Bundle.create({
             name,
             image,
             originalPrice,
-            discountedPrice,
             products: productIds,
             imagebanner,
+            rating,
         });
 
         res.status(201).json(newBundle);
@@ -23,14 +36,16 @@ const createBundle = async (req, res) => {
     }
 };
 
-
 const getAllBundles = async (req, res) => {
     try {
         const bundles = await Bundle.find().populate('products');
 
-        const formattedBundles = bundles.map(bundle => ({
+        const availableBundles = bundles.filter(bundle => {
+            return bundle.products.every(product => product.productQuantity > 0);
+        });
+
+        const formattedBundles = availableBundles.map(bundle => ({
             ...bundle._doc,
-            discountedPrice: parseFloat(bundle.discountedPrice.toString()),
             originalPrice: parseFloat(bundle.originalPrice.toString()),
         }));
 
@@ -40,7 +55,6 @@ const getAllBundles = async (req, res) => {
         res.status(500).json({ message: "Failed to fetch bundles.", error: error.message });
     }
 };
-
 
 module.exports = {
     createBundle,

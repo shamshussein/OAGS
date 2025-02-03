@@ -72,64 +72,80 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-  exports.addBundleToCart = async (req, res) => {
-    try {
-      const { bundleId } = req.body;
-  
+exports.addBundleToCart = async (req, res) => {
+  try {
+      const { bundleId, quantity = 1 } = req.body;
+
       if (!mongoose.Types.ObjectId.isValid(bundleId)) {
-        return res.status(400).json({ message: "Invalid bundle ID" });
+          return res.status(400).json({ message: "Invalid bundle ID" });
       }
-  
+
       const bundle = await Bundle.findById(bundleId).populate("products");
       if (!bundle) {
-        return res.status(404).json({ message: "Bundle not found" });
+          return res.status(404).json({ message: "Bundle not found" });
       }
-  
+
+      const isBundleAvailable = bundle.products.every(product => product.productQuantity > 0);
+      if (!isBundleAvailable) {
+          return res.status(409).json({ message: "Bundle is out of stock." });
+      }
+
+      const maxBundleQuantity = Math.min(...bundle.products.map(product => product.productQuantity));
+      if (quantity > maxBundleQuantity) {
+          return res.status(409).json({ message: `Cannot add more than ${maxBundleQuantity} bundles.` });
+      }
+
       const userId = req.user._id;
-  
+
       let cart = await Cart.findOne({ cartOwner: userId });
       if (!cart) {
-        cart = await Cart.create({ cartOwner: userId, cartItems: [], totalPrice: 0 });
+          cart = await Cart.create({ cartOwner: userId, cartItems: [], totalPrice: 0 });
       }
-  
-      const existingBundleIndex = cart.cartItems.findIndex(
-        (item) => item.itemType === "bundle" && item.itemId.toString() === bundle._id.toString()
-      );
-  
-      const bundlePrice = parseFloat(bundle.discountedPrice);
-  
-      if (existingBundleIndex !== -1) {
-        cart.cartItems[existingBundleIndex].quantity += 1;
-        cart.cartItems[existingBundleIndex].itemPrice = (
-          parseFloat(cart.cartItems[existingBundleIndex].itemPrice) + bundlePrice
-        ).toFixed(2);
-      } else {
 
-        const bundleDetails = {
-          name: bundle.name,
-          description: bundle.description,
-          image: bundle.image,
-        };
-        
-        cart.cartItems.push({
-          itemType: "bundle",
-          itemId: bundle._id,
-          quantity: 1,
-          itemPrice: bundlePrice.toFixed(2),
-          ...bundleDetails,
-        });
-        
+      const existingBundleIndex = cart.cartItems.findIndex(
+          (item) => item.itemType === "bundle" && item.itemId.toString() === bundle._id.toString()
+      );
+
+      const bundlePrice = parseFloat(bundle.originalPrice) * quantity;
+
+      if (existingBundleIndex !== -1) {
+          const newQuantity = cart.cartItems[existingBundleIndex].quantity + quantity;
+
+          if (newQuantity > maxBundleQuantity) {
+              return res.status(409).json({
+                  message: `Cannot add more bundles. Maximum available quantity is ${maxBundleQuantity}.`,
+              });
+          }
+
+          cart.cartItems[existingBundleIndex].quantity = newQuantity;
+          cart.cartItems[existingBundleIndex].itemPrice = (
+              parseFloat(cart.cartItems[existingBundleIndex].itemPrice) + bundlePrice
+          ).toFixed(2);
+      } else {
+          const bundleDetails = {
+              name: bundle.name,
+              // description: bundle.description,
+              image: bundle.image,
+          };
+
+          cart.cartItems.push({
+              itemType: "bundle",
+              itemId: bundle._id,
+              quantity: quantity,
+              itemPrice: bundlePrice.toFixed(2),
+              ...bundleDetails,
+          });
       }
-  
+
       cart.totalPrice = (parseFloat(cart.totalPrice) + bundlePrice).toFixed(2);
       await cart.save();
-  
+
       res.status(200).json({ message: "Bundle added to cart successfully", cart });
-    } catch (err) {
+  } catch (err) {
       console.error("Error adding bundle to cart:", err.message);
       res.status(500).json({ message: "An error occurred", error: err.message });
-    }
-  };
+  }
+};
   
   exports.getCartItems = async (req, res) => {
     try {
@@ -141,7 +157,7 @@ exports.addToCart = async (req, res) => {
   
       const cart = await Cart.findOne({ cartOwner: userId }).populate({
         path: "cartItems.itemId",
-        select: "productName bundleName productDescription productImage",
+        select: "productName name productDescription productImage",
       });
       
       
