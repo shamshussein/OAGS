@@ -15,11 +15,12 @@ const Cart = () => {
       try {
         if (!user || !user.userID) {
           console.error("User is not logged in or userID is missing.");
-          return;
+          return; 
         }
         const response = await axios.get(
           `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
         );
+        console.log("ress: " , response.data.cartItems);
         setCartItems(response.data.cartItems || []);
         setTotalPrice(response.data.totalPrice || 0);
       } catch (error) {
@@ -27,12 +28,12 @@ const Cart = () => {
       }
     };
     fetchCartItems();
-  }, [user]);
+  }, []);
 
   const handleProceedToCheckout = () => {
     navigate("/checkout", { state: { cartItems, totalPrice } });
   };
-
+  
   const handleRemoveItem = async (itemId) => {
     try {
       if (!user || !user.token) {
@@ -85,34 +86,36 @@ const Cart = () => {
 
   const updateCartItemQuantity = async (itemId, newQuantity) => {
     try {
-      if (!user || !user.token) {
-        console.error("User is not logged in.");
-        return;
-      }
-      await axios.post(
-        "http://localhost:3000/api/carts/updateCartItemQuantity",
-        { itemId, newQuantity },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+        if (!user || !user.token) {
+            console.error("User is not logged in.");
+            return;
         }
-      );
-     
-        setCartItems((prevItems) =>
-          prevItems.map((item) =>
-            item.id === itemId ? { ...item, quantity: newQuantity } : item
-          )
+        const response = await axios.post(
+            "http://localhost:3000/api/carts/updateCartItemQuantity",
+            { itemId, newQuantity },
+            {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
         );
-    } catch (error) {
-      console.error("Error updating cart item quantity:", error);
-      alert(
-        "Failed to update quantity. You reached the maximum amount in stock!"
-      );
-      window.location.reload();
-    }
-  };
 
+        if (response.status === 200) {
+            setCartItems((prevItems) =>
+                prevItems.map((item) =>
+                    item.itemId === itemId ? { ...item, quantity: newQuantity } : item
+                )
+            );
+        } else {
+            alert("Failed to update quantity. You reached the maximum amount in stock!");
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error("Error updating cart item quantity:", error);
+        alert("Failed to update quantity. You reached the maximum amount in stock!");
+        window.location.reload();
+    }
+};
   const discount = totalPrice * 0.1;
   const deliveryFee = cartItems.length > 0 ? 5.99 : 0;
   const finalTotal = totalPrice - discount + deliveryFee;
