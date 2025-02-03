@@ -1,0 +1,146 @@
+/* Checkout Page Styles */
+.checkout-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Checkout Items */
+.checkout-items {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.checkout-items h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.item-name {
+    font-weight: 500;
+}
+
+.item-price {
+    font-weight: 600;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 5px;
+}
+
+.discounted-price {
+    color: #27ae60;
+}
+
+/* Order Summary */
+.order-summary {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.order-summary h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.order-summary p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.final-total {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+/* Shipping Information */
+.shipping-info {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.shipping-info h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.shipping-info label {
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.shipping-info input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.checkout-button {
+    width: 100%;
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+.checkout-button:hover {
+    background: #0056b3;
+}
+
+/* Order Status */
+.order-status {
+    background: #eaffea;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: #2d7b2d;
+}
+
+.order-status h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.empty-cart {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+    margin-top: 20px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
