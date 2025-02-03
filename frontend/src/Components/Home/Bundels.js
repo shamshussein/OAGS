@@ -109,20 +109,8 @@ function BundleBanner() {
             >
               <div className="content d-flex flex-column align-items-start ms-lg-5 gap-2">
                 <h2 className="bundle-title">{bundle.name}</h2>
-                <br />
-                <s className="text-decoration-line-through" style={{ color: 'red', fontWeight: 'bold' }}>
-                  Price: ${parseFloat(bundle.originalPrice).toFixed(2)}
-                </s>
-                <div className="text-success fw-bold">
-                  Discounted Price: ${parseFloat(bundle.originalPrice).toFixed(2) * (1 - 10 / 100)}
-                </div>
-                <div className="text-info fw-bold">
-                  Available Quantity: {calculateBundleQuantity(bundle)}
-                </div>
-                <div className="rating-stars">
-                  Rating: {renderRatingStars(bundle.rating)}
-                </div>
-                <br />
+                <br/>
+
                 <div className="bundle-products">
                   <h5>Products in this Bundle:</h5>
                   <ul>
@@ -133,6 +121,21 @@ function BundleBanner() {
                     ))}
                   </ul>
                 </div>
+
+                <s className="text-decoration-line-through" style={{ color: 'red', fontWeight: 'bold' }}>
+                  ${parseFloat(bundle.originalPrice).toFixed(2)}
+                </s>
+                <div className="text-success fw-bold">
+                  ${parseFloat(bundle.originalPrice).toFixed(2) * (1 - 10 / 100)}
+                </div>
+                <div className="text-info fw-bold text-black">
+                  Available Quantity: {calculateBundleQuantity(bundle)}
+                </div>
+                <div className="rating-stars">
+                  Rating: {renderRatingStars(bundle.rating)}
+                </div>
+                <br />
+               
                 <button
                   className="btn border border-black BrowseBundleBtn mt-2"
                   onClick={() => addBundleToCart(bundle._id)}
