@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import CartItem from "Components/cart/CartItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -10,24 +10,26 @@ const Cart = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        if (!user || !user.userID) {
-          console.error("User is not logged in or userID is missing.");
-          return;
-        }
-        const response = await axios.get(
-          `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
-        );
-        setCartItems(response.data.cartItems || []);
-        setTotalPrice(response.data.totalPrice || 0);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
+  const fetchCartItems = useCallback(async () => {
+    try {
+      if (!user || !user.userID) {
+        console.error("User is not logged in or userID is missing.");
+        return; 
       }
-    };
-    fetchCartItems();
+      const response = await axios.get(
+        `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
+      );
+      console.log("ress: " , response.data.cartItems);
+      setCartItems(response.data.cartItems || []);
+      setTotalPrice(response.data.totalPrice || 0);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
   }, [user]);
+
+  useEffect(() => {
+    fetchCartItems();
+  }, [fetchCartItems]);
 
   const handleProceedToCheckout = () => {
     navigate("/checkout", { state: { cartItems, totalPrice } });
@@ -48,9 +50,9 @@ const Cart = () => {
           },
         }
       );
-  
-      setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-      } catch (error) {
+      setCartItems((prevItems) => prevItems.filter((item) => item.itemId !== itemId));
+      window.location.reload();
+    } catch (error) {
       console.error("Error removing item:", error);
     }
   };
@@ -78,6 +80,8 @@ const Cart = () => {
 
       setCartItems([]);
       setTotalPrice(0);
+      window.location.reload();
+
     } catch (error) {
       console.error("Error clearing cart:", error);
     }
@@ -89,7 +93,7 @@ const Cart = () => {
         console.error("User is not logged in.");
         return;
       }
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:3000/api/carts/updateCartItemQuantity",
         { itemId, newQuantity },
         {
@@ -98,19 +102,23 @@ const Cart = () => {
           },
         }
       );
-     
+
+      if (response.status === 200) {
         setCartItems((prevItems) =>
           prevItems.map((item) =>
-            item.id === itemId ? { ...item, quantity: newQuantity } : item
+            item.itemId === itemId ? { ...item, quantity: newQuantity } : item
           )
         );
+      } else {
+        alert(response.data.message || "Failed to update quantity.");
+        fetchCartItems();
+      }
     } catch (error) {
       console.error("Error updating cart item quantity:", error);
-      alert(
-        "Failed to update quantity. You reached the maximum amount in stock!"
-      );
-      window.location.reload();
+      alert(error.response?.data?.message || "Failed to update quantity.");
+      fetchCartItems();
     }
+    window.location.reload();
   };
 
   const discount = totalPrice * 0.1;
@@ -124,10 +132,7 @@ const Cart = () => {
         <div className="col-md-8">
           <div className="card shadow-lg mb-4" style={{ border: "none" }}>
             <div className="mt-5 text-black">
-              <h2
-                className="text-center mb-0"
-                style={{ fontSize: "1.7em", fontWeight: "bold" }}
-              >
+              <h2 className="text-center mb-0" style={{ fontSize: "1.7em", fontWeight: "bold" }}>
                 Your Cart
               </h2>
             </div>
@@ -138,10 +143,11 @@ const Cart = () => {
                 <ul className="list-group mb-4">
                   {cartItems.map((item) => (
                     <CartItem
-                      key={item.id}
+                      key={item.itemId}
                       item={item}
                       updateQuantity={updateCartItemQuantity}
                       onRemoveItem={handleRemoveItem}
+                      maxQuantity={item.maxQuantity}
                     />
                   ))}
                 </ul>
@@ -151,15 +157,9 @@ const Cart = () => {
         </div>
         <div className="col-md-4">
           {cartItems.length > 0 && (
-            <div
-              className="card shadow-lg"
-              style={{ border: "none", backgroundColor: "#f9f9f9" }}
-            >
-              <div className=" mt-5 text-black">
-                <h3
-                  className="text-center mb-0"
-                  style={{ fontSize: "1.7em", fontWeight: "bold" }}
-                >
+            <div className="card shadow-lg" style={{ border: "none", backgroundColor: "#f9f9f9" }}>
+              <div className="mt-5 text-black">
+                <h3 className="text-center mb-0" style={{ fontSize: "1.7em", fontWeight: "bold" }}>
                   Summary
                 </h3>
               </div>
