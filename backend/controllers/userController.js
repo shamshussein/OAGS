@@ -60,7 +60,6 @@ exports.signup = async (req, res) => {
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
     });
-    
 
     createSendToken(newUser, 201, res);
   } catch (err) {
@@ -118,6 +117,43 @@ exports.googleAuth = async (req, res) => {
   } catch (err) {
       console.error("Google Auth Error:", err);
       res.status(500).json({ message: "Google authentication failed" });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    const user = await User.findById(req.user.id).select("+password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Old password is incorrect" });
+    }
+
+    user.password = newPassword;
+    user.passwordChangedAt = Date.now();
+
+    await user.save();
+
+    const newToken = signToken(user._id);
+
+    res.status(200).json({ message: "Password changed successfully", token: newToken });
+  } catch (err) {
+    console.error("Error changing password:", err);
+    res.status(500).json({ message: "An error occurred", error: err.message });
   }
 };
 
@@ -195,38 +231,7 @@ exports.removeProfilePicture = async (req, res) => {
     res.status(500).json({ message: "An error occurred", error: err.message });
   }
 };
-exports.changePassword = async (req, res) => {
-  try {
-    const { oldPassword, newPassword, confirmPassword } = req.body;
 
-    if (!oldPassword || !newPassword || !confirmPassword) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({ message: "Passwords do not match" });
-    }
-
-    const user = await User.findById(req.user.id).select("+password");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const isMatch = await bcrypt.compare(oldPassword, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Old password is incorrect" });
-    }
-
-    user.password = await bcrypt.hash(newPassword, 12);
-    await user.save();
-
-    res.status(200).json({ message: "Password changed successfully" });
-  } catch (err) {
-    console.error("Error changing password:", err);
-    res.status(500).json({ message: "An error occurred", error: err.message });
-  }
-};
 // Middleware 
 exports.protect = async (req, res, next) => {
   try {

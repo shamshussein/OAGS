@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import "./ChangePassword.css";
+import useTogglePassword from "Components/utils/togglePassword";
+import PasswordInput from "Components/utils/passwordInput";
 
 function ChangePassword() {
   const [oldPassword, setOldPassword] = useState("");
@@ -10,6 +11,21 @@ function ChangePassword() {
   const [message, setMessage] = useState("");
   const userData = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+
+  const {
+    showPassword: showOldPassword,
+    togglePasswordVisibility: toggleOldPasswordVisibility,
+  } = useTogglePassword();
+
+  const {
+    showPassword: showNewPassword,
+    togglePasswordVisibility: toggleNewPasswordVisibility,
+  } = useTogglePassword();
+
+  const {
+    showPassword: showConfirmPassword,
+    togglePasswordVisibility: toggleConfirmPasswordVisibility,
+  } = useTogglePassword();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,35 +57,34 @@ function ChangePassword() {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Old Password</label>
-          <input
-            type="password"
-            className="form-control"
+          <PasswordInput
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
-            required
+            showPassword={showOldPassword}
+            togglePasswordVisibility={toggleOldPasswordVisibility}
           />
         </div>
         <div className="mb-3">
           <label className="form-label">New Password</label>
-          <input
-            type="password"
-            className="form-control"
+          <PasswordInput
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            required
+            showPassword={showNewPassword}
+            togglePasswordVisibility={toggleNewPasswordVisibility}
           />
         </div>
         <div className="mb-3">
           <label className="form-label">Confirm Password</label>
-          <input
-            type="password"
-            className="form-control"
+          <PasswordInput
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
+            showPassword={showConfirmPassword}
+            togglePasswordVisibility={toggleConfirmPasswordVisibility}
           />
         </div>
-        <button type="submit" className="btn btn-secondary">Change Password</button>
+        <button type="submit" className="btn btn-secondary">
+          Change Password
+        </button>
       </form>
     </div>
   );

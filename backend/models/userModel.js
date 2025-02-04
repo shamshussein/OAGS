@@ -49,18 +49,20 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-    userSchema.pre("save", async function(next){
-        try {
-            if(!this.isModified("password")){
-                return next;
-            }
-            this.password = await bcrypt.hash(this.password, 12);
-            this.passwordConfirm = undefined;
-        } catch (err) {
-            console.log(err);
-        }
-    }
-)
+userSchema.pre("save", async function (next) {
+  try {
+    if (!this.isModified("password")) return next();
+
+    this.password = await bcrypt.hash(this.password, 12);
+    this.passwordConfirm = undefined;
+    
+    next();
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
+
 
 userSchema.methods.checkPassword = async function(candidatePassword, userPassword){
     return await bcrypt.compare(candidatePassword, userPassword);

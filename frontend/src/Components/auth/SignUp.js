@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './auth.css';
 import { signUp, googlSignUp } from '../services/authService';
-
+import useTogglePassword from "Components/utils/togglePassword";
+import PasswordInput from "Components/utils/passwordInput";
 
 const SignUp = () => {
   
@@ -18,6 +19,15 @@ const SignUp = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate(); 
+  const {
+     showPassword,
+     togglePasswordVisibility,
+  } = useTogglePassword();
+
+  const {
+    showPassword: showConfirmPassword,
+    togglePasswordVisibility: toggleConfirmPasswordVisibility,
+  } = useTogglePassword();
 
   const handleSignUp = async () => {
     try {
@@ -140,32 +150,30 @@ const handleGoogleFailure = (error) => {
             <label htmlFor="password" className="form-label">
               Password
             </label>
-            <input
-              type="password"
+            <PasswordInput
               id="password"
-              className="form-control"
               placeholder="Enter your password"
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              required
+              showPassword={showPassword}
+              togglePasswordVisibility={togglePasswordVisibility}
             />
           </div>
           <div className="mb-3">
             <label htmlFor="passwordConfirm" className="form-label">
               Confirm Password
             </label>
-            <input
-              type="password"
+            <PasswordInput
               id="passwordConfirm"
-              className="form-control"
               placeholder="Confirm your password"
               value={formData.passwordConfirm}
               onChange={(e) =>
                 setFormData({ ...formData, passwordConfirm: e.target.value })
               }
-              required
+              showPassword={showConfirmPassword}
+              togglePasswordVisibility={toggleConfirmPasswordVisibility}
             />
           </div>
           {error && <p className="text-danger">{error}</p>}
