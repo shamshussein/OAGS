@@ -18,7 +18,6 @@ exports.addToCart = async (req, res) => {
 
     const productQuantity = req.body.productQuantity || 1;
 
-    // Calculate total used quantity including bundles
     let totalUsedQuantity = 0;
     for (const item of cart.cartItems) {
       if (item.itemType === "product" && item.itemId.toString() === product._id.toString()) {
@@ -31,10 +30,9 @@ exports.addToCart = async (req, res) => {
       }
     }
 
-    // Ensure the total quantity does not exceed the stock
     if (totalUsedQuantity + productQuantity > product.productQuantity) {
       return res.status(409).json({
-        message: `Insufficient stock. Maximum available: ${product.productQuantity - totalUsedQuantity}`,
+        message: `Insufficient stock.`,
       });
     }
 
@@ -109,7 +107,7 @@ exports.addBundleToCart = async (req, res) => {
     }
 
     if (quantity > maxBundleQuantity) {
-      return res.status(409).json({ message: `Cannot add more than ${maxBundleQuantity} bundles.` });
+      return res.status(409).json({ message: `Cannot add more bundles.` });
     }
 
     const existingBundleIndex = cart.cartItems.findIndex(
@@ -162,8 +160,9 @@ exports.updateCartItemQuantity = async (req, res) => {
 
     const cart = await Cart.findOne({ cartOwner: userId }).populate({
       path: "cartItems.itemId",
-      populate: { path: "products", select: "_id" },
+      populate: { path: "products", select: "_id productQuantity" },
     });
+
     if (!cart) {
       return res.status(404).json({ message: "Cart not found." });
     }
@@ -171,66 +170,85 @@ exports.updateCartItemQuantity = async (req, res) => {
     const itemIndex = cart.cartItems.findIndex(
       (item) => item.itemId._id.toString() === itemId
     );
+
     if (itemIndex === -1) {
       return res.status(404).json({ message: "Item not found in cart." });
     }
 
     const cartItem = cart.cartItems[itemIndex];
+    let product = null;
+    let maxAvailableQuantity = 0;
 
     if (cartItem.itemType === "bundle") {
       const bundle = await Bundle.findById(cartItem.itemId).populate({
         path: "products",
-        select: "productQuantity productName",
+        select: "_id productQuantity",
       });
 
-      if (!bundle || !bundle.products || bundle.products.length === 0) {
-        return res.status(404).json({ message: "Bundle or its products not found." });
+      if (!bundle) {
+        return res.status(404).json({ message: "Bundle not found." });
       }
 
-      let maxBundleQuantity = Math.min(...bundle.products.map(product => product.productQuantity));
+      let lowestStockProduct = null;
 
-      for (const product of bundle.products) {
-        const existingProduct = cart.cartItems.find(
-          item => item.itemType === "product" && item.itemId.toString() === product._id.toString()
-        );
-        if (existingProduct) {
-          maxBundleQuantity = Math.min(maxBundleQuantity, product.productQuantity - existingProduct.quantity);
+      for (const productInBundle of bundle.products) {
+        let totalUsedQuantity = 0;
+
+        for (const item of cart.cartItems) {
+          if (item.itemType === "product" && item.itemId._id.toString() === productInBundle._id.toString()) {
+            totalUsedQuantity += item.quantity;
+          } else if (item.itemType === "bundle") {
+            const existingBundle = await Bundle.findById(item.itemId).populate("products");
+            if (existingBundle && existingBundle.products.some(p => p._id.toString() === productInBundle._id.toString())) {
+              totalUsedQuantity += item.quantity;
+            }
+          }
+        }
+
+        let availableForThisProduct = productInBundle.productQuantity - totalUsedQuantity;
+        if (lowestStockProduct === null || availableForThisProduct < maxAvailableQuantity) {
+          maxAvailableQuantity = availableForThisProduct;
+          lowestStockProduct = productInBundle;
         }
       }
 
-      if (newQuantity > maxBundleQuantity) {
-        return res.status(409).json({ message: `Cannot add more than ${maxBundleQuantity} bundles.` });
+      if (newQuantity > maxAvailableQuantity) {
+        return res.status(409).json({
+          message: `Cannot add more bundles. Available: ${maxAvailableQuantity}, Requested: ${newQuantity}.`,
+        });
       }
 
-      cart.cartItems[itemIndex].quantity = newQuantity;
-      cart.cartItems[itemIndex].itemPrice = (parseFloat(bundle.originalPrice) * newQuantity).toFixed(2);
-
+      cartItem.quantity = newQuantity;
+      cartItem.itemPrice = (parseFloat(bundle.originalPrice) * newQuantity).toFixed(2);
     } else {
-      const product = await Product.findById(cartItem.itemId);
+      product = await Product.findById(cartItem.itemId);
+
       if (!product) {
         return res.status(404).json({ message: "Product not found." });
       }
 
       let totalUsedQuantity = newQuantity;
 
-      const bundlesContainingProduct = cart.cartItems.filter(
-        (item) => item.itemType === "bundle" && item.itemId.products && item.itemId.products.includes(product._id)
-      );
-
-      for (const bundle of bundlesContainingProduct) {
-        totalUsedQuantity += bundle.quantity;
+      for (const item of cart.cartItems) {
+        if (item.itemType === "bundle") {
+          const bundle = await Bundle.findById(item.itemId).populate("products");
+          if (bundle && bundle.products.some(p => p._id.toString() === product._id.toString())) {
+            totalUsedQuantity += item.quantity;
+          }
+        }
       }
 
       if (totalUsedQuantity > product.productQuantity) {
-        return res.status(409).json({ message: "Insufficient stock available." });
+        return res.status(409).json({
+          message: `Cannot add more. Available: ${product.productQuantity}, Requested: ${totalUsedQuantity}.`,
+        });
       }
 
-      cart.cartItems[itemIndex].quantity = newQuantity;
-      cart.cartItems[itemIndex].itemPrice = (parseFloat(product.productPrice) * newQuantity).toFixed(2);
+      cartItem.quantity = newQuantity;
+      cartItem.itemPrice = (parseFloat(product.productPrice) * newQuantity).toFixed(2);
     }
 
     cart.totalPrice = cart.cartItems.reduce((total, item) => total + parseFloat(item.itemPrice), 0).toFixed(2);
-
     await cart.save();
 
     res.status(200).json({ message: "Cart item quantity updated successfully", cart });
@@ -239,6 +257,8 @@ exports.updateCartItemQuantity = async (req, res) => {
     res.status(500).json({ message: "An error occurred", error: err.message });
   }
 };
+
+
 
   exports.getCartItems = async (req, res) => {
     try {
