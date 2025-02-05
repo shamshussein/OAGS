@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-
 import './auth.css';
 import { signIn, googlSignUp } from '../services/authService';
+import useTogglePassword from "Components/utils/togglePassword";
+import PasswordInput from "Components/utils/passwordInput";
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const {
+    showPassword,
+    togglePasswordVisibility,
+  } = useTogglePassword();
 
   const navigate = useNavigate(); 
 
@@ -102,14 +107,13 @@ const handleGoogleFailure = (error) => {
             <label htmlFor="password" className="form-label">
               Password
             </label>
-            <input
-              type="password"
+            <PasswordInput
               id="password"
               placeholder="Enter your password"
-              className="form-control"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
+              showPassword={showPassword}
+              togglePasswordVisibility={togglePasswordVisibility}
             />
           </div>
           {error && <p className="text-danger">{error}</p>}

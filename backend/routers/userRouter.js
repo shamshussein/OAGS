@@ -7,6 +7,7 @@ router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.post("/google-auth", userController.googleAuth);
 router.delete("/deleteUser", userController.protect, userController.deleteUser);
+router.put("/changePassword", userController.protect, userController.changePassword);
 
 router.put(
     "/updateProfile",

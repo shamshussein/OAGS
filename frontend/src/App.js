@@ -12,6 +12,7 @@ import AboutUs from 'pages/about/AboutUs';
 import EditProfile from 'Components/layout/NavBar/EditProfile';
 import Checkout from 'pages/checkout/Checkout';
 import Orders from 'pages/order/Orders';
+import ChangePassword from 'Components/layout/NavBar/ChangePassword';
 
 function App() {
   return (
@@ -84,7 +85,14 @@ function App() {
           </MainLayout>
         }
       />
-
+ <Route
+        path="/change-password"
+        element={
+          <MainLayout>
+           <ChangePassword />
+          </MainLayout>
+        }
+      />
       {/* Routes with AuthLayout */}
       <Route
         path="/signin"
