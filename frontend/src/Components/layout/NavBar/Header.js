@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import axios from "axios";
-import './Header.css';
+import './header.css';
 
 function Header() {
   const [cartItems, setCartItems] = useState([]);

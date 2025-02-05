@@ -68,6 +68,7 @@ const CheckoutPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        console.log("test");
         if (!validatePhoneNumber(shippingDetails.number)) {
             setPhoneError("Please enter a valid Lebanese phone number.");
             return; 
@@ -75,10 +76,20 @@ const CheckoutPage = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:5000/api/checkout", {
+            // Retrieve the JSON string from local storage
+            const userString = localStorage.getItem("user");
+
+// Parse the JSON string to an object
+            const userObject = JSON.parse(userString);
+
+// Extract  the token
+            const token = userObject.token;
+
+            console.log(token);
+            const response = await axios.post("http://localhost:3000/api/checkout",{
                 cart: cartItems,
                 shippingDetails,
-            });
+            },{headers:{Authorization:`Bearer ${token}`}});
 
             setOrderStatus(response.data);
         } catch (error) {
@@ -189,7 +200,7 @@ const CheckoutPage = () => {
             )}
 
 
-            <button type="submit" className="checkout-button" style={{fontWeight:'bold'}}>
+            <button type="submit" className="checkout-button" style={{fontWeight:'bold'}} onClick={handleSubmit}>
                 Complete Checkout
             </button>
         </form>
