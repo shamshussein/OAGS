@@ -76,7 +76,7 @@ function EditProfile() {
 
   const handleChangePassword = () => {
     navigate("/change-password");
-  };
+  };  
 
   const handleDeleteAccount = async () => {
     const confirmed = window.confirm("Are you sure you want to delete your account?");
@@ -176,6 +176,7 @@ function EditProfile() {
                 <div className="border-top pt-3">
                   {!userData.isGoogleSignIn && (
                     <button
+                    type="button"
                       className="btn btn-outline-secondary w-100 mb-3"
                       onClick={handleChangePassword}
                     >
