@@ -16,27 +16,31 @@ exports.addToCart = async (req, res) => {
       cart = await Cart.create({ cartOwner: userId, cartItems: [], totalPrice: 0 });
     }
 
+    const productQuantity = req.body.productQuantity || 1;
+
+    // Calculate total used quantity including bundles
+    let totalUsedQuantity = 0;
+    for (const item of cart.cartItems) {
+      if (item.itemType === "product" && item.itemId.toString() === product._id.toString()) {
+        totalUsedQuantity += item.quantity;
+      } else if (item.itemType === "bundle") {
+        const bundle = await Bundle.findById(item.itemId).populate("products");
+        if (bundle && bundle.products.some(p => p._id.toString() === product._id.toString())) {
+          totalUsedQuantity += item.quantity;
+        }
+      }
+    }
+
+    // Ensure the total quantity does not exceed the stock
+    if (totalUsedQuantity + productQuantity > product.productQuantity) {
+      return res.status(409).json({
+        message: `Insufficient stock. Maximum available: ${product.productQuantity - totalUsedQuantity}`,
+      });
+    }
+
     const existingProduct = cart.cartItems.find(
       (item) => item.itemType === "product" && item.itemId.toString() === product._id.toString()
     );
-
-    const productQuantity = req.body.productQuantity || 1;
-
-    let totalUsedQuantity = existingProduct ? existingProduct.quantity : 0;
-
-    const bundlesContainingProduct = cart.cartItems.filter(
-      (item) => item.itemType === "bundle" && item.itemId.products && item.itemId.products.includes(product._id)
-    );
-
-    for (const bundle of bundlesContainingProduct) {
-      totalUsedQuantity += bundle.quantity;
-    }
-
-    if (totalUsedQuantity + productQuantity > product.productQuantity) {
-      return res.status(409).json({
-        message: "Insufficient product quantity available. Maximum stock reached.",
-      });
-    }
 
     const productPrice = parseFloat(product.productPrice) * productQuantity;
 
@@ -65,6 +69,7 @@ exports.addToCart = async (req, res) => {
   }
 };
 
+
 exports.addBundleToCart = async (req, res) => {
   try {
     const { bundleId, quantity = 1 } = req.body;
@@ -84,15 +89,23 @@ exports.addBundleToCart = async (req, res) => {
       cart = await Cart.create({ cartOwner: userId, cartItems: [], totalPrice: 0 });
     }
 
-    let maxBundleQuantity = Math.min(...bundle.products.map(product => product.productQuantity));
+    let maxBundleQuantity = Infinity;
 
     for (const product of bundle.products) {
-      const existingProduct = cart.cartItems.find(
-        item => item.itemType === "product" && item.itemId.toString() === product._id.toString()
-      );
-      if (existingProduct) {
-        maxBundleQuantity = Math.min(maxBundleQuantity, product.productQuantity - existingProduct.quantity);
+      let totalUsedQuantity = 0;
+
+      for (const item of cart.cartItems) {
+        if (item.itemType === "product" && item.itemId.toString() === product._id.toString()) {
+          totalUsedQuantity += item.quantity;
+        } else if (item.itemType === "bundle") {
+          const existingBundle = await Bundle.findById(item.itemId).populate("products");
+          if (existingBundle && existingBundle.products.some(p => p._id.toString() === product._id.toString())) {
+            totalUsedQuantity += item.quantity;
+          }
+        }
       }
+
+      maxBundleQuantity = Math.min(maxBundleQuantity, product.productQuantity - totalUsedQuantity);
     }
 
     if (quantity > maxBundleQuantity) {
@@ -118,17 +131,13 @@ exports.addBundleToCart = async (req, res) => {
         parseFloat(cart.cartItems[existingBundleIndex].itemPrice) + bundlePrice
       ).toFixed(2);
     } else {
-      const bundleDetails = {
-        name: bundle.name,
-        image: bundle.image,
-      };
-
       cart.cartItems.push({
         itemType: "bundle",
         itemId: bundle._id,
         quantity: quantity,
         itemPrice: bundlePrice.toFixed(2),
-        ...bundleDetails,
+        name: bundle.name,
+        image: bundle.image,
       });
     }
 
