@@ -1,0 +1,192 @@
+/* Checkout Page Layout */
+.checkout-container {
+    max-width: 1200px; /* Increase the overall width */
+    margin: auto;
+    padding: 30px;
+ 
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* Left Side - Shipping Information */
+.shipping-info {
+    flex: 1.7;
+
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Right Side - Checkout Items */
+.right-side {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Checkout Items */
+.checkout-items {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+ 
+}
+
+/* Order Summary inside Checkout Items */
+.order-summary {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 50px; /* Ensure it stays below the checkout items */
+}
+
+/* Cart Items */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.item-name {
+    font-weight: 500;
+}
+
+.item-price {
+    font-weight: 600;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: red;
+    margin-right: 5px;
+}
+
+.discounted-price {
+    color: green;
+}
+
+.checkout-items p {
+    font-size: 16px;
+    margin: 5px 0;
+    margin-left: 5vh;
+}
+
+.final-total {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+/* Shipping Information Form */
+.shipping-info h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* Align Labels and Inputs side by side */
+.shipping-info label {
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 5px;
+    width: 150px; /* Adjust width for better spacing */
+}
+
+.shipping-info input,
+.shipping-info select {
+    width: calc(100% - 160px); /* Ensure inputs take the remaining space */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.shipping-info .form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Checkout Button */
+.checkout-button {
+    width: 100%;
+    background: #c7d6cf;
+    color: rgb(0, 0, 0);
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10vh;
+    font-size: 16px;
+}
+
+.checkout-button:hover {
+    background: #9cada5;
+}
+
+/* Order Status */
+.order-status {
+    background: #eaffea;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: #2d7b2d;
+}
+
+.order-status h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Empty Cart Message */
+.empty-cart {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+    margin-top: 20px;
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .checkout-container {
+        flex-direction: column;
+    }
+
+    .shipping-info {
+        width: 100%;
+    }
+
+    .right-side {
+        width: 100%;
+    }
+
+    .shipping-info label,
+    .shipping-info input,
+    .shipping-info select {
+        width: 100%;
+    }
+
+    .shipping-info .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

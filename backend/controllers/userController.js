@@ -7,6 +7,7 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const Cart = require("../models/cartModel");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -82,41 +83,41 @@ exports.login = async (req, res) => {
     createSendToken(user, 200, res);
   } catch (err) {
     res.status(500).json({ message: err.message });
-    console.log(err);
+    console.error(err);
   }
 };
 
 exports.googleAuth = async (req, res) => {
   try {
-      const { credential, email, name, phoneNumber } = req.body; 
+    const { credential, email, name, phoneNumber } = req.body;
 
-      const ticket = await client.verifyIdToken({
-          idToken: credential,
-          audience: process.env.GOOGLE_CLIENT_ID, 
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    if (payload.email !== email) {
+      return res.status(400).json({ message: 'Email mismatch with Google payload' });
+    }
+
+    let user = await User.findOne({ googleId: payload.sub });
+    if (!user) {
+      const randomPassword = crypto.randomBytes(8).toString("hex");
+
+      user = await User.create({
+        email,
+        userName: name,
+        phoneNumber,
+        googleId: payload.sub,
+        password: randomPassword,
+        passwordConfirm: randomPassword,
       });
-      const payload = ticket.getPayload();  
-
-      if (payload.email !== email) {
-          return res.status(400).json({ message: 'Email mismatch with Google payload' });
-      }
-
-      let user = await User.findOne({ googleId: payload.sub });
-      if (!user) {
-        const randomPassword = crypto.randomBytes(8).toString("hex"); 
-
-          user = await User.create({
-              email,
-              userName: name,   
-              phoneNumber,
-              googleId: payload.sub,
-              password: randomPassword,
-              passwordConfirm: randomPassword
-          });
-      }
-      createSendToken(user, 200, res);      
+    }
+    createSendToken(user, 200, res);
   } catch (err) {
-      console.error("Google Auth Error:", err);
-      res.status(500).json({ message: "Google authentication failed" });
+    console.error("Google Auth Error:", err);
+    res.status(500).json({ message: "Google authentication failed" });
   }
 };
 
@@ -159,8 +160,7 @@ exports.changePassword = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const userID = req.user.id; 
-    console.log("Received userID for deletion:", userID);
+    const userID = req.user.id;
 
     if (!mongoose.Types.ObjectId.isValid(userID)) {
       return res.status(400).json({ message: "Invalid user ID." });
@@ -181,7 +181,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const profilePicture = req.file; 
+    const profilePicture = req.file;
 
     const userId = req.user.id;
 
@@ -210,11 +210,11 @@ exports.updateProfile = async (req, res) => {
 
 exports.removeProfilePicture = async (req, res) => {
   try {
-    const userId = req.user.id; 
+    const userId = req.user.id;
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { profilePicture: null }, 
+      { profilePicture: null },
       { new: true }
     );
 
@@ -242,29 +242,32 @@ exports.protect = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "You are not logged in" });
     }
-
     let decoded;
     try {
-      decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+      decoded = jwt.decode(token, process.env.JWT_SECRET);
+      console.log(decoded);  
     } catch (err) {
       if (err.name === "JsonWebTokenError") {
         return res.status(401).json({ message: "Invalid token" });
       } else if (err.name === "TokenExpiredError") {
         return res.status(401).json({ message: "Your session token is expired. Login again" });
       }
-      console.log(err);
+      console.error(err);
     }
 
     const currentUser = await User.findById(decoded.id);
+
     if (!currentUser) {
       return res.status(401).json({ message: "The token owner no longer exists" });
     }
     if (currentUser.passwordChangedAfterTokenIssue(decoded.iat)) {
       return res.status(401).json({ message: "Your password has been changed. Please log in again" });
     }
+    console.log(currentUser);
     req.user = currentUser;
     next();
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).json({ message: "An error occurred", error: err.message });
   }
 };

@@ -1,36 +1,35 @@
 import React from "react";
+import "styles/Checkout.css"; // Import external CSS
+ 
 
 const CheckoutItems = ({ cart }) => {
   if (cart.length === 0) {
-    return <p className="text-gray-500">Your cart is empty.</p>;
+    return <p className="empty-cart">Your cart is empty.</p>;
   }
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Checkout Items</h2>
+    <div className="">
+      <h4 style={{textAlign:'center',marginBottom:'5vh',fontSize:'1.5em'}}>Order Summary</h4>
       <ul>
         {cart.map((item) => {
-          // Ensure each item has necessary properties before destructuring
           if (!item || !item.name || !item.itemPrice || !item.quantity) return null;
 
           const { name, itemPrice, quantity } = item;
-          const discountedPrice = itemPrice * (1 - 0.1); // 10% discount
+          const discountedPrice = itemPrice * 0.9; 
 
           return (
-            <li key={item.productId} className="flex justify-between border-b py-2">
-              <span className="font-medium">
-                {name} (x{quantity})
-              </span>
-              <span className="text-green-600">
-                ${(itemPrice ).toFixed(2)} | Discounted: ${(discountedPrice).toFixed(2)}
+            <li key={item.productId} className="cart-item">
+              <span className="item-name">{name} (x{quantity})</span>
+              <span className="item-price">
+                <span className="original-price">${itemPrice.toFixed(2)}</span> 
+                <span className="discounted-price">${discountedPrice.toFixed(2)}</span>
               </span>
             </li>
           );
         })}
       </ul>
-    
     </div>
   );
 };
 
-export default CheckoutItems;
+export default CheckoutItems;   
