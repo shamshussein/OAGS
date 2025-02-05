@@ -8,8 +8,8 @@ const CheckoutItems = ({ cart }) => {
   }
 
   return (
-    <div className="checkout-items">
-      <h2>Checkout Items</h2>
+    <div className="">
+      <h4 style={{textAlign:'center',marginBottom:'5vh',fontSize:'1.5em'}}>Order Summary</h4>
       <ul>
         {cart.map((item) => {
           if (!item || !item.name || !item.itemPrice || !item.quantity) return null;
@@ -32,4 +32,4 @@ const CheckoutItems = ({ cart }) => {
   );
 };
 
-export default CheckoutItems;
+export default CheckoutItems;   
