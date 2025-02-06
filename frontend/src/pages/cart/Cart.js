@@ -19,7 +19,6 @@ const Cart = () => {
       const response = await axios.get(
         `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
       );
-      console.log("ress: " , response.data.cartItems);
       setCartItems(response.data.cartItems || []);
       setTotalPrice(response.data.totalPrice || 0);
     } catch (error) {
