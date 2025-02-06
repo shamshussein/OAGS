@@ -89,6 +89,10 @@ exports.addBundleToCart = async (req, res) => {
 
     let maxBundleQuantity = Infinity;
 
+    const existingBundleIndex = cart.cartItems.findIndex(
+      (item) => item.itemType === "bundle" && item.itemId.toString() === bundle._id.toString()
+    );
+
     for (const product of bundle.products) {
       let totalUsedQuantity = 0;
 
@@ -103,16 +107,16 @@ exports.addBundleToCart = async (req, res) => {
         }
       }
 
+      if (existingBundleIndex !== -1) {
+        totalUsedQuantity -= cart.cartItems[existingBundleIndex].quantity;
+      }
+
       maxBundleQuantity = Math.min(maxBundleQuantity, product.productQuantity - totalUsedQuantity);
     }
 
     if (quantity > maxBundleQuantity) {
-      return res.status(409).json({ message: `Cannot add more bundles.` });
+      return res.status(409).json({ message: `Cannot add more bundles. Available: ${maxBundleQuantity}, Requested: ${quantity}.` });
     }
-
-    const existingBundleIndex = cart.cartItems.findIndex(
-      (item) => item.itemType === "bundle" && item.itemId.toString() === bundle._id.toString()
-    );
 
     const bundlePrice = parseFloat(bundle.originalPrice) * quantity;
 
@@ -204,6 +208,8 @@ exports.updateCartItemQuantity = async (req, res) => {
             }
           }
         }
+
+        totalUsedQuantity -= cartItem.quantity;
 
         let availableForThisProduct = productInBundle.productQuantity - totalUsedQuantity;
         if (lowestStockProduct === null || availableForThisProduct < maxAvailableQuantity) {
