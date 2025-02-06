@@ -244,7 +244,8 @@ exports.protect = async (req, res, next) => {
     }
     let decoded;
     try {
-      decoded = jwt.decode(token, process.env.JWT_SECRET);
+      // decoded = jwt.decode(token, process.env.JWT_SECRET);
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
       console.log(decoded);  
     } catch (err) {
       if (err.name === "JsonWebTokenError") {

@@ -258,8 +258,6 @@ exports.updateCartItemQuantity = async (req, res) => {
   }
 };
 
-
-
   exports.getCartItems = async (req, res) => {
     try {
       const userId = req.query.userId;
