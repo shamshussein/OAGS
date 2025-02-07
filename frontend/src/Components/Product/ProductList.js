@@ -8,7 +8,7 @@ const ProductList = ({ products, discountPercentage }) => {
       {products.length > 0 ? (
         <div className="row gy-10">
           {products.map((product) => (
-            <div key={product._id} className="col-md-6 col-lg-4">
+            <div key={product._id} className="col-md-6 col-lg-6 d-flex justify-content-center mb-4">
               <ProductItem product={product} discountPercentage={discountPercentage} />
             </div>
           ))}

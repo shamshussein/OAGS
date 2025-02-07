@@ -133,7 +133,7 @@ function Product() {
             <input
               type="text"
               className="form-control"
-              placeholder="Search by name, category, or description"
+              placeholder=" 🔍 Search by name, category, or description "
               value={searchTerm}
               onChange={handleSearch}
             />
@@ -146,7 +146,7 @@ function Product() {
             if (displayedProducts.length > 0) {
               return (
                 <div key={category}>
-                  <h3>{category}</h3>
+                  <h3 style={{marginBottom:"7vh",marginTop:"5vh", textAlign:"center"}}>{category}</h3>
                   <ProductList products={displayedProducts} discountPercentage={discountPercentage} />
 
                   {hasMore[category] && (

@@ -1,0 +1,133 @@
+.bundle-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    align-items: center; 
+    gap: 40px; 
+    padding: 40px;
+    max-width: 1300px; 
+    margin: 50px auto; 
+  }
+  
+  .bundle-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 100%;
+    transition: all 0.3s ease;
+  }
+  
+  .bundle-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .bundle-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .bundle-image img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .bundle-info {
+    margin-top: 15px;
+  }
+  
+  .bundle-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+  }
+  
+  
+  .bundle-products ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  .bundle-products li {
+    font-size: 0.9rem;
+    text-align: center;
+    color: #000000;
+  }
+  
+  .price-section {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    gap: 10px; 
+    margin-top: 15px;
+  }
+  
+  .original-price {
+    font-size: 1.2rem;
+    color: red;
+    text-decoration: line-through;
+    font-weight: bold;
+  }
+  
+  .discounted-price {
+    font-size: 1.2rem;
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  
+  .availability-rating {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+  }
+  
+  .availability {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .rating {
+    font-size: 1rem;
+    color: #ffc107;
+    margin-top: 5px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center; /* Centers the button horizontally */
+    align-items: center; /* Aligns items vertically */
+    margin-top: 15px;
+    width: 100%; /* Ensures it spans the available space */
+  }
+
+  .addtocart {
+    background-color: #c7d6cf;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    align-self: center;
+  }
+  
+  .addtocart:hover {
+    background-color: #9db3a8;
+  }
+  
+  @media (max-width: 768px) {
+    .bundle-card {
+      height: auto;
+    }
+  }
+  

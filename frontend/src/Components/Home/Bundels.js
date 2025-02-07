@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-import 'swiper/css/effect-fade';
-import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
+import './bundles.css';
 
 function BundleBanner() {
   const [bundles, setBundles] = useState([]);
@@ -77,77 +72,65 @@ function BundleBanner() {
   };
 
   return (
-    <Swiper
-      spaceBetween={50}
-      slidesPerView={1}
-      autoplay={{
-        delay: 1500,
-        disableOnInteraction: false,
-      }}
-      effect={'fade'}
-      speed={400}
-      fadeEffect={{ crossFade: true }}
-      pagination={{ clickable: true }}
-      loop
-      navigation={false}
-      modules={[Autoplay, Pagination, EffectFade]}
-      className=''
-    >
-      {bundles.map((bundle, index) => (
-        <SwiperSlide key={index}>
-          <div className='bundleMother'>
-            <div
-              className="bundle-item d-flex align-items-center bundle-image"
-              style={{
-                backgroundImage: `url(${bundle.imagebanner})`,
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                width: '100%',
-                height: '500px',
-              }}
-            >
-              <div className="content d-flex flex-column align-items-start ms-lg-5 gap-2">
-                <h2 className="bundle-title">{bundle.name}</h2>
-                <br/>
+    <div className="bundle-container">
+      <div className="row">
+        {bundles.map((bundle, index) => (
+          <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div className="bundle-card">
+              <div className="bundle-card-content">
+                <div className="bundle-image">
+                  <img
+                    src={bundle.image}
+                    alt={bundle.name}
+                    className="img-fluid rounded"
+                  />
+                </div>
+                <div className="bundle-info">
+                  <h2 className="bundle-title">{bundle.name}</h2>
 
-                <div className="bundle-products">
-                  <h5>Products in this Bundle:</h5>
-                  <ul>
-                    {bundle.products.map((product, idx) => (
-                      <li key={idx}>
-                        {product.productName} (Qty: {product.productQuantity})
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                  {/* <div className="bundle-products">
+                    <ul>
+                      {bundle.products.map((product, idx) => (
+                        <li key={idx}>
+                          {product.productName} 
+                          (Qty: {product.productQuantity})
+                        </li>
+                      ))}
+                    </ul>
+                  </div> */}
 
-                <s className="text-decoration-line-through" style={{ color: 'red', fontWeight: 'bold' }}>
-                  ${parseFloat(bundle.originalPrice).toFixed(2)}
-                </s>
-                <div className="text-success fw-bold">
-                  ${parseFloat(bundle.originalPrice).toFixed(2) * (1 - 10 / 100)}
+                  <div className="price-section">
+                    <s className="original-price">
+                      ${parseFloat(bundle.originalPrice).toFixed(2)}
+                    </s>
+                    <span className="discounted-price">
+                      ${parseFloat(bundle.originalPrice * (1 - 0.1)).toFixed(2)}
+                    </span>
+                  </div>
+
+                  <div className="availability-rating">
+                    {/* <div className="availability">
+                      <strong>Available Quantity:</strong> {calculateBundleQuantity(bundle)}
+                    </div> */}
+                    <div className="rating">
+                     {renderRatingStars(bundle.rating)}
+                    </div>
+                  </div>
+                  <div className='button-container'>
+                  <button
+                    className="addtocart"
+                    onClick={() => addBundleToCart(bundle._id)}
+                  >
+                    Add to Cart
+                  </button>
+                  </div>
                 </div>
-                <div className="text-info fw-bold text-black">
-                  Available Quantity: {calculateBundleQuantity(bundle)}
-                </div>
-                <div className="rating-stars">
-                  Rating: {renderRatingStars(bundle.rating)}
-                </div>
-                <br />
-               
-                <button
-                  className="btn border border-black BrowseBundleBtn mt-2"
-                  onClick={() => addBundleToCart(bundle._id)}
-                >
-                  Add Bundle to Cart
-                </button>
               </div>
             </div>
           </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+        ))}
+      </div>
+    </div>
   );
 }
 
