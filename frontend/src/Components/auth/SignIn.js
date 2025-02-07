@@ -6,6 +6,7 @@ import { signIn, googlSignUp } from '../services/authService';
 import useTogglePassword from "Components/utils/togglePassword";
 import PasswordInput from "Components/utils/passwordInput";
 
+
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -80,6 +81,15 @@ const handleGoogleFailure = (error) => {
   console.error("Google Sign-In Error:", error);
   setError("Google sign-in failed. Please try again.");
 };
+
+
+
+const handleForgotPassword = () => {
+  navigate("/forgot-password");
+};  
+
+
+
   return (
    <GoogleOAuthProvider clientId="228358965090-n0v3qt1ub11abq17adigr3s0u0sfgsu1.apps.googleusercontent.com">  
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
@@ -116,6 +126,12 @@ const handleGoogleFailure = (error) => {
               togglePasswordVisibility={togglePasswordVisibility}
             />
           </div>
+       
+          <button className="" onClick={handleForgotPassword}>Forgot Password?</button>
+
+
+
+
           {error && <p className="text-danger">{error}</p>}
           {success && <p className="text-success">{success}</p>}
 

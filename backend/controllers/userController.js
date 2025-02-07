@@ -232,6 +232,52 @@ exports.removeProfilePicture = async (req, res) => {
   }
 };
 
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+
+      // Generate a password reset token (valid for 10 minutes)
+      const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "10m" });
+
+      res.json({
+          message: "Copy this token and use it to reset your password.",
+          resetToken
+      });
+
+  } catch (error) {
+      res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Reset Password - Validate Token & Change Password
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+      // Verify JWT token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.userId);
+      
+      if (!user) {
+          return res.status(400).json({ message: "Invalid or expired token" });
+      }
+      user.password = newPassword;
+      await user.save();
+      const newToken = signToken(user._id);
+
+      res.json({ message: "Password reset successful. You can now log in.", token : newToken });
+
+  } catch (error) {
+      res.status(400).json({ message: "Invalid or expired token" });
+  }
+
+};
+
 // Middleware 
 exports.protect = async (req, res, next) => {
   try {
