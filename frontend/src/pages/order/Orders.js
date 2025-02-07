@@ -6,9 +6,10 @@ import axios from "axios";
 export default function OrdersPage() {
   const [orders, setOrders] = useState({ history: [], upcoming: [] });
   const [loading, setLoading] = useState(true);
+  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
+  const [feedbackText, setFeedbackText] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // Fetch orders from the backend
   const fetchOrders = useCallback(async () => {
     try {
       if (!user || !user.userID) {
@@ -23,10 +24,8 @@ export default function OrdersPage() {
         }
       );
   
-      // The backend returns an object with an "orders" array.
       const fetchedOrders = response.data.orders || [];
   
-      // Separate orders into history and upcoming based on orderStatus.
       const history = fetchedOrders.filter(
         (order) => order.orderStatus === "completed"
       );
@@ -65,7 +64,6 @@ export default function OrdersPage() {
       toast.error("Reorder failed.");
     }
   };
-  
 
   const cancelOrder = async (orderId) => {
     try {
@@ -98,10 +96,26 @@ export default function OrdersPage() {
           },
         }
       );
-      fetchOrders();
       toast.success("Order Completed");
+      fetchOrders();
+      setShowFeedbackPopup(true);
     } catch (error) {
       toast.error("Failed to complete order.");
+    }
+  };
+
+  const submitFeedback = async () => {
+    try {
+      await axios.post(
+        "/api/feedbacks/sendFeedback",
+        { feedback: feedbackText },
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      toast.success("Thank you for your feedback!");
+      setFeedbackText("");
+      setShowFeedbackPopup(false);
+    } catch (error) {
+      toast.error("Failed to submit feedback.");
     }
   };
 
@@ -111,7 +125,6 @@ export default function OrdersPage() {
     <div className="orders-container">
       <h2 className="title">Orders</h2>
 
-      {/* Order History */}
       <div className="section">
         <h3 className="section-title">Order History</h3>
         {orders.history.length === 0 ? (
@@ -124,7 +137,9 @@ export default function OrdersPage() {
                 {order.items
                   .map(
                     (item) =>
-                      item.product?.productName || item.bundle?.name || "Unknown"
+                      item.product?.productName ||
+                      item.bundle?.name ||
+                      "Unknown"
                   )
                   .join(", ")}
               </p>
@@ -143,7 +158,6 @@ export default function OrdersPage() {
         )}
       </div>
 
-      {/* Upcoming Orders */}
       <div className="section">
         <h3 className="section-title">Upcoming Orders</h3>
         {orders.upcoming.length === 0 ? (
@@ -156,7 +170,9 @@ export default function OrdersPage() {
                 {order.items
                   .map(
                     (item) =>
-                      item.product?.productName || item.bundle?.name || "Unknown"
+                      item.product?.productName ||
+                      item.bundle?.name ||
+                      "Unknown"
                   )
                   .join(", ")}
               </p>
@@ -183,6 +199,32 @@ export default function OrdersPage() {
           ))
         )}
       </div>
+
+      {showFeedbackPopup && (
+        <div className="feedback-popup">
+          <h2>We Value Your Feedback</h2>
+          <p>Please share your thoughts about your recent order.</p>
+          <textarea
+            value={feedbackText}
+            onChange={(e) => setFeedbackText(e.target.value)}
+            placeholder="Enter your feedback here..."
+          />
+          <div className="feedback-buttons">
+            <button className="btn primary" onClick={submitFeedback}>
+              Submit Feedback
+            </button>
+            <button
+              className="btn danger"
+              onClick={() => {
+                setShowFeedbackPopup(false);
+                setFeedbackText("");
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

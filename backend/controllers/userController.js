@@ -244,9 +244,7 @@ exports.protect = async (req, res, next) => {
     }
     let decoded;
     try {
-      // decoded = jwt.decode(token, process.env.JWT_SECRET);
       decoded = jwt.verify(token, process.env.JWT_SECRET);
-      // console.log(decoded);  
     } catch (err) {
       if (err.name === "JsonWebTokenError") {
         return res.status(401).json({ message: "Invalid token" });
@@ -264,7 +262,6 @@ exports.protect = async (req, res, next) => {
     if (currentUser.passwordChangedAfterTokenIssue(decoded.iat)) {
       return res.status(401).json({ message: "Your password has been changed. Please log in again" });
     }
-    console.log(currentUser);
     req.user = currentUser;
     next();
   } catch (err) {
