@@ -131,7 +131,12 @@ const handleGoogleFailure = (error) => {
     setError("Google sign-in failed. Please try again.");
 };
   
-
+const handlePrivacyPolicyClick = () => {
+  window.open('/privacy_policy.html', '_blank');
+};
+const handleTermsOfUseClick = () => {
+  window.open('/terms_of_use.html', '_blank');
+};
   return (
     <GoogleOAuthProvider clientId="228358965090-n0v3qt1ub11abq17adigr3s0u0sfgsu1.apps.googleusercontent.com">
 
@@ -238,6 +243,21 @@ const handleGoogleFailure = (error) => {
             className="w-100 mt-3"
           />
         </form>
+        <p className="terms text-center mt-4">
+          By creating an account, you agree to the{' '}
+          <span
+              style={{ color: '#007bff', cursor: 'pointer' }}
+              onClick={handleTermsOfUseClick}
+            >
+              Terms Of Use
+            </span> and acknowledge the{' '}
+          <span
+              style={{ color: '#007bff', cursor: 'pointer' }}
+              onClick={handlePrivacyPolicyClick}
+            >
+              Privacy Policy
+            </span>.
+        </p>
       </div>
     </div>
     </GoogleOAuthProvider>

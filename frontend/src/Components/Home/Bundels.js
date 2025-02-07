@@ -73,6 +73,9 @@ function BundleBanner() {
 
   return (
     <div className="bundle-container">
+      <h2 className="text-center" style={{ fontSize: '1.5rem' }}>
+        OUR OFFERS
+      </h2>
       <div className="row">
         {bundles.map((bundle, index) => (
           <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
@@ -88,16 +91,16 @@ function BundleBanner() {
                 <div className="bundle-info">
                   <h2 className="bundle-title">{bundle.name}</h2>
 
-                  {/* <div className="bundle-products">
+                  { <div className="bundle-products">
                     <ul>
                       {bundle.products.map((product, idx) => (
                         <li key={idx}>
                           {product.productName} 
-                          (Qty: {product.productQuantity})
+                          {/* (Qty: {product.productQuantity}) */}
                         </li>
                       ))}
                     </ul>
-                  </div> */}
+                  </div> }
 
                   <div className="price-section">
                     <s className="original-price">
@@ -107,11 +110,11 @@ function BundleBanner() {
                       ${parseFloat(bundle.originalPrice * (1 - 0.1)).toFixed(2)}
                     </span>
                   </div>
-
-                  <div className="availability-rating">
-                    {/* <div className="availability">
+                  <div className="availability">
                       <strong>Available Quantity:</strong> {calculateBundleQuantity(bundle)}
-                    </div> */}
+                    </div> 
+                  <div className="availability-rating">
+                     
                     <div className="rating">
                      {renderRatingStars(bundle.rating)}
                     </div>

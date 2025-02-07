@@ -23,7 +23,7 @@ function FeedBack() {
       className="happy-clients d-flex align-items-center justify-content-center flex-column"
     >
       <h2
-        style={{ paddingTop: "10vh", paddingBottom: "5vh", fontSize: "1.5rem" }}
+        style={{ fontSize: "1.5rem" }}
       >
         CLIENTS FEEDBACKS
       </h2>

@@ -107,17 +107,17 @@ function App() {
       <Route
         path="/forgot-password"
         element={
-          <MainLayout>
+          <AuthLayout>
            <ForgotPassword/>
-          </MainLayout>
+          </AuthLayout>
         }
       />
       <Route
         path="/reset-password"
         element={
-          <MainLayout>
+          <AuthLayout>
            <ResetPassword/>
-          </MainLayout>
+          </AuthLayout>
         }
       />
      <Route 

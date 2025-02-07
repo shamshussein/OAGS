@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './auth.css';
 import { signIn, googlSignUp } from '../services/authService';
@@ -42,7 +42,12 @@ const SignIn = () => {
   const handleCreateAccountClick = () => {
       navigate('/signup'); 
   };
-
+  const handlePrivacyPolicyClick = () => {
+    window.open('/privacy_policy.html', '_blank');
+  };
+  const handleTermsOfUseClick = () => {
+    window.open('/terms_of_use.html', '_blank');
+  };
 const handleGoogleSuccess = async (response) => {
     try {
         const credential = response.credential; 
@@ -158,9 +163,19 @@ const handleForgotPassword = () => {
         </button>
         </form>
         <p className="terms text-center mt-4">
-          By signing in or creating a member account, you agree to the{' '}
-          <Link to="/terms">Terms of Use</Link> and acknowledge the{' '}
-          <Link to="/privacy-policy">Privacy Policy</Link>.
+          By signing in, you agree to the{' '}
+          <span
+              style={{ color: '#007bff', cursor: 'pointer' }}
+              onClick={handleTermsOfUseClick}
+            >
+              Terms Of Use
+            </span> and acknowledge the{' '}
+          <span
+              style={{ color: '#007bff', cursor: 'pointer' }}
+              onClick={handlePrivacyPolicyClick}
+            >
+              Privacy Policy
+            </span>.
         </p>
       </div>
     </div>

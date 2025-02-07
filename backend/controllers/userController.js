@@ -241,7 +241,6 @@ exports.forgotPassword = async (req, res) => {
           return res.status(404).json({ message: "User not found" });
       }
 
-      // Generate a password reset token (valid for 10 minutes)
       const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "10m" });
 
       res.json({
@@ -254,12 +253,10 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
-// Reset Password - Validate Token & Change Password
 exports.resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
 
   try {
-      // Verify JWT token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(decoded.userId);
       

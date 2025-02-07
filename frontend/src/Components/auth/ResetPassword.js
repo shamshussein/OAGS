@@ -17,26 +17,49 @@ const ResetPassword = () => {
     };
 
     return (
-        <div>
-            <h2>Reset Password</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Enter reset token"
-                    value={token}
-                    onChange={(e) => setToken(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Enter new password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">Reset Password</button>
-            </form>
-            {message && <p>{message}</p>}
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h2 className="card-title text-center">Reset Password</h2>
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="token">Reset Token</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="token"
+                                        placeholder="Enter reset token"
+                                        value={token}
+                                        onChange={(e) => setToken(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="newPassword">New Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="newPassword"
+                                        placeholder="Enter new password"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <button type="submit" className="btn btn-primary btn-block">Reset Password</button>
+                            </form>
+
+                            {message && (
+                                <div className="mt-4 alert alert-info">
+                                    <p className="mb-0">{message}</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
