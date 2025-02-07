@@ -5,6 +5,7 @@ import './auth.css';
 import { signUp, googlSignUp } from '../services/authService';
 import useTogglePassword from "Components/utils/togglePassword";
 import PasswordInput from "Components/utils/passwordInput";
+import validator from 'validator';
 
 const SignUp = () => {
   
@@ -30,6 +31,49 @@ const SignUp = () => {
   } = useTogglePassword();
 
   const handleSignUp = async () => {
+    setError('');
+
+  if (!formData.userName.trim()) {
+    setError('Username is required.');
+    return;
+  }
+  
+  if (!formData.email.trim()) {
+    setError('Email is required.');
+    return;
+  }
+  if (!validator.isEmail(formData.email)) {
+    setError('Please enter a valid email address.');
+    return;
+  }
+  
+  if (!formData.phoneNumber.trim()) {
+    setError('Phone number is required.');
+    return;
+  }
+
+  const lebanesePhoneRegex = /^(?:\+961|961)?(3|70|71|76|78|79|81|01|04|05|06|07|08|09)[0-9]{6}$/;
+  if (!lebanesePhoneRegex.test(formData.phoneNumber)) {
+    setError('Please enter a valid Lebanese phone number.');
+    return;
+  }
+  
+  if (!formData.password) {
+    setError('Password is required.');
+    return;
+  }
+  if (!validator.isStrongPassword(formData.password)) {
+    setError(
+      'Provide a strong password containing at least one uppercase letter, one lowercase letter, a number, and a symbol.'
+    );
+    return;
+  }
+  
+  if (formData.password !== formData.passwordConfirm) {
+    setError('Passwords do not match.');
+    return;
+  }
+
     try {
       const response = await signUp(formData);
       localStorage.setItem('user', JSON.stringify({ 
