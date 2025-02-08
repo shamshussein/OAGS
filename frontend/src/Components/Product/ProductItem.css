@@ -3,7 +3,6 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  height: 45vh;
   transition: opacity 0.3s ease, transform 0.3s ease; 
 }
 
@@ -35,8 +34,6 @@ margin-left: 2vh;
 }
 
 .card-body {
-  padding: 1rem;
-  margin-top: 3vh;
   margin-left: 2.5vh;
   position: relative;
   transition: opacity 0.3s ease; 

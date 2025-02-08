@@ -70,10 +70,10 @@ const ProductItem = ({ product, discountPercentage }) => {
   return (
     <div className="card mb-4 product-item-card shadow-sm">
       <div className="row g-0">
-        <div className="col-md-4">
+        <div className="col-md-3">
           <img src={imageSrc} className="img-fluid rounded-start product-item-image" alt={product.productName} />
         </div>
-        <div className="col-md-8 d-flex flex-column justify-content-between">
+        <div className="col-md-6 d-flex flex-column justify-content-between">
           <div className="card-body">
             <h5 className="card-title">{product.productName}</h5>
             {/* <p className="card-text"><strong>Category:</strong> {product.productCategory}</p> */}
