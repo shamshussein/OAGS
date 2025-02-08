@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './auth.css';
 import { signIn, googlSignUp } from '../services/authService';
 import useTogglePassword from "Components/utils/togglePassword";
 import PasswordInput from "Components/utils/passwordInput";
+
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -41,7 +42,12 @@ const SignIn = () => {
   const handleCreateAccountClick = () => {
       navigate('/signup'); 
   };
-
+  const handlePrivacyPolicyClick = () => {
+    window.open('/privacy_policy.html', '_blank');
+  };
+  const handleTermsOfUseClick = () => {
+    window.open('/terms_of_use.html', '_blank');
+  };
 const handleGoogleSuccess = async (response) => {
     try {
         const credential = response.credential; 
@@ -80,6 +86,15 @@ const handleGoogleFailure = (error) => {
   console.error("Google Sign-In Error:", error);
   setError("Google sign-in failed. Please try again.");
 };
+
+
+
+const handleForgotPassword = () => {
+  navigate("/forgot-password");
+};  
+
+
+
   return (
    <GoogleOAuthProvider clientId="228358965090-n0v3qt1ub11abq17adigr3s0u0sfgsu1.apps.googleusercontent.com">  
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
@@ -116,6 +131,12 @@ const handleGoogleFailure = (error) => {
               togglePasswordVisibility={togglePasswordVisibility}
             />
           </div>
+       
+          <button className="" onClick={handleForgotPassword}>Forgot Password?</button>
+
+
+
+
           {error && <p className="text-danger">{error}</p>}
           {success && <p className="text-success">{success}</p>}
 
@@ -142,9 +163,19 @@ const handleGoogleFailure = (error) => {
         </button>
         </form>
         <p className="terms text-center mt-4">
-          By signing in or creating a member account, you agree to the{' '}
-          <Link to="/terms">Terms of Use</Link> and acknowledge the{' '}
-          <Link to="/privacy-policy">Privacy Policy</Link>.
+          By signing in, you agree to the{' '}
+          <span
+              style={{ color: '#007bff', cursor: 'pointer' }}
+              onClick={handleTermsOfUseClick}
+            >
+              Terms Of Use
+            </span> and acknowledge the{' '}
+          <span
+              style={{ color: '#007bff', cursor: 'pointer' }}
+              onClick={handlePrivacyPolicyClick}
+            >
+              Privacy Policy
+            </span>.
         </p>
       </div>
     </div>

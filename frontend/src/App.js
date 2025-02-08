@@ -13,6 +13,8 @@ import EditProfile from 'Components/layout/NavBar/EditProfile';
 import Checkout from 'pages/checkout/Checkout';
 import Orders from 'pages/order/Orders';
 import ChangePassword from 'Components/layout/NavBar/ChangePassword';
+import ForgotPassword from 'Components/auth/ForgotPassword';
+import ResetPassword from 'Components/auth/ResetPassword';
 
 function App() {
   return (
@@ -99,6 +101,22 @@ function App() {
         element={
           <AuthLayout>
             <SignIn />
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <AuthLayout>
+           <ForgotPassword/>
+          </AuthLayout>
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <AuthLayout>
+           <ResetPassword/>
           </AuthLayout>
         }
       />

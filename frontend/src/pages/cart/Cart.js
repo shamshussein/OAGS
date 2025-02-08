@@ -19,7 +19,6 @@ const Cart = () => {
       const response = await axios.get(
         `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
       );
-      console.log("ress: " , response.data.cartItems);
       setCartItems(response.data.cartItems || []);
       setTotalPrice(response.data.totalPrice || 0);
     } catch (error) {
@@ -190,15 +189,15 @@ const Cart = () => {
                   {cartItems.length > 0 && (
                     <button
                       className="btn btn-success mt-3 mb-2 ml-2 mr-2 w-100"
-                      style={{ backgroundColor: "green", border: "none" }}
+                      style={{ backgroundColor: "", border: "none" }}
                       onClick={handleProceedToCheckout}
                     >
                       Proceed to Checkout
                     </button>
                   )}
                   <button
-                    className="btn btn-success text-center mb-5 ml-2 mr-2 w-100"
-                    style={{ backgroundColor: "red", border: "none" }}
+                    className="btn btn-danger text-center mb-5 ml-2 mr-2 w-100"
+                    style={{ backgroundColor: "", border: "none" }}
                     onClick={handleClearCart}
                   >
                     Clear Cart

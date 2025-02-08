@@ -1,6 +1,5 @@
-/* Checkout Page Layout */
 .checkout-container {
-    max-width: 1200px; /* Increase the overall width */
+    max-width: 1200px; 
     margin: auto;
     padding: 30px;
  
@@ -11,17 +10,14 @@
     gap: 40px;
 }
 
-/* Left Side - Shipping Information */
 .shipping-info {
     flex: 1.7;
-
     background: white;
     padding: 25px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Right Side - Checkout Items */
 .right-side {
     flex: 2;
     display: flex;
@@ -33,7 +29,6 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Checkout Items */
 .checkout-items {
     background: white;
     padding: 20px;
@@ -41,15 +36,13 @@
  
 }
 
-/* Order Summary inside Checkout Items */
 .order-summary {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    margin-top: 50px; /* Ensure it stays below the checkout items */
+    margin-top: 50px;
 }
 
-/* Cart Items */
 .cart-item {
     display: flex;
     justify-content: space-between;
@@ -66,8 +59,8 @@
 }
 
 .original-price {
-    text-decoration: line-through;
-    color: red;
+    /* text-decoration: line-through; */
+    /* color: red; */
     margin-right: 5px;
 }
 
@@ -87,24 +80,22 @@
     color: #d9534f;
 }
 
-/* Shipping Information Form */
 .shipping-info h3 {
     font-size: 20px;
     margin-bottom: 15px;
 }
 
-/* Align Labels and Inputs side by side */
 .shipping-info label {
     font-size: 14px;
     font-weight: 500;
     display: inline-block;
     margin-bottom: 5px;
-    width: 150px; /* Adjust width for better spacing */
+    width: 150px;
 }
 
 .shipping-info input,
 .shipping-info select {
-    width: calc(100% - 160px); /* Ensure inputs take the remaining space */
+    width: calc(100% - 160px); 
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
@@ -118,7 +109,6 @@
     margin-bottom: 20px;
 }
 
-/* Checkout Button */
 .checkout-button {
     width: 100%;
     background: #c7d6cf;
@@ -135,7 +125,6 @@
     background: #9cada5;
 }
 
-/* Order Status */
 .order-status {
     background: #eaffea;
     padding: 20px;
@@ -150,7 +139,6 @@
     font-weight: bold;
 }
 
-/* Empty Cart Message */
 .empty-cart {
     text-align: center;
     font-size: 16px;
@@ -158,14 +146,12 @@
     margin-top: 20px;
 }
 
-/* Error Message */
 .error-message {
     color: red;
     font-size: 14px;
     margin-top: 5px;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .checkout-container {
         flex-direction: column;

@@ -4,6 +4,9 @@
     border: 1px solid #ddd;
     border-radius: 8px;
   }
+
+
+  
   
   .sidebar h5 {
     font-size: 18px;
@@ -37,12 +40,21 @@
   }
   
   .mt-4 .btn-secondary {
-    background-color: #007bff;
+    background-color: #c7d6cf;
+    border: none;
+  }
+
+  .mt-4 .btn-secondary:hover {
+    background-color: #9db3a8;
     border: none;
   }
   
   .btn-secondary {
-    background-color: #6c757d;
+    background-color: #c7d6cf;
     border: none;
   }
   
+  .btn-secondary {
+    background-color: #9db3a8;
+    border: none;
+  }

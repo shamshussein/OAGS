@@ -10,21 +10,13 @@ const orderSchema = new Schema(
         },
         items: [
             {
-                product: {
-                    type: Schema.Types.ObjectId,
-                    ref: "Product",
-                    required: true,
-                },
-                quantity: {
-                    type: Number,
-                    required: true,
-                    min: 1,
-                },
-                price: {
-                    type: Number,
-                    required: true,
-                },
-            },
+                product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: false },
+                bundle: { type: mongoose.Schema.Types.ObjectId, ref: "Bundle", required: false },
+                quantity: { type: Number, required: true },
+                price: { type: Number, required: true },
+                name: { type: String, required: true },
+                type: { type: String, enum: ["product", "bundle"], required: true },
+            }
         ],
         totalAmount: {
             type: Number,
@@ -42,7 +34,7 @@ const orderSchema = new Schema(
         },
     },
     {
-        timestamps: true, // Automatically adds createdAt & updatedAt
+        timestamps: true,
     }
 );
 

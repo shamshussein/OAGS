@@ -72,4 +72,32 @@
   .btn.danger:hover {
     background: #a71d2a;
   }
+  .feedback-popup {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    max-width: 90%;
+  }
+  
+  .feedback-popup h2 {
+    margin-top: 0;
+  }
+  
+  .feedback-popup textarea {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    padding: 10px;
+  }
+  
+  .feedback-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
   

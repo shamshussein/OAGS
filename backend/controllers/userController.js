@@ -232,6 +232,49 @@ exports.removeProfilePicture = async (req, res) => {
   }
 };
 
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+
+      const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "10m" });
+
+      res.json({
+          message: "Copy this token and use it to reset your password.",
+          resetToken
+      });
+
+  } catch (error) {
+      res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.userId);
+      
+      if (!user) {
+          return res.status(400).json({ message: "Invalid or expired token" });
+      }
+      user.password = newPassword;
+      await user.save();
+      const newToken = signToken(user._id);
+
+      res.json({ message: "Password reset successful. You can now log in.", token : newToken });
+
+  } catch (error) {
+      res.status(400).json({ message: "Invalid or expired token" });
+  }
+
+};
+
 // Middleware 
 exports.protect = async (req, res, next) => {
   try {
@@ -244,8 +287,7 @@ exports.protect = async (req, res, next) => {
     }
     let decoded;
     try {
-      decoded = jwt.decode(token, process.env.JWT_SECRET);
-      console.log(decoded);  
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
       if (err.name === "JsonWebTokenError") {
         return res.status(401).json({ message: "Invalid token" });
@@ -263,7 +305,6 @@ exports.protect = async (req, res, next) => {
     if (currentUser.passwordChangedAfterTokenIssue(decoded.iat)) {
       return res.status(401).json({ message: "Your password has been changed. Please log in again" });
     }
-    console.log(currentUser);
     req.user = currentUser;
     next();
   } catch (err) {
