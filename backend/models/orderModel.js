@@ -32,8 +32,8 @@ const orderSchema = new Schema(
         },
         shippingDetails: {
             address: { type: String, required: true },
-            city: { type: String, required: true },
-            postalCode: { type: String, required: true },
+            city: { type: String, required: false },
+            postalCode: { type: String, required: false },
         },
         orderStatus: {
             type: String,

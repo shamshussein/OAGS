@@ -89,7 +89,7 @@ const CheckoutPage = () => {
             const response = await axios.post("http://localhost:3000/api/checkout",{
                 cart: cartItems,
                 shippingDetails,
-            },{headers:{Authorization:`Bearer ${token}`}});
+            },{headers:{Authorization:`Bearer ${token }`}});
 
             setOrderStatus(response.data);
         } catch (error) {
