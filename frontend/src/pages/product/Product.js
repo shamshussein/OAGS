@@ -12,7 +12,6 @@ function Product() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedPriceRange, setSelectedPriceRange] = useState('');
-
   const productsPerPage = 6;
   const discountPercentage = 10;
 
