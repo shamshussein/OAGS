@@ -59,13 +59,9 @@
 }
 
 .original-price {
-    /* text-decoration: line-through; */
-    /* color: red; */
-    margin-right: 5px;
-}
-
-.discounted-price {
-    color: green;
+     text-decoration: none; 
+     color: green;
+     margin-right: 5px;
 }
 
 .checkout-items p {

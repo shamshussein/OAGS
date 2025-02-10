@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
-import "styles/Orders.css";
 import axios from "axios";
+import "styles/Orders.css";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState({ history: [], upcoming: [] });
@@ -16,23 +16,23 @@ export default function OrdersPage() {
         console.error("User is not logged in or userID is missing.");
         return;
       }
-  
+
       const response = await axios.get(
         `http://localhost:3000/api/checkout/getOrders?userId=${user.userID}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-  
+
       const fetchedOrders = response.data.orders || [];
-  
+
       const history = fetchedOrders.filter(
         (order) => order.orderStatus === "completed"
       );
       const upcoming = fetchedOrders.filter(
         (order) => order.orderStatus === "pending"
       );
-  
+
       setOrders({ history, upcoming });
       setLoading(false);
     } catch (error) {
@@ -47,6 +47,11 @@ export default function OrdersPage() {
   }, [fetchOrders]);
 
   const reorder = async (order) => {
+    const userConfirmed = window.confirm(
+      "Are you sure you want to reorder this order? This will place a new order with the same items."
+    );
+    if (!userConfirmed) return; 
+  
     try {
       await axios.post(
         "/api/checkout/reorder",
@@ -64,6 +69,7 @@ export default function OrdersPage() {
       toast.error("Reorder failed.");
     }
   };
+  
 
   const cancelOrder = async (orderId) => {
     try {
@@ -78,7 +84,7 @@ export default function OrdersPage() {
         }
       );
       fetchOrders();
-      toast.success("Order Canceled");
+      toast.success("Order canceled");
     } catch (error) {
       toast.error("Failed to cancel order.");
     }
@@ -96,7 +102,7 @@ export default function OrdersPage() {
           },
         }
       );
-      toast.success("Order Completed");
+      toast.success("Order completed");
       fetchOrders();
       setShowFeedbackPopup(true);
     } catch (error) {
@@ -123,9 +129,9 @@ export default function OrdersPage() {
 
   return (
     <div className="orders-container">
-      <h2 className="title">Orders</h2>
+      <h2 className="title">Your Orders</h2>
 
-      <div className="section">
+      <div className="orders-section">
         <h3 className="section-title">Order History</h3>
         {orders.history.length === 0 ? (
           <p className="empty-text">No previous orders.</p>
@@ -158,7 +164,7 @@ export default function OrdersPage() {
         )}
       </div>
 
-      <div className="section">
+      <div className="orders-section">
         <h3 className="section-title">Upcoming Orders</h3>
         {orders.upcoming.length === 0 ? (
           <p className="empty-text">No upcoming orders.</p>
@@ -180,7 +186,7 @@ export default function OrdersPage() {
                 <strong>Status:</strong> {order.orderStatus}
               </p>
               {order.orderStatus === "pending" && (
-                <>
+                <div className="order-actions">
                   <button
                     className="btn danger"
                     onClick={() => cancelOrder(order._id)}
@@ -193,7 +199,7 @@ export default function OrdersPage() {
                   >
                     Complete Order
                   </button>
-                </>
+                </div>
               )}
             </div>
           ))

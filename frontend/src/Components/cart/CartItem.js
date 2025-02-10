@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CartItem.css";
-import { Plus, Dash, X, Check } from "react-bootstrap-icons";
+import { Plus, Dash, Check } from "react-bootstrap-icons";
 
 const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
   const { name, image, quantity, itemPrice, itemId } = item;
@@ -38,62 +38,72 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
     const confirmRemoval = window.confirm(
       `Are you sure you want to remove "${name}" from your cart?`
     );
-
     if (confirmRemoval) {
       onRemoveItem(itemId);
     }
   };
 
   return (
-    <li className="list-group-item d-flex align-items-center p-3 rounded shadow-sm">
-      <img
-        src={image || "https://via.placeholder.com/100"}
-        alt={name}
-        className="rounded me-3"
-        style={{ width: "100px", height: "100px", objectFit: "contain" }}
-      />
-      <div className="d-flex align-items-center flex-grow-1 justify-content-between">
-        <h5 className="fw-bold mb-0 me-3">{name}</h5>
-        <div className="d-flex align-items-center me-3">
-          <span className="text-decoration-line-through text-danger fw-bold me-2">
-            ${itemPrice.toFixed(2)}
-          </span>
-          <span className="text-success fw-bold">${discountedPrice.toFixed(2)}</span>
+    <div className="card mb-4 cart-item">
+      <div className="row g-0">
+        <div className="col-md-3 d-flex align-items-center justify-content-center">
+          <img
+            src={image || "https://via.placeholder.com/150"}
+            alt={name}
+            className="img-fluid p-3 product-image"
+          />
         </div>
-        <div className="d-flex align-items-center">
-          <button
-            onClick={handleDecrement}
-            className="btn btn-light border rounded-circle d-flex align-items-center justify-content-center me-2"
-            style={{ width: "40px", height: "40px" }}
-          >
-            <Dash size={24} />
-          </button>
-          <span className="fw-bold mx-2">{itemQuantity}</span>
-          <button
-            onClick={handleIncrement}
-            className="btn btn-light border rounded-circle d-flex align-items-center justify-content-center ms-2"
-            style={{ width: "40px", height: "40px" }}
-          >
-            <Plus size={24} />
-          </button>
+        <div className="col-md-9">
+          <div className="card-body d-flex flex-column justify-content-between h-100">
+            <div>
+              <h5 className="card-title fw-bold">{name}</h5>
+              <p className="card-text mb-1">
+                <span className="text-decoration-line-through text-danger me-2 old-price">
+                  ${itemPrice.toFixed(2)}
+                </span>
+                <span className="text-success fw-bold new-price">
+                  ${discountedPrice.toFixed(2)}
+                </span>
+              </p>
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center quantity-controls">
+                <button
+                  onClick={handleDecrement}
+                  className="btn btn-outline-secondary rounded-circle me-2"
+                  style={{ width: "45px", height: "40px" }}
+                >
+                  <Dash size={20} />
+                </button>
+                <span className="fw-bold item-quantity">{itemQuantity}</span>
+                <button
+                  onClick={handleIncrement}
+                  className="btn btn-outline-secondary rounded-circle ms-2"
+                  style={{ width: "45px", height: "40px" }}
+                >
+                  <Plus size={20} />
+                </button>
+                {isEditing && (
+                  <button
+                    onClick={handleSave}
+                    className="btn btn-outline-success rounded-circle ms-3"
+                    style={{ width: "45px", height: "40px" }}
+                  >
+                    <Check size={20} />
+                  </button>
+                )}
+              </div>
+              <button
+                  onClick={handleRemove}
+                  className="btn btn-danger remove-btn"
+                >
+                  Remove
+                </button>
+            </div>
+          </div>
         </div>
-        {isEditing && (
-          <button className="btn btn-outline-success border-0 d-flex align-items-center justify-content-center rounded-circle ms-3" 
-          style={{ width: "40px", height: "40px" }}
-          onClick={handleSave}>
-
-            <Check size={24} />
-          </button>
-        )}
       </div>
-      <button
-        onClick={handleRemove}
-        className="btn btn-outline-danger border-0 d-flex align-items-center justify-content-center rounded-circle ms-3"
-        style={{ width: "40px", height: "40px" }}
-      >
-        <X size={26} />
-      </button>
-    </li>
+    </div>
   );
 };
 

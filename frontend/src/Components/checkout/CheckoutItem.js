@@ -12,7 +12,6 @@ const CheckoutItems = ({ cart }) => {
             <ul>
                 {cart.map((item) => {
                     if (!item.itemId) return null;
-
                     return (
                         <li key={item.itemId._id} className="cart-item">
                             <span className="item-name">{item.name} (x{item.quantity})</span>

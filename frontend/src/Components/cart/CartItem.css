@@ -1,17 +1,40 @@
-.list-group-item {
+.cart-item {
   border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.list-group-item:hover {
-  background-color: #e2e2e2;
+.cart-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-img {
-  transition: transform 0.2s ease-in-out;
+.product-image {
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: contain;
 }
 
-img:hover {
-  transform: scale(1.05);
+.old-price {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.new-price {
+  font-size: 1.2rem;
+}
+.item-quantity{
+  margin-top: 10px;
+}
+/* .quantity-controls button {
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.quantity-controls button:hover {
+  transform: scale(1.1);
+} */
+
+@media (max-width: 576px) {
+  .cart-item .card-body {
+    padding: 1rem;
+  }
 }
