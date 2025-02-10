@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from 'Components/layout/NavBar/Header';
-import Footer from 'Components/layout/Footer/Footer';
+import Header from 'components/layout/NavBar/Header';
+import Footer from 'components/layout/Footer/Footer';
 
 const MainLayout = ({ children }) => {
   return (
