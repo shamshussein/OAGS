@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import Sidebar from 'components/product/Sidebar';
-import ProductList from 'components/product/ProductList';
+import Sidebar from 'Components/product/Sidebar';
+import ProductList from 'Components/product/ProductList';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import API_BASE_URL from "config";

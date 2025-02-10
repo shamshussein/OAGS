@@ -1,9 +1,9 @@
 import React from 'react';
 import 'styles/Hero.css';
-import Banner from 'components/home/Banner';
-import Cares from 'components/home/Cares';
-import Bundels from 'components/home/Bundels';
-import FeedBack from 'components/home/FeedBack';
+import Banner from 'Components/home/Banner';
+import Cares from 'Components/home/Cares';
+import Bundels from 'Components/home/Bundels';
+import FeedBack from 'Components/home/FeedBack';
 
 function Hero() {
   return (

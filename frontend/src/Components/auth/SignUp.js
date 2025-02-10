@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './auth.css';
 import { signUp, googlSignUp } from '../services/authService';
-import useTogglePassword from "components/utils/togglePassword";
-import PasswordInput from "components/utils/passwordInput";
+import useTogglePassword from "Components/utils/togglePassword";
+import PasswordInput from "Components/utils/passwordInput";
 import validator from 'validator';
 
 const SignUp = () => {

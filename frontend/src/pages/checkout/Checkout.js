@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import CheckoutItems from "components/checkout/CheckoutItem";
+import CheckoutItems from "Components/checkout/CheckoutItem";
 import "styles/Checkout.css";
 
 const CheckoutPage = () => {
