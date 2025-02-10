@@ -8,7 +8,7 @@ const userRouter = require("./routers/userRouter");
 const feedbackRouter = require("./routers/feedbackRouter");
 const bundlesRouter = require("./routers/bundlesRouter");
 const cartRouter = require("./routers/cartRouter");
-const checkoutRouter = require("./routers/checkoutRouter"); // ✅ Added Checkout Router
+const checkoutRouter = require("./routers/checkoutRouter");
 
 const DB = require("./database").connectDB;
 

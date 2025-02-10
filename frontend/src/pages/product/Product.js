@@ -3,6 +3,7 @@ import Sidebar from 'Components/product/Sidebar';
 import ProductList from 'Components/product/ProductList';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import API_BASE_URL from "config";
 
 function Product() {
   const [productsByCategory, setProductsByCategory] = useState({});
@@ -24,7 +25,7 @@ function Product() {
   const fetchProducts = useCallback(
     async (category, page = 1, append = false) => {
       try {
-        const response = await axios.get("http://localhost:3000/api/products/getAllProducts", {
+        const response = await axios.get(`${API_BASE_URL}/api/products/getAllProducts`, {
           params: {
             page,
             limit: productsPerPage,
