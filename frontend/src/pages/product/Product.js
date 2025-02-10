@@ -34,7 +34,6 @@ function Product() {
             priceRange: selectedPriceRange 
           },
         });
-
         setProductsByCategory((prev) => ({
           ...prev,
           [category]: append
