@@ -23,7 +23,7 @@ const ForgotPassword = () => {
                         <div className="card-body">
                             <h2 className="card-title text-center">Forgot Password</h2>
                             <form onSubmit={handleSubmit}>
-                                <div className="form-group">
+                                <div className="form-group mb-3">
                                     <label htmlFor="email">Email address</label>
                                     <input
                                         type="email"

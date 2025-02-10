@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import PasswordInput from 'Components/utils/passwordInput';
+import useTogglePassword from 'Components/utils/togglePassword';
 const ResetPassword = () => {
     const [token, setToken] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
+    const {
+        showPassword,
+        togglePasswordVisibility,
+      } = useTogglePassword();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,14 +43,13 @@ const ResetPassword = () => {
                                 </div>
                                 <div className="form-group mb-3">
                                     <label htmlFor="newPassword">New Password</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
+                                    <PasswordInput
                                         id="newPassword"
                                         placeholder="Enter new password"
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
-                                        required
+                                        showPassword={showPassword}
+                                        togglePasswordVisibility={togglePasswordVisibility}
                                     />
                                 </div>
                                 <button type="submit" className="btn btn-primary btn-block">Reset Password</button>

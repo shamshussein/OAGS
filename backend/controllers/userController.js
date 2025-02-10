@@ -8,6 +8,8 @@ const mongoose = require("mongoose");
 const Cart = require("../models/cartModel");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
+const Order = require("../models/orderModel");
+const Feedback = require("../models/feedbackModel");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -171,6 +173,8 @@ exports.deleteUser = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
     await Cart.deleteMany({ cartOwner: userID });
+    await Order.deleteMany({ orderOwner: userID });
+    await Feedback.deleteMany({ user: userID });
 
     res.status(200).json({ message: "User deleted successfully" });
   } catch (err) {

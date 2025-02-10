@@ -234,7 +234,7 @@ const handleTermsOfUseClick = () => {
           >
             Sign Up
           </button>
-          <p className="text-center mb-4">Or</p>
+          <p className="text-center">Or</p>
 
           <GoogleLogin
             onSuccess={handleGoogleSuccess}

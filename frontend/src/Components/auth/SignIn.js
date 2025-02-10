@@ -86,15 +86,9 @@ const handleGoogleFailure = (error) => {
   console.error("Google Sign-In Error:", error);
   setError("Google sign-in failed. Please try again.");
 };
-
-
-
 const handleForgotPassword = () => {
   navigate("/forgot-password");
 };  
-
-
-
   return (
    <GoogleOAuthProvider clientId="228358965090-n0v3qt1ub11abq17adigr3s0u0sfgsu1.apps.googleusercontent.com">  
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
@@ -132,10 +126,7 @@ const handleForgotPassword = () => {
             />
           </div>
        
-          <button className="" onClick={handleForgotPassword}>Forgot Password?</button>
-
-
-
+          <button className="mb-3" onClick={handleForgotPassword}>Forgot Password?</button>
 
           {error && <p className="text-danger">{error}</p>}
           {success && <p className="text-success">{success}</p>}
@@ -153,8 +144,7 @@ const handleForgotPassword = () => {
                      useOneTap
                      className="w-100 mt-3"
                    />
-        <p className="text-center mb-4">Or</p>
-
+        <p className="text-center mt-3">Or</p>
           <button
             type="button"
             className="btn btn-outline-dark w-100 mb-3"

@@ -27,7 +27,7 @@ const PasswordInput = ({
         style={{
           position: "absolute",
           right: "0",
-          top: "30%",
+          top: "50%",
           transform: "translateY(-50%)",
           border: "none",
           background: "transparent",
