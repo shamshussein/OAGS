@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import MainLayout from 'Components/Layout/MainLayout';
-import AuthLayout from 'Components/Layout/AuthLayout';
+import MainLayout from 'Components/layout/MainLayout';
+import AuthLayout from 'Components/layout/AuthLayout';
 import Hero from 'pages/home/Hero';
 import Product from 'pages/product/Product';
 import SignIn from 'Components/auth/SignIn';
@@ -9,10 +9,10 @@ import Cart from 'pages/cart/Cart';
 import SignUp from 'Components/auth/SignUp';
 import ContactUs from 'pages/contact/ContactUs';
 import AboutUs from 'pages/about/AboutUs';
-import EditProfile from 'Components/Layout/NavBar/EditProfile';
+import EditProfile from 'Components/layout/NavBar/EditProfile';
 import Checkout from 'pages/checkout/Checkout';
 import Orders from 'pages/order/Orders';
-import ChangePassword from 'Components/Layout/NavBar/ChangePassword';
+import ChangePassword from 'Components/layout/NavBar/ChangePassword';
 import ForgotPassword from 'Components/auth/ForgotPassword';
 import ResetPassword from 'Components/auth/ResetPassword';
 
