@@ -6,6 +6,12 @@ const bundleSchema = new mongoose.Schema({
     originalPrice: { type: Number, required: true },
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true }],
     imagebanner: { type: String, required: true},
+    description: {
+        type: String,
+        trim: true,
+        minlength: 3,
+        maxLength: 255,
+    },
     rating: { 
         type: Number, 
         default: 0,

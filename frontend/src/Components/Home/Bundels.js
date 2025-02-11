@@ -92,16 +92,17 @@ function BundleBanner() {
                 <div className="bundle-info">
                   <h2 className="bundle-title">{bundle.name}</h2>
 
-                  { <div className="bundle-products">
+                  {/* { <div className="bundle-products">
                     <ul>
                       {bundle.products.map((product, idx) => (
                         <li key={idx}>
                           {product.productName} 
-                          {/* (Qty: {product.productQuantity}) */}
+                          (Qty: {product.productQuantity})
                         </li>
                       ))}
                     </ul>
-                  </div> }
+                  </div> } */}
+                  <p className="description-section">{bundle.description}</p><br />
 
                   <div className="price-section">
                     <s className="original-price">
