@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import API_BASE_URL from "config";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -8,7 +9,7 @@ const ForgotPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/users/forgotPassword', { email });
+            const response = await axios.post(`${API_BASE_URL}/api/users/forgotPassword`, { email });
             setResetToken(response.data.resetToken); 
         } catch (error) {
             alert('Error generating reset token');

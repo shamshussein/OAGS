@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import PasswordInput from 'Components/Utils/PasswordInput';
 import useTogglePassword from 'Components/Utils/TogglePassword';
+import API_BASE_URL from "config";
+
 const ResetPassword = () => {
     const [token, setToken] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -14,7 +16,7 @@ const ResetPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/users/resetPassword', { token, newPassword });
+            const response = await axios.post(`${API_BASE_URL}/api/users/resetPassword`, { token, newPassword });
             setMessage(response.data.message);
         } catch (error) {
             setMessage('Error resetting password');

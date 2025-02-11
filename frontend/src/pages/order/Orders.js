@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "styles/Orders.css";
+import API_BASE_URL from "config";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState({ history: [], upcoming: [] });
@@ -18,7 +19,7 @@ export default function OrdersPage() {
       }
 
       const response = await axios.get(
-        `http://localhost:3000/api/checkout/getOrders?userId=${user.userID}`,
+        `${API_BASE_URL}/api/checkout/getOrders?userId=${user.userID}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -54,7 +55,7 @@ export default function OrdersPage() {
   
     try {
       await axios.post(
-        "/api/checkout/reorder",
+        `${API_BASE_URL}/api/checkout/reorder`,
         { orderId: order._id },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -74,7 +75,7 @@ export default function OrdersPage() {
   const cancelOrder = async (orderId) => {
     try {
       await axios.post(
-        `/api/checkout/cancelOrder/${orderId}`,
+       `${API_BASE_URL}/api/checkout/cancelOrder/${orderId}`,
         {},
         {
           headers: {
@@ -93,7 +94,7 @@ export default function OrdersPage() {
   const completeOrder = async (orderId) => {
     try {
       await axios.post(
-        `/api/checkout/completedOrder/${orderId}`,
+        `${API_BASE_URL}/api/checkout/completedOrder/${orderId}`,
         {},
         {
           headers: {
@@ -113,7 +114,7 @@ export default function OrdersPage() {
   const submitFeedback = async () => {
     try {
       await axios.post(
-        "/api/feedbacks/sendFeedback",
+        `${API_BASE_URL}/api/feedbacks/sendFeedback`,
         { feedback: feedbackText },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

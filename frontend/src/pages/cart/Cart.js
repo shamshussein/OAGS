@@ -3,6 +3,7 @@ import CartItem from "Components/Cart/CartItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import API_BASE_URL from "config";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -17,7 +18,7 @@ const Cart = () => {
         return; 
       }
       const response = await axios.get(
-        `http://localhost:3000/api/carts/getCartItems?userId=${user.userID}`
+        `${API_BASE_URL}/api/carts/getCartItems?userId=${user.userID}`
       );
       setCartItems(response.data.cartItems || []);
       setTotalPrice(response.data.totalPrice || 0);
@@ -41,7 +42,7 @@ const Cart = () => {
         return;
       }
       await axios.post(
-        `http://localhost:3000/api/carts/removeItem`,
+        `${API_BASE_URL}/api/carts/removeItem`,
         { itemId },
         {
           headers: {
@@ -68,7 +69,7 @@ const Cart = () => {
         return;
       }
       await axios.post(
-        `http://localhost:3000/api/carts/clearCart`,
+        `${API_BASE_URL}/api/carts/clearCart`,
         { userID: user.userID },
         {
           headers: {
@@ -93,7 +94,7 @@ const Cart = () => {
         return;
       }
       const response = await axios.post(
-        "http://localhost:3000/api/carts/updateCartItemQuantity",
+        `${API_BASE_URL}/api/carts/updateCartItemQuantity`,
         { itemId, newQuantity },
         {
           headers: {

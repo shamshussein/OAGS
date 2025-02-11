@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './bundles.css';
+import API_BASE_URL from "config";
 
 function BundleBanner() {
   const [bundles, setBundles] = useState([]);
@@ -8,7 +9,7 @@ function BundleBanner() {
   useEffect(() => {
     const fetchBundles = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/bundles/');
+        const response = await axios.get(`${API_BASE_URL}/api/bundles/`);
         setBundles(response.data);
       } catch (err) {
         console.error("Error fetching bundles:", err.message);
@@ -28,7 +29,7 @@ function BundleBanner() {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/api/carts/addBundleToCart",
+        `${API_BASE_URL}/api/carts/addBundleToCart`,
         { bundleId },
         {
           headers: {

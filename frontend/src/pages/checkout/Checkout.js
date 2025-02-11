@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CheckoutItems from "Components/Checkout/CheckoutItem";
 import "styles/Checkout.css";
+import API_BASE_URL from "config";
 
 const CheckoutPage = () => {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ const CheckoutPage = () => {
     useEffect(() => {
         const fetchCartItems = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/carts/getCartItems`, {
+                const response = await axios.get(`${API_BASE_URL}/api/carts/getCartItems`, {
                     params: { userId: userData.userID },
                 });
 
@@ -76,7 +77,7 @@ const CheckoutPage = () => {
     
         try {
             const response = await axios.post(
-                "http://localhost:3000/api/checkout",
+                `${API_BASE_URL}/api/checkout`,
                 { cart: cartItems, shippingDetails },
                 { headers: { Authorization: `Bearer ${userData.token}` } }
             );

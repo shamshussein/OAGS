@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_BASE_URL from "config";
 
 function FeedBack() {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -7,7 +8,7 @@ function FeedBack() {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/feedbacks/getFeedbacks");
+        const response = await axios.get(`${API_BASE_URL}/api/feedbacks/getFeedbacks`);
         setFeedbacks(response.data.data);
       } catch (err) {
         console.error("Error fetching feedbacks:", err);
