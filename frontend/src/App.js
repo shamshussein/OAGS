@@ -4,17 +4,17 @@ import MainLayout from 'Components/Layout/MainLayout';
 import AuthLayout from 'Components/Layout/AuthLayout';
 import Hero from 'pages/home/Hero';
 import Product from 'pages/product/Product';
-import SignIn from 'Components/auth/SignIn';
+import SignIn from 'Components/Auth/SignIn';
 import Cart from 'pages/cart/Cart'; 
-import SignUp from 'Components/auth/SignUp';
+import SignUp from 'Components/Auth/SignUp';
 import ContactUs from 'pages/contact/ContactUs';
 import AboutUs from 'pages/about/AboutUs';
 import EditProfile from 'Components/Layout/NavBar/EditProfile';
 import Checkout from 'pages/checkout/Checkout';
 import Orders from 'pages/order/Orders';
 import ChangePassword from 'Components/Layout/NavBar/ChangePassword';
-import ForgotPassword from 'Components/auth/ForgotPassword';
-import ResetPassword from 'Components/auth/ResetPassword';
+import ForgotPassword from 'Components/Auth/ForgotPassword';
+import ResetPassword from 'Components/Auth/ResetPassword';
 
 function App() {
   return (

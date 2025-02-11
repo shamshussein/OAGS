@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faTrash, faUserCircle, faKey, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import "./EditProfile.css"; // Custom CSS for additional styling
+import "./EditProfile.css";
 
 function EditProfile() {
   const [profilePicture, setProfilePicture] = useState(null);
