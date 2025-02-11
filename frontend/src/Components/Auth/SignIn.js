@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './auth.css';
-import { signIn, googlSignUp } from '../Services/AuthService';
+import { signIn, googlSignUp } from 'Components/Services/AuthService';
 import useTogglePassword from "Components/Utils/TogglePassword";
 import PasswordInput from "Components/Utils/PasswordInput";
 
