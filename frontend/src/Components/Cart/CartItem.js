@@ -4,7 +4,7 @@ import "./CartItem.css";
 import { Plus, Dash, Check } from "react-bootstrap-icons";
 
 const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
-  const { name, image, quantity, itemPrice, itemId } = item;
+  const { name, image, quantity, itemPrice, description, itemId } = item;
   const [itemQuantity, setItemQuantity] = useState(quantity);
   const [isEditing, setIsEditing] = useState(false);
   const discountPercentage = 10;
@@ -58,6 +58,7 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
             <div>
               <h5 className="card-title fw-bold">{name}</h5>
               <p className="card-text mb-1">
+              <h6 className="text-muted fw-bold">{description}</h6>
                 <span className="text-decoration-line-through text-danger me-2 old-price">
                   ${itemPrice.toFixed(2)}
                 </span>
@@ -67,31 +68,68 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
               </p>
             </div>
             <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center quantity-controls">
-                <button
-                  onClick={handleDecrement}
-                  className="btn btn-outline-secondary rounded-circle me-2"
-                  style={{ width: "45px", height: "40px" }}
-                >
-                  <Dash size={20} />
-                </button>
-                <span className="fw-bold item-quantity">{itemQuantity}</span>
-                <button
-                  onClick={handleIncrement}
-                  className="btn btn-outline-secondary rounded-circle ms-2"
-                  style={{ width: "45px", height: "40px" }}
-                >
-                  <Plus size={20} />
-                </button>
-                {isEditing && (
-                  <button
-                    onClick={handleSave}
-                    className="btn btn-outline-success rounded-circle ms-3"
-                    style={{ width: "45px", height: "40px" }}
-                  >
-                    <Check size={20} />
-                  </button>
-                )}
+            <div className="d-flex align-items-center gap-3 quantity-controls">
+            {/* Decrement Button */}
+            <button
+              onClick={handleDecrement}
+              className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+              style={{
+                width: "45px",
+                height: "45px",
+                fontSize: "1.2rem",
+                borderWidth: "2px",
+                transition: "all 0.3s ease-in-out",
+              }}
+             
+            >
+              <Dash size={22} />
+            </button>
+
+            {/* Quantity Display */}
+            <span
+              className="fw-bold text-center"
+              style={{
+                minWidth: "40px",
+                fontSize: "1rem",
+                color: "#333",
+              }}
+            >
+              {itemQuantity}
+            </span>
+
+            {/* Increment Button */}
+            <button
+              onClick={handleIncrement}
+              className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+              style={{
+                width: "45px",
+                height: "45px",
+                fontSize: "1.2rem",
+                borderWidth: "2px",
+                transition: "all 0.3s ease-in-out",
+              }}
+             
+            >
+              <Plus size={22} />
+            </button>
+
+            {isEditing && (
+            <button
+              onClick={handleSave}
+              className="btn btn-outline-success rounded-circle d-flex align-items-center justify-content-center shadow-sm ms-3"
+              style={{
+                width: "45px",
+                height: "45px",
+                fontSize: "1.2rem",
+                borderWidth: "2px",
+                transition: "all 0.3s ease-in-out",
+              }}
+    
+            >
+              <Check size={22} />
+            </button>
+          )}
+
               </div>
               <button
                   onClick={handleRemove}

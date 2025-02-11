@@ -155,7 +155,7 @@ export default function OrdersPage() {
                 {new Date(order.createdAt).toLocaleDateString()}
               </p>
               <button
-                className="btn primary"
+                className="btn btn-success"
                 onClick={() => reorder(order)}
               >
                 Reorder
@@ -195,7 +195,7 @@ export default function OrdersPage() {
                     Cancel Order
                   </button>
                   <button
-                    className="btn primary"
+                    className="btn btn-success"
                     onClick={() => completeOrder(order._id)}
                   >
                     Complete Order

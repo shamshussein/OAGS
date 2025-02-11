@@ -107,7 +107,7 @@ const CheckoutPage = () => {
     return (
         <div className="checkout-container">
             <div className="shipping-info">
-                <h4 className="section-title">Shipping Information</h4>
+                <h4 className="section-title">Shipping Information</h4><br></br>
                 <form onSubmit={handleSubmit}>
                     <label>Full Name</label>
                     <input
@@ -172,14 +172,41 @@ const CheckoutPage = () => {
                 </form>
             </div>
 
-            <div className="right-side">
-                <CheckoutItems cart={cartItems} />
-                <p>Total Quantity: <strong>{totalQuantity}</strong></p>
-                <p>Total Price: <strong>${totalPrice.toFixed(2)}</strong></p>
-                <p>Discount: <strong>${discount.toFixed(2)}</strong></p>
-                <p>Delivery Fee: <strong>${deliveryFee.toFixed(2)}</strong></p>
-                <p className="final-total">Final Total: <strong>${finalTotal.toFixed(2)}</strong></p>
-            </div>
+            <div className="right-side p-4 rounded shadow-sm bg-light">
+  {/* <h4 className="text-center fw-bold">Order Summary</h4> */}
+
+  <CheckoutItems cart={cartItems} />
+
+  <hr className="my-3" />
+
+  <div className="d-flex justify-content-between align-items-center mb-2">
+    <span>Total Quantity:</span> 
+    <strong>{totalQuantity}</strong>
+  </div>
+
+  <div className="d-flex justify-content-between align-items-center mb-2">
+    <span>Total Price:</span> 
+    <strong>${totalPrice.toFixed(2)}</strong>
+  </div>
+
+  <div className="d-flex justify-content-between align-items-center mb-2 text-danger">
+    <span>Discount:</span> 
+    <strong>- ${discount.toFixed(2)}</strong>
+  </div>
+
+  <div className="d-flex justify-content-between align-items-center mb-2">
+    <span>Delivery Fee:</span> 
+    <strong>${deliveryFee.toFixed(2)}</strong>
+  </div>
+
+  <hr className="my-3" />
+
+  <div className="d-flex justify-content-between align-items-center final-total text-success fs-5 fw-bold">
+    <span>Final Total:</span> 
+    <strong>${finalTotal.toFixed(2)}</strong>
+  </div>
+</div>
+
 
             {orderStatus && (
                 <div className="order-status">
