@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'font-awesome/css/font-awesome.min.css';
 import './ProductItem.css';
 import axios from 'axios';
+import API_BASE_URL from "config";
 
 const generateStars = (rating) => {
   const fullStars = Math.floor(rating);
@@ -40,7 +41,7 @@ const ProductItem = ({ product, discountPercentage }) => {
       }
   
       const response = await axios.post(
-        'http://localhost:3000/api/carts/addToCart',
+        `${API_BASE_URL}/api/carts/addToCart`,
         {
           product: product._id,
           productQuantity: 1,
