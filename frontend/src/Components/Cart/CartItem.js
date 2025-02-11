@@ -1,23 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CartItem.css";
 import { Plus, Dash, Check } from "react-bootstrap-icons";
 
 const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
-  const { name, image, quantity, itemPrice, description, itemId } = item;
+  const { name, image, quantity, itemPrice, itemId, itemType } = item;
   const [itemQuantity, setItemQuantity] = useState(quantity);
   const [isEditing, setIsEditing] = useState(false);
+
+  const isBundle = itemType === "bundle";
   const discountPercentage = 10;
   const discountedPrice = itemPrice * (1 - discountPercentage / 100);
 
+  // List of random badges for products
+  const productBadges = [
+    { text: "Top Pick", color: "bg-primary text-white" },
+    { text: "Flash Sale", color: "bg-danger text-white" },
+    { text: "Limited Stock", color: "bg-warning text-dark" },
+    { text: "Trending", color: "bg-info text-dark" },
+    { text: "Best Seller", color: "bg-success text-white" },
+  ];
+
+  // Function to pick a random badge
+  const getRandomBadge = () => productBadges[Math.floor(Math.random() * productBadges.length)];
+
+  // Store badge in state (remains the same on re-render)
+  const [badge, setBadge] = useState(() => getRandomBadge());
+
+  // If the item is a bundle, set a fixed "Bundle Offer" badge
+  useEffect(() => {
+    if (isBundle) {
+      setBadge({ text: "Bundle Offer", color: "bg-warning text-dark" });
+    }
+  }, [isBundle]);
+
   const handleIncrement = () => {
-    setItemQuantity((prevQuantity) => prevQuantity + 1);
+    setItemQuantity((prev) => prev + 1);
     setIsEditing(true);
   };
 
   const handleDecrement = () => {
     if (itemQuantity > 1) {
-      setItemQuantity((prevQuantity) => prevQuantity - 1);
+      setItemQuantity((prev) => prev - 1);
       setIsEditing(true);
     }
   };
@@ -35,108 +59,129 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
   };
 
   const handleRemove = () => {
-    const confirmRemoval = window.confirm(
-      `Are you sure you want to remove "${name}" from your cart?`
-    );
-    if (confirmRemoval) {
+    if (window.confirm(`Are you sure you want to remove "${name}" from your cart?`)) {
       onRemoveItem(itemId);
     }
   };
 
   return (
-    <div className="card mb-4 cart-item">
-      <div className="row g-0">
-        <div className="col-md-3 d-flex align-items-center justify-content-center">
+    <div
+      className={`card mb-4 cart-item shadow-sm ${isBundle ? "bundle-item" : ""}`}
+      style={{
+        border: isBundle ? "2px solid #ff9800" : "1px solid #ddd",
+        backgroundColor: isBundle ? "#fffaf2" : "#fff",
+        padding: "10px",
+        borderRadius: "12px",
+        transition: "all 0.3s ease-in-out",
+      }}
+    >
+      <div className="row g-0 align-items-center">
+        {/* Image Section */}
+        <div className="col-md-3 d-flex justify-content-center position-relative">
+          {/* Static Badge */}
+          <span
+            className={`badge ${badge.color}`}
+            style={{
+              position: "absolute",
+              top: "10px",
+              left: "10px",
+              fontSize: "0.8rem",
+              fontWeight: "bold",
+              padding: "5px 10px",
+              borderRadius: "8px",
+            }}
+          >
+            {badge.text}
+          </span>
           <img
             src={image || "https://via.placeholder.com/150"}
             alt={name}
             className="img-fluid p-3 product-image"
+            style={{
+              // width: isBundle ? "190px" : "105px",
+              // height: isBundle ? "130px" : "140px",
+              // objectFit: "cover",
+              // borderRadius: "8px",
+            }}
           />
         </div>
+
+        {/* Details Section */}
         <div className="col-md-9">
           <div className="card-body d-flex flex-column justify-content-between h-100">
-            <div>
-              <h5 className="card-title fw-bold">{name}</h5>
-              <p className="card-text mb-1">
-              <h6 className="text-muted fw-bold">{description}</h6>
-                <span className="text-decoration-line-through text-danger me-2 old-price">
-                  ${itemPrice.toFixed(2)}
-                </span>
-                <span className="text-success fw-bold new-price">
-                  ${discountedPrice.toFixed(2)}
-                </span>
-              </p>
-            </div>
+            <h5 className="card-title fw-bold">{name}</h5>
+            <p className="card-text mb-2">
+              <span className="text-decoration-line-through text-danger me-2 old-price">
+                ${itemPrice.toFixed(2)}
+              </span>
+              <span
+                className="fw-bold"
+                style={{
+                  color: "#28a745",
+                  fontSize: isBundle ? "1.2rem" : "1rem",
+                }}
+              >
+                ${discountedPrice.toFixed(2)}
+              </span>
+            </p>
+            {isBundle && <p className="text-muted small">Includes multiple items!</p>}
+
+            {/* Quantity Controls */}
             <div className="d-flex align-items-center justify-content-between">
-            <div className="d-flex align-items-center gap-3 quantity-controls">
-            {/* Decrement Button */}
-            <button
-              onClick={handleDecrement}
-              className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm"
-              style={{
-                width: "45px",
-                height: "45px",
-                fontSize: "1.2rem",
-                borderWidth: "2px",
-                transition: "all 0.3s ease-in-out",
-              }}
-             
-            >
-              <Dash size={22} />
-            </button>
-
-            {/* Quantity Display */}
-            <span
-              className="fw-bold text-center"
-              style={{
-                minWidth: "40px",
-                fontSize: "1rem",
-                color: "#333",
-              }}
-            >
-              {itemQuantity}
-            </span>
-
-            {/* Increment Button */}
-            <button
-              onClick={handleIncrement}
-              className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm"
-              style={{
-                width: "45px",
-                height: "45px",
-                fontSize: "1.2rem",
-                borderWidth: "2px",
-                transition: "all 0.3s ease-in-out",
-              }}
-             
-            >
-              <Plus size={22} />
-            </button>
-
-            {isEditing && (
-            <button
-              onClick={handleSave}
-              className="btn btn-outline-success rounded-circle d-flex align-items-center justify-content-center shadow-sm ms-3"
-              style={{
-                width: "45px",
-                height: "45px",
-                fontSize: "1.2rem",
-                borderWidth: "2px",
-                transition: "all 0.3s ease-in-out",
-              }}
-    
-            >
-              <Check size={22} />
-            </button>
-          )}
-
-              </div>
-              <button
-                  onClick={handleRemove}
-                  className="btn btn-danger remove-btn"
+              <div className="d-flex align-items-center gap-3 quantity-controls">
+                <button
+                  onClick={handleDecrement}
+                  className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    fontSize: "1.2rem",
+                    borderWidth: "2px",
+                    transition: "all 0.3s ease-in-out",
+                  }}
                 >
-                  Remove
+                  <Dash size={24} />
                 </button>
+
+                <span className="fw-bold text-center" style={{ minWidth: "45px", fontSize: "1.2rem", color: "#333" }}>
+                  {itemQuantity}
+                </span>
+
+                <button
+                  onClick={handleIncrement}
+                  className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    fontSize: "1.2rem",
+                    borderWidth: "2px",
+                    transition: "all 0.3s ease-in-out",
+                  }}
+                >
+                  <Plus size={24} />
+                </button>
+
+                {isEditing && (
+                  <button
+                    onClick={handleSave}
+                    className="btn btn-outline-success rounded-circle d-flex align-items-center justify-content-center shadow-sm ms-3"
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      fontSize: "1.2rem",
+                      borderWidth: "2px",
+                      transition: "all 0.3s ease-in-out",
+                    }}
+                  >
+                    <Check size={24} />
+                  </button>
+                )}
+              </div>
+
+              {/* Remove Button */}
+              <button onClick={handleRemove} className="btn btn-danger remove-btn" style={{ fontSize: "0.9rem", padding: "8px 12px", borderRadius: "8px" }}>
+                Remove
+              </button>
             </div>
           </div>
         </div>
