@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import PasswordInput from 'Components/utils/passwordInput';
-import useTogglePassword from 'Components/utils/togglePassword';
+import PasswordInput from 'Components/Utils/passwordInput';
+import useTogglePassword from 'Components/Utils/togglePassword';
 const ResetPassword = () => {
     const [token, setToken] = useState('');
     const [newPassword, setNewPassword] = useState('');

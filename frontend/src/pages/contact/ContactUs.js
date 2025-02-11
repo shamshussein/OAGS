@@ -27,7 +27,7 @@ function ContactUs() {
     if (!formData.message.trim()) newErrors.message = 'Message is required.';
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Returns true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (event) => {
@@ -37,7 +37,6 @@ function ContactUs() {
     console.log('Form data submitted:', formData);
     alert('Message sent successfully!');
     
-    // Reset form after submission
     setFormData({ name: '', email: '', message: '' });
     setErrors({});
   };
