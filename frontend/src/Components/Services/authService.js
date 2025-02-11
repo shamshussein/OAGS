@@ -1,4 +1,4 @@
-import apiClient from '../Utils/apiClient';
+import apiClient from '../Utils/ApiClient';
 
 export const signIn = (data) => apiClient.post('/login', data);
 export const signUp = (data) => apiClient.post('/signup', data);

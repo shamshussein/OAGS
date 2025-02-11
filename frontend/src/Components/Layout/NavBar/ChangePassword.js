@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useTogglePassword from "Components/Utils/togglePassword";
-import PasswordInput from "Components/Utils/passwordInput";
+import useTogglePassword from "Components/Utils/TogglePassword";
+import PasswordInput from "Components/Utils/PasswordInput";
 
 function ChangePassword() {
   const [oldPassword, setOldPassword] = useState("");
