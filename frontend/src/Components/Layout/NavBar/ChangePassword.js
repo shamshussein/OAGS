@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useTogglePassword from "Components/Utils/TogglePassword";
 import PasswordInput from "Components/Utils/PasswordInput";
+import API_BASE_URL from "config";
 
 function ChangePassword() {
   const [oldPassword, setOldPassword] = useState("");
@@ -31,7 +32,7 @@ function ChangePassword() {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/users/changePassword`,
+        `${API_BASE_URL}/api/users/changePassword`,
         { oldPassword, newPassword, confirmPassword },
         {
           headers: { Authorization: `Bearer ${userData.token}` },

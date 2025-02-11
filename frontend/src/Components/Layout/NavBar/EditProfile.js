@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faTrash, faUserCircle, faKey, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import "./EditProfile.css";
+import API_BASE_URL from "config";
 
 function EditProfile() {
   const [profilePicture, setProfilePicture] = useState(null);
@@ -20,7 +21,7 @@ function EditProfile() {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/users/updateProfile`,
+        `${API_BASE_URL}/api/users/updateProfile`,
         formData,
         {
           headers: {
@@ -51,7 +52,7 @@ function EditProfile() {
   const handleRemovePicture = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/users/removeProfilePicture`,
+        `${API_BASE_URL}/api/users/removeProfilePicture`,
         {},
         {
           headers: {
@@ -83,7 +84,7 @@ function EditProfile() {
     if (confirmed) {
       try {
         const response = await axios.delete(
-          `http://localhost:3000/api/users/deleteUser`,
+          `${API_BASE_URL}/api/users/deleteUser`,
           {
             headers: {
               Authorization: `Bearer ${userData.token}`,

@@ -4,6 +4,7 @@ import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import './Header.css';
+import API_BASE_URL from "config";
 
 function Header() {
   const [cartItems, setCartItems] = useState([]);
@@ -28,7 +29,7 @@ function Header() {
   const fetchCartItems = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/carts/getCartItems?userId=${userId}`
+        `${API_BASE_URL}/api/carts/getCartItems?userId=${userId}`
       );
       setCartItems(response.data.cartItems || []);
     } catch (error) {
