@@ -12,7 +12,6 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
   const discountPercentage = 10;
   const discountedPrice = itemPrice * (1 - discountPercentage / 100);
 
-  // List of random badges for products
   const productBadges = [
     { text: "Top Pick", color: "bg-primary text-white" },
     { text: "Flash Sale", color: "bg-danger text-white" },
@@ -21,13 +20,10 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
     { text: "Best Seller", color: "bg-success text-white" },
   ];
 
-  // Function to pick a random badge
   const getRandomBadge = () => productBadges[Math.floor(Math.random() * productBadges.length)];
 
-  // Store badge in state (remains the same on re-render)
   const [badge, setBadge] = useState(() => getRandomBadge());
 
-  // If the item is a bundle, set a fixed "Bundle Offer" badge
   useEffect(() => {
     if (isBundle) {
       setBadge({ text: "Bundle Offer", color: "bg-warning text-dark" });
@@ -76,9 +72,7 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
       }}
     >
       <div className="row g-0 align-items-center">
-        {/* Image Section */}
         <div className="col-md-3 d-flex justify-content-center position-relative">
-          {/* Static Badge */}
           <span
             className={`badge ${badge.color}`}
             style={{
@@ -106,7 +100,6 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
           />
         </div>
 
-        {/* Details Section */}
         <div className="col-md-9">
           <div className="card-body d-flex flex-column justify-content-between h-100">
             <h5 className="card-title fw-bold">{name}</h5>
@@ -126,7 +119,6 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
             </p>
             {isBundle && <p className="text-muted small">Includes multiple items!</p>}
 
-            {/* Quantity Controls */}
             <div className="d-flex align-items-center justify-content-between">
               <div className="d-flex align-items-center gap-3 quantity-controls">
                 <button
@@ -178,7 +170,6 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
                 )}
               </div>
 
-              {/* Remove Button */}
               <button onClick={handleRemove} className="btn btn-danger remove-btn" style={{ fontSize: "0.9rem", padding: "8px 12px", borderRadius: "8px" }}>
                 Remove
               </button>

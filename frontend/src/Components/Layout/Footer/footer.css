@@ -1,5 +1,4 @@
 .footer {
-
   background-color: #c7d6cf;
   color: #000000;
   padding: 4vh 2rem;
@@ -7,7 +6,7 @@
   flex-shrink: 0;
   margin-top: 10vh;
   
-  position: relative; /* Change to relative so it stays at the bottom of the page */
+  position: relative; 
   bottom: 0;
   left: 0;
   width: 100%;
@@ -16,35 +15,34 @@
 
 .footer-content {
   display: flex;
-  justify-content: center; /* Centers the entire footer content horizontally */
-  align-items: center;    /* Aligns items vertically */
+  justify-content: center;
+  align-items: center;    
   flex-wrap: wrap;
   gap: 1vh;
 }
 
-/* Align menu items horizontally and center them */
 .footer-menu ul {
   list-style: none;
   padding: 0;
-  display: flex;          /* Make the items display in a row */
-  justify-content: center; /* Center items horizontally */
-  gap: 1.3rem;              /* Add spacing between items */
-  margin: 0;              /* Remove default margin */
+  display: flex;         
+  justify-content: center; 
+  gap: 1.3rem;
+  margin: 0; 
 }
 
 .footer-menu li {
-  margin: 0; /* Remove any extra margins */
+  margin: 0; 
 }
 
 .footer-menu a {
   text-decoration: none;
   color: #000000;
   transition: color 0.3s ease;
-  font-size: 0.8rem; /* Adjust font size */
+  font-size: 0.8rem;
 }
 
 .footer-menu a:hover {
-  color: #ffffff; /* Change color on hover */
+  color: #ffffff;
 }
 
 .social-media {

@@ -105,7 +105,7 @@ function BundleBanner() {
                   <p className="description-section">{bundle.description}</p><br />
 
                   <div className="price-section">
-                    <s className="original-price text-danger" style={{textDecoration:'line-through' }}>
+                    <s className="original-price">
                       ${parseFloat(bundle.originalPrice).toFixed(2)}
                     </s>
                     <span className="discounted-price">
