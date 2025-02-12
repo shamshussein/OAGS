@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import { toast } from "react-toastify";
 import axios from "axios";
 import "styles/Orders.css";
 import API_BASE_URL from "config";
@@ -26,14 +25,12 @@ export default function OrdersPage() {
       );
 
       const fetchedOrders = response.data.orders || [];
-
       const history = fetchedOrders.filter(
         (order) => order.orderStatus === "completed"
       );
       const upcoming = fetchedOrders.filter(
         (order) => order.orderStatus === "pending"
       );
-
       setOrders({ history, upcoming });
       setLoading(false);
     } catch (error) {
@@ -47,35 +44,62 @@ export default function OrdersPage() {
     fetchOrders();
   }, [fetchOrders]);
 
+  const getOrderSignature = (order) => {
+    return order.items
+      .map(
+        (item) =>
+          `${item.product?.productName || item.bundle?.name || "Unknown"}-${item.quantity}`
+      )
+      .sort()
+      .join("|");
+  };
+
+  const getGroupedHistoryOrders = () => {
+    const groups = {};
+    orders.history.forEach((order) => {
+      const signature = getOrderSignature(order);
+      if (!groups[signature]) {
+        groups[signature] = { groupId: Object.keys(groups).length + 1, orders: [] };
+      }
+      groups[signature].orders.push(order);
+    });
+    return Object.values(groups);
+  };
+
   const reorder = async (order) => {
     const userConfirmed = window.confirm(
       "Are you sure you want to reorder this order? This will place a new order with the same items."
     );
-    if (!userConfirmed) return; 
-  
+    if (!userConfirmed) return;
+
     try {
       await axios.post(
         `${API_BASE_URL}/api/checkout/reorder`,
         { orderId: order._id },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
-      toast.success(
-        `Reordered: ${order.items
-          .map((item) => item.product?.productName || item.bundle?.name)
-          .join(", ")}`
+      const uniqueItemNames = Array.from(
+        new Set(
+          order.items.map(
+            (item) => item.product?.productName || item.bundle?.name || "Unknown"
+          )
+        )
       );
+      window.alert(`Reordered: ${uniqueItemNames.join(", ")}`);
       fetchOrders();
     } catch (error) {
       console.error("Reorder error:", error);
-      toast.error("Reorder failed.");
+      window.alert("Reorder failed.");
     }
   };
-  
 
   const cancelOrder = async (orderId) => {
+    const userConfirmed = window.confirm("Are you sure you want to cancel this order?");
+    if (!userConfirmed) return;
+
     try {
       await axios.post(
-       `${API_BASE_URL}/api/checkout/cancelOrder/${orderId}`,
+        `${API_BASE_URL}/api/checkout/cancelOrder/${orderId}`,
         {},
         {
           headers: {
@@ -85,13 +109,17 @@ export default function OrdersPage() {
         }
       );
       fetchOrders();
-      toast.success("Order canceled");
+      window.alert("Order canceled");
     } catch (error) {
-      toast.error("Failed to cancel order.");
+      console.error("Cancel order error:", error);
+      window.alert("Failed to cancel order.");
     }
   };
 
   const completeOrder = async (orderId) => {
+    const userConfirmed = window.confirm("Are you sure you want to complete this order?");
+    if (!userConfirmed) return;
+
     try {
       await axios.post(
         `${API_BASE_URL}/api/checkout/completedOrder/${orderId}`,
@@ -103,11 +131,12 @@ export default function OrdersPage() {
           },
         }
       );
-      toast.success("Order completed");
+      window.alert("Order completed");
       fetchOrders();
       setShowFeedbackPopup(true);
     } catch (error) {
-      toast.error("Failed to complete order.");
+      console.error("Complete order error:", error);
+      window.alert("Failed to complete order.");
     }
   };
 
@@ -118,15 +147,18 @@ export default function OrdersPage() {
         { feedback: feedbackText },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
-      toast.success("Thank you for your feedback!");
+      window.alert("Thank you for your feedback!");
       setFeedbackText("");
       setShowFeedbackPopup(false);
     } catch (error) {
-      toast.error("Failed to submit feedback.");
+      console.error("Feedback submission error:", error);
+      window.alert("Failed to submit feedback.");
     }
   };
 
   if (loading) return <p className="loading-text">Loading orders...</p>;
+
+  const groupedHistoryOrders = getGroupedHistoryOrders();
 
   return (
     <div className="orders-container">
@@ -137,31 +169,43 @@ export default function OrdersPage() {
         {orders.history.length === 0 ? (
           <p className="empty-text">No previous orders.</p>
         ) : (
-          orders.history.map((order) => (
-            <div key={order._id} className="order-card">
-              <p>
-                <strong>Items:</strong>{" "}
-                {order.items
-                  .map(
-                    (item) =>
-                      item.product?.productName ||
-                      item.bundle?.name ||
-                      "Unknown"
-                  )
-                  .join(", ")}
-              </p>
-              <p>
-                <strong>Date:</strong>{" "}
-                {new Date(order.createdAt).toLocaleDateString()}
-              </p>
-              <button
-                className="btn btn-success"
-                onClick={() => reorder(order)}
-              >
-                Reorder
-              </button>
-            </div>
-          ))
+          groupedHistoryOrders.map((group) =>
+            group.orders.map((order, index) => (
+              <div key={order._id} className="order-card">
+                <p>
+                  <strong>Order Group:</strong> {group.groupId}
+                  {group.orders.length > 1 && " (duplicate)"}
+                </p>
+                <p>
+                  <strong>Items:</strong>{" "}
+                  {order.items
+                    .map(
+                      (item) =>
+                        item.product?.productName ||
+                        item.bundle?.name ||
+                        "Unknown"
+                    )
+                    .join(", ")}
+                </p>
+                <p>
+                  <strong>Total Price: $</strong>
+                  {order.totalAmount}
+                </p>
+                <p>
+                  <strong>Date:</strong>{" "}
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </p>
+                {index === 0 && (
+                  <button
+                    className="btn btn-success"
+                    onClick={() => reorder(order)}
+                  >
+                    Reorder
+                  </button>
+                )}
+              </div>
+            ))
+          )
         )}
       </div>
 
@@ -182,6 +226,10 @@ export default function OrdersPage() {
                       "Unknown"
                   )
                   .join(", ")}
+              </p>
+              <p>
+                <strong>Total Price: $</strong>
+                {order.totalAmount}
               </p>
               <p>
                 <strong>Status:</strong> {order.orderStatus}

@@ -18,8 +18,9 @@ const app = express();
 
 app.use(cors({
   origin: 
-  // "https://outdooradventuregear.netlify.app" ||
- "http://localhost:3001",
+  "https://outdooradventuregear.netlify.app",
+  //  ||
+//  "http://localhost:3001",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));

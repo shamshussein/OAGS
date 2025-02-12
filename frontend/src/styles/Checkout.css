@@ -135,6 +135,12 @@
     font-weight: bold;
 }
 
+.loading-text {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #aaa;
+    padding: 220px;
+  }
 .empty-cart {
     text-align: center;
     font-size: 16px;

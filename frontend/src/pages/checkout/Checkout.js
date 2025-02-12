@@ -88,7 +88,9 @@ const CheckoutPage = () => {
             setTotalPrice(0);
     
             alert("Order placed successfully!");
-            navigate("/"); 
+            navigate("/");
+            window.location.reload();
+ 
         } catch (error) {
             console.error("Checkout Error:", error.response?.data || error.message);
             setError("Failed to process order.");
@@ -96,7 +98,7 @@ const CheckoutPage = () => {
     };
     
 
-    if (loading) return <p>Loading cart...</p>;
+    if (loading) return <p className="loading-text">Loading...</p>;
     if (error) return <p className="error-message">{error}</p>;
 
     const discount = totalPrice * 0.1;
@@ -175,37 +177,37 @@ const CheckoutPage = () => {
             <div className="right-side p-4 rounded shadow-sm bg-light">
   {/* <h4 className="text-center fw-bold">Order Summary</h4> */}
 
-  <CheckoutItems cart={cartItems} />
+                <CheckoutItems cart={cartItems} />
 
-  <hr className="my-3" />
+                <hr className="my-3" />
 
-  <div className="d-flex justify-content-between align-items-center mb-2">
-    <span>Total Quantity:</span> 
-    <strong>{totalQuantity}</strong>
-  </div>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span>Total Quantity:</span> 
+                    <strong>{totalQuantity}</strong>
+                </div>
 
-  <div className="d-flex justify-content-between align-items-center mb-2">
-    <span>Total Price:</span> 
-    <strong>${totalPrice.toFixed(2)}</strong>
-  </div>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span>Total Price:</span> 
+                    <strong>${totalPrice.toFixed(2)}</strong>
+                </div>
 
-  <div className="d-flex justify-content-between align-items-center mb-2 text-danger">
-    <span>Discount:</span> 
-    <strong>- ${discount.toFixed(2)}</strong>
-  </div>
+                <div className="d-flex justify-content-between align-items-center mb-2 text-danger">
+                    <span>Discount:</span> 
+                    <strong>- ${discount.toFixed(2)}</strong>
+                </div>
 
-  <div className="d-flex justify-content-between align-items-center mb-2">
-    <span>Delivery Fee:</span> 
-    <strong>${deliveryFee.toFixed(2)}</strong>
-  </div>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span>Delivery Fee:</span> 
+                    <strong>${deliveryFee.toFixed(2)}</strong>
+                </div>
 
-  <hr className="my-3" />
+                <hr className="my-3" />
 
-  <div className="d-flex justify-content-between align-items-center final-total text-success fs-5 fw-bold">
-    <span>Final Total:</span> 
-    <strong>${finalTotal.toFixed(2)}</strong>
-  </div>
-</div>
+                <div className="d-flex justify-content-between align-items-center final-total text-success fs-5 fw-bold">
+                    <span>Final Total:</span> 
+                    <strong>${finalTotal.toFixed(2)}</strong>
+                </div>
+                </div>
 
 
             {orderStatus && (

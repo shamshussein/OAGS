@@ -6,7 +6,6 @@ import { signIn, googlSignUp } from 'Components/Services/AuthService';
 import useTogglePassword from "Components/Utils/TogglePassword";
 import PasswordInput from "Components/Utils/PasswordInput";
 
-
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
