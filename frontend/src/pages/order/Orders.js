@@ -189,8 +189,8 @@ export default function OrdersPage() {
                 </p>
                 <p>
                   <strong>Total Price: $</strong>
-                  {order.totalAmount}
-                </p>
+                  {parseFloat(order.totalAmount).toFixed(2)}
+                  </p>
                 <p>
                   <strong>Date:</strong>{" "}
                   {new Date(order.createdAt).toLocaleDateString()}
@@ -229,7 +229,7 @@ export default function OrdersPage() {
               </p>
               <p>
                 <strong>Total Price: $</strong>
-                {order.totalAmount}
+                {parseFloat(order.totalAmount).toFixed(2)}
               </p>
               <p>
                 <strong>Status:</strong> {order.orderStatus}
