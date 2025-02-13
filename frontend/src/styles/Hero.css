@@ -114,9 +114,10 @@
 
 .testimonial {
   background-color: #ffffff;
-  padding: 3vh;
+  padding: 1vh;
   width:60%;
-  height: 15vh;
+  min-height: 15vh;
+  max-height: fit-content;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: opacity 1s ease-in-out, transform 0.5s ease;

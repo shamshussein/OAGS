@@ -29,7 +29,8 @@ margin-left: 2vh;
 
 .product-item-image {
   height: 100%;
-  margin-left: 2vh;
+  max-height: 350px;
+  /* margin-left: 2vh; */
   object-fit: contain;
 }
 

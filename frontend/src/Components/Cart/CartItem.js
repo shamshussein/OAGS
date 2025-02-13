@@ -169,14 +169,13 @@ const CartItem = ({ item, onRemoveItem, updateQuantity }) => {
                   </button>
                 )}
               </div>
-
-              <button onClick={handleRemove} className="btn btn-danger remove-btn" style={{ fontSize: "0.9rem", padding: "8px 12px", borderRadius: "8px" }}>
-                Remove
-              </button>
             </div>
           </div>
         </div>
       </div>
+      <button onClick={handleRemove} className="btn btn-danger remove-btn" style={{ fontSize: "0.9rem", padding: "8px 12px", borderRadius: "8px" }}>
+                Remove
+              </button>
     </div>
   );
 };
