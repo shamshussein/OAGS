@@ -10,8 +10,8 @@ router.post("/login", userController.login);
 router.post("/google-auth", userController.googleAuth);
 router.delete("/deleteUser", userController.protect, userController.deleteUser);
 router.put("/changePassword", userController.protect, userController.changePassword);
-router.post("/forgotPassword", forgotPassword); // Generates a token
-router.post("/resetPassword", resetPassword); // Resets password using token
+router.post("/forgotPassword", forgotPassword);
+router.post("/resetPassword", resetPassword); 
 
 router.put(
     "/updateProfile",

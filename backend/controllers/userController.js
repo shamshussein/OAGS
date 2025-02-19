@@ -6,7 +6,7 @@ const { promisify } = require("util");
 const crypto = require("crypto"); 
 const mongoose = require("mongoose");
 const Cart = require("../models/cartModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const Order = require("../models/orderModel");
 const Feedback = require("../models/feedbackModel");
